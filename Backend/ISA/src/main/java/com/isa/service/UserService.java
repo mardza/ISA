@@ -3,8 +3,12 @@ package com.isa.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.isa.controller.exception.custom.EntityNotFoundException;
+import com.isa.dto.UserDTO;
+import com.isa.entity.Role;
 import com.isa.entity.User;
 import com.isa.repository.UserRepository;
 
@@ -15,6 +19,12 @@ public class UserService implements UserServiceInterface {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private RoleService roleService;
+	
+	@Autowired
+    private PasswordEncoder passwordEncoder;
+	
 
 	@Override
 	public List<User> findAll() {
@@ -23,7 +33,11 @@ public class UserService implements UserServiceInterface {
 
 	@Override
 	public User findByEmail(String email) {
-		return userRepository.findByEmail(email);
+		User user = userRepository.findByEmail(email);
+		if(user == null) {
+			throw new EntityNotFoundException("User with email '" + email + "' not found");
+		}
+		return user;
 	}
 
 	@Override
@@ -33,12 +47,29 @@ public class UserService implements UserServiceInterface {
 
 	@Override
 	public User findById(Integer userId) {
-		return userRepository.findById(userId).orElse(null);
+		User user = userRepository.findById(userId).orElse(null);
+		if(user == null) {
+			throw new EntityNotFoundException("User with id '" + userId + "' not found");
+		}
+		return user;
 	}
 
 	@Override
 	public User save(User user) {
 		return userRepository.save(user);
+	}
+	
+	@Override
+	public User register(UserDTO userDTO) {
+		User user = new User(userDTO);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		Role role = this.roleService.findByName("ROLE_PATIENT");
+		user.setRole(role);
+		user = userRepository.save(user);
+		if(user == null) {
+			// throw new CantRegisterNewUserException("");
+		}
+		return user;
 	}
 
 	@Override

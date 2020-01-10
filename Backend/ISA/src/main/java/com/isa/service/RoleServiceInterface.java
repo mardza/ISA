@@ -12,7 +12,7 @@ public interface RoleServiceInterface {
 	
 	Role findById(Integer id);
 	
-	List<Role> findByUserId(Integer userId);
+	Role findByUserId(Integer userId);
 	
 	Role save(Role role);
 	

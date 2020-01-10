@@ -1,1 +1,73 @@
-<p>register works!</p>
+<mat-card>
+    <mat-card-title>Register</mat-card-title>
+    <form (ngSubmit)="onSubmit(form)" #form="ngForm">
+
+        <!-- Email -->
+        <mat-form-field>
+            <input matInput type="email" name="email" placeholder="Email" ngModel #email="ngModel" required>
+            <mat-error *ngIf="email.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Password1 -->
+        <mat-form-field>
+            <input matInput type="password" name="password1" placeholder="Password" ngModel #password="ngModel"
+                   required>
+            <mat-error *ngIf="password.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Password2 -->
+        <mat-form-field>
+            <input matInput type="password" name="password2" placeholder="Repeat password" ngModel #password2="ngModel"
+                   required pattern="{{password.value}}">
+            <mat-error *ngIf="password2.errors?.required">Can not be empty</mat-error>
+            <mat-error *ngIf="password2.errors?.pattern">Passwords do not match</mat-error>
+        </mat-form-field>
+
+        <!-- First name -->
+        <mat-form-field>
+            <input matInput type="text" name="firstName" placeholder="First name" ngModel #firstName="ngModel" required>
+            <mat-error *ngIf="firstName.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Last name -->
+        <mat-form-field>
+            <input matInput type="text" name="lastName" placeholder="Last name" ngModel #lastName="ngModel" required>
+            <mat-error *ngIf="lastName.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Address -->
+        <mat-form-field>
+            <input matInput type="text" name="address" placeholder="Address" ngModel #address="ngModel" required>
+            <mat-error *ngIf="address.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- City -->
+        <mat-form-field>
+            <input matInput type="text" name="city" placeholder="City" ngModel #city="ngModel" required>
+            <mat-error *ngIf="city.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Country -->
+        <mat-form-field>
+            <input matInput type="text" name="country" placeholder="Country" ngModel #country="ngModel" required>
+            <mat-error *ngIf="country.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Phone -->
+        <mat-form-field>
+            <input matInput type="text" name="phone" placeholder="Phone" ngModel #phone="ngModel" required>
+            <mat-error *ngIf="phone.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Insurance number -->
+        <mat-form-field>
+            <input matInput type="text" name="insuranceNumber" placeholder="Insurance number" ngModel #insuranceNumber="ngModel" required>
+            <mat-error *ngIf="insuranceNumber.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <mat-card-actions align="end">
+            <button mat-raised-button type="submit">Register</button>
+            <button mat-button type="button" [routerLink]="['/login']">Login</button>
+        </mat-card-actions>
+    </form>
+</mat-card>

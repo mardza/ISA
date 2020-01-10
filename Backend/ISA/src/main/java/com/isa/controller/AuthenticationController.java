@@ -1,5 +1,7 @@
 package com.isa.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -43,7 +45,7 @@ public class AuthenticationController {
 	
 	
 	@PostMapping(path = "/login")
-	public ResponseEntity<String> createAuthenticationToken(@RequestBody LoginDTO loginDTO){
+	public ResponseEntity<String> createAuthenticationToken(@Valid @RequestBody LoginDTO loginDTO){
 		Authentication authentication;
 		try {
 			authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
@@ -51,6 +53,7 @@ public class AuthenticationController {
 		} catch (AuthenticationException e) {
 			System.out.println("/auth/login | Someone tried to log in with wrong credentials");
 			return new ResponseEntity<String>("Wrong email/password", HttpStatus.UNAUTHORIZED);
+			// throw new BadLoginException
 		}
 		
 		// Ubaci email + password u kontext
@@ -64,6 +67,7 @@ public class AuthenticationController {
 	}
 
 	
+	// TODO: remove this method
 	@GetMapping(path = "/toHash")
 	public ResponseEntity<String> passwordToHash(@RequestParam("password") String password) {
 		return new ResponseEntity<String>(passwordEncoder.encode(password), HttpStatus.OK);

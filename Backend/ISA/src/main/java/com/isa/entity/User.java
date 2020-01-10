@@ -1,27 +1,21 @@
 package com.isa.entity;
 
 import java.util.Collection;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-
-// TODO: single role per user
+import com.isa.dto.UserDTO;
 
 @Entity
 @Table(name = "users")
@@ -59,20 +53,31 @@ public class User implements UserDetails {
 	@Column(name = "insuranceNumber", unique = false, nullable = true, length = 65)
 	private String insuranceNumber;
 
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.MERGE }, fetch = FetchType.EAGER)
-	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-	private List<Role> roles;
-	
+	@ManyToOne
+	@JoinColumn(name = "role_id", referencedColumnName = "id", unique = false, nullable = false)
+	private Role role;
+
 	private Double ratingAverage;
 	private Integer ratingWeight;
-	
+
 	private Boolean passwordSet;
 
-	
 	public User() {
 	}
 
-	
+	public User(UserDTO userDTO) {
+		id = userDTO.getId();
+		email = userDTO.getEmail();
+		password = userDTO.getPassword();
+		firstName = userDTO.getFirstName();
+		lastName = userDTO.getLastName();
+		address = userDTO.getAddress();
+		city = userDTO.getCity();
+		country = userDTO.getCountry();
+		phone = userDTO.getPhone();
+		insuranceNumber = userDTO.getInsuranceNumber();
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -89,7 +94,6 @@ public class User implements UserDetails {
 		this.email = email;
 	}
 
-	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
@@ -154,60 +158,49 @@ public class User implements UserDetails {
 		this.insuranceNumber = insuranceNumber;
 	}
 
-	public List<Role> getRoles() {
-		return roles;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public void setRole(Role role) {
+		this.role = role;
 	}
-	
-	
+
 	@Override
 	public String getUsername() {
 		return this.email;
 	}
-	
+
 	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return this.roles;
+		return java.util.Arrays.asList(role);
 	}
-	
+
 	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isEnabled() {
 		return true;
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		return "User ["
-				+ "id=" + id + ", "
-				+ "firstName=" + firstName + ", "
-				+ "lastname=" + lastName + ", "
-				+ "email=" + email + ", "
-				+ "password=" + password + ", "
-				+ "address=" + address + ", "
-				+ "city=" + city + ", "
-				+ "country=" + country + ", "
-				+ "phone=" + phone + ", "
-				+ "insuranceNumber=" + insuranceNumber
-				+ "]";
+		return "User [" + "id=" + id + ", " + "firstName=" + firstName + ", " + "lastname=" + lastName + ", " + "email="
+				+ email + ", " + "password=" + password + ", " + "address=" + address + ", " + "city=" + city + ", "
+				+ "country=" + country + ", " + "phone=" + phone + ", " + "insuranceNumber=" + insuranceNumber + "]";
 	}
 }

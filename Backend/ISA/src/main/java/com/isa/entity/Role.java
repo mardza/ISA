@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -28,7 +28,7 @@ public class Role implements GrantedAuthority {
 	private String name;
 	
 	@JsonIgnore
-	@ManyToMany(mappedBy = "roles", cascade = {CascadeType.MERGE, CascadeType.MERGE})
+	@OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE)
 	private List<User> users;
 	
 	

@@ -62,8 +62,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 	//svim korisnicima dopusti da pristupe putanjama /auth/login
                 	.antMatchers("/auth/toHash").permitAll()
                 	.antMatchers("/auth/login").permitAll()
-                	.antMatchers("/user/register").permitAll()
-                	.antMatchers("/user/currentUser").permitAll()
+                	.antMatchers("/users/register").permitAll()
+                	.antMatchers("/users/currentUser").permitAll()
                 	.antMatchers("/file/download/*").permitAll()
                 	.antMatchers("/search/**").permitAll()
                 	//svaki zahtev mora biti autorizovan

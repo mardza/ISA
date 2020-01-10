@@ -12,18 +12,6 @@ mat-card {
     display: flex;
     flex-direction: column;
 
-    // Fix for email input when chrome does autofill (https://stackoverflow.com/a/37432260)
-    @-webkit-keyframes autofill {
-      to {
-        background: transparent;
-      }
-    }
-    input:-webkit-autofill {
-      -webkit-animation-name: autofill;
-      -webkit-animation-fill-mode: both;
-    }
-    // end fix
-
     button[type=submit] {
       width: auto;
     }

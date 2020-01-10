@@ -2,15 +2,17 @@
     <mat-card-title>Login</mat-card-title>
     <form (ngSubmit)="onSubmit(form)" #form="ngForm">
         <mat-form-field>
-            <input matInput type="email" name="email" placeholder="Email" ngModel required email>
+            <input matInput type="email" name="email" placeholder="Email" ngModel #email="ngModel" required email>
+            <mat-error *ngIf="email.errors?.required">Can not be empty</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="password" name="password" placeholder="Password" ngModel required>
+            <input matInput type="password" name="password" placeholder="Password" ngModel #password="ngModel" required>
+            <mat-error *ngIf="password.errors?.required">Can not be empty</mat-error>
         </mat-form-field>
 
         <mat-card-actions align="end">
             <button mat-raised-button type="submit">Login</button>
-            <button mat-button type="button">Register</button>
+            <button mat-button type="button" [routerLink]="['/register']">Register</button>
         </mat-card-actions>
     </form>
 </mat-card>

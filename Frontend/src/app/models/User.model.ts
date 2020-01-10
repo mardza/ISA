@@ -3,6 +3,7 @@ import {Role} from './Role.model';
 export class User {
     id: number;
     email: string;
+    password: string;
     firstName: string;
     lastName: string;
     address: string;
@@ -23,6 +24,7 @@ export class User {
         const userToReturn: User = new User();
         userToReturn.id = user.id;
         userToReturn.email = user.email;
+        userToReturn.password = user.password; // should not be returned from backend
         userToReturn.firstName = user.firstName;
         userToReturn.lastName = user.lastName;
         userToReturn.address = user.address;

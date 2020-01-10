@@ -9,3 +9,18 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+form {
+  // Fix for email input when chrome does autofill (https://stackoverflow.com/a/37432260)
+  @-webkit-keyframes autofill {
+    to {
+      color: #FFFFFF00 !important;
+      background: transparent;
+    }
+  }
+  input:-webkit-autofill {
+    -webkit-animation-name: autofill !important;
+    -webkit-animation-fill-mode: both !important;
+  }
+  // end fix
+}

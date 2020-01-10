@@ -31,7 +31,7 @@ public class RoleService implements RoleServiceInterface {
 	}
 
 	@Override
-	public List<Role> findByUserId(Integer userId) {
+	public Role findByUserId(Integer userId) {
 		return roleRepository.findByUsers_Id(userId);
 	}
 
