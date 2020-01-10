@@ -1,0 +1,11 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body {
+  min-height: 100%;
+  //height: 100%; // default material, but introduces weird stuff when routed element has top margin
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
