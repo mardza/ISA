@@ -11,16 +11,24 @@ import {UserService} from '../../services/http/user.service';
 })
 export class RegisterComponent implements OnInit {
 
+    isLoading: boolean;
+    error: string;
+
+
     constructor(
         private userService: UserService
     ) {
     }
 
+
     ngOnInit() {
+        this.isLoading = false;
+        this.error = "";
     }
 
     onSubmit(form: NgForm) {
         if(form.valid) {
+            this.isLoading = true;
             let user: User = new User();
             user.email = form.value.email;
             user.password = form.value.password1;
@@ -37,6 +45,11 @@ export class RegisterComponent implements OnInit {
                 .subscribe(
                     value => {
                         console.log(value);
+                        this.isLoading = false;
+                    },
+                    error => {
+                        this.error = error
+                        this.isLoading = false;
                     }
                 );
         }

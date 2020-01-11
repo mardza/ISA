@@ -14,5 +14,6 @@
             <button mat-raised-button type="submit">Login</button>
             <button mat-button type="button" [routerLink]="['/register']">Register</button>
         </mat-card-actions>
+        <mat-error align="center" *ngIf="msg">{{msg}}</mat-error>
     </form>
 </mat-card>

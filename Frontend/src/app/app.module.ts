@@ -8,10 +8,11 @@ import {RegisterComponent} from './components/register/register.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
+import {TokenInterceptorService} from './services/auth/TokenInterceptor.service';
 
 @NgModule({
     declarations: [
@@ -30,7 +31,9 @@ import {MatCardModule} from '@angular/material/card';
         MatButtonModule,
         MatCardModule
     ],
-    providers: [],
+    providers: [
+        {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

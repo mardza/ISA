@@ -28,8 +28,8 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.isa.controller.exception.custom.BadLoginException;
 import com.isa.controller.exception.custom.EntityNotFoundException;
-
 
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -41,6 +41,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, ex));
 	}
 	
+	@ExceptionHandler(BadLoginException.class)
+	protected ResponseEntity<Object> handleBadLogin(BadLoginException ex) {
+		return buildResponseEntity(new ApiError(HttpStatus.UNAUTHORIZED, ex));
+	}
 	
 	
 	
@@ -145,7 +149,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 			HttpStatus status, WebRequest request) {
 		return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, ex));
 	}
-	
 	
 	private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
 		return new ResponseEntity<>(apiError, apiError.getStatus());

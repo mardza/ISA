@@ -61,7 +61,8 @@
 
         <!-- Insurance number -->
         <mat-form-field>
-            <input matInput type="text" name="insuranceNumber" placeholder="Insurance number" ngModel #insuranceNumber="ngModel" required>
+            <input matInput type="text" name="insuranceNumber" placeholder="Insurance number" ngModel
+                   #insuranceNumber="ngModel" required>
             <mat-error *ngIf="insuranceNumber.errors?.required">Can not be empty</mat-error>
         </mat-form-field>
 

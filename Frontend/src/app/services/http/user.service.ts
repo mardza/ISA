@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {User} from '../../models/User.model';
 import {map} from 'rxjs/operators';
 import {globals} from '../../globals';
@@ -28,5 +28,10 @@ export class UserService {
             .pipe(
                 map(response => User.toUser(response))
             );
+    }
+
+
+    handleError(error) {
+        return throwError(JSON.parse(error.error));
     }
 }

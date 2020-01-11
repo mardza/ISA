@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {BehaviorSubject, throwError} from 'rxjs';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {globals} from '../../globals';
 import {Router} from '@angular/router';
+import {catchError, tap} from 'rxjs/operators';
 
 
 @Injectable({providedIn: 'root'})
@@ -36,7 +37,7 @@ export class AuthService {
                     localStorage.setItem('jwt', token);
                     this.loggedIn.next(true);
                 },
-                error => {
+                (error: HttpErrorResponse) => {
                     console.log('Auth NOT good');
                     console.log(error);
                     this.loggedIn.next(false);
