@@ -13,12 +13,14 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {TokenInterceptorService} from './services/auth/TokenInterceptor.service';
+import { ActivateAccountComponent } from './components/activate-account/activate-account.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
-        RegisterComponent
+        RegisterComponent,
+        ActivateAccountComponent
     ],
     imports: [
         BrowserModule,

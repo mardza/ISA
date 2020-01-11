@@ -1,7 +1,6 @@
 package com.isa.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -15,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isa.dto.RegistrationDTO;
 import com.isa.dto.UserDTO;
+import com.isa.entity.Registration;
 import com.isa.entity.User;
 import com.isa.service.UserService;
 
@@ -26,23 +27,41 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	
+
 	@GetMapping()
 	public ResponseEntity<List<UserDTO>> getAll() {
 		List<User> userList = this.userService.findAll();
-		List<UserDTO> userListDTO = userList.stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
-		return new ResponseEntity<List<UserDTO>>(userListDTO, HttpStatus.OK);
+		return new ResponseEntity<List<UserDTO>>(UserDTO.toList(userList), HttpStatus.OK);
 	}
-	
+
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<UserDTO> getById(@PathVariable("id") Integer id) {
 		User user = this.userService.findById(id);
 		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
 	}
-	
+
 	@PostMapping(path = "/register")
 	public ResponseEntity<UserDTO> register(@RequestBody @Valid UserDTO userDTO) {
 		User user = this.userService.register(userDTO);
 		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
 	}
+
+	@GetMapping(path = "/unapproved")
+	public ResponseEntity<List<UserDTO>> getAllUnapproved() {
+		List<User> userList = this.userService.findAllUnapproved();
+		return new ResponseEntity<List<UserDTO>>(UserDTO.toList(userList, true), HttpStatus.OK);
+	}
+
+	@PostMapping(path = "/approve-registration/{id}")
+	public ResponseEntity<RegistrationDTO> approveRegistration(@PathVariable("id") String id) {
+		Registration registration = this.userService.approveRegistration(id);
+		return new ResponseEntity<RegistrationDTO>(new RegistrationDTO(registration), HttpStatus.OK);
+	}
+
+	@PostMapping(path = "/activate-registration/{id}")
+	public ResponseEntity<RegistrationDTO> activateRegistration(@PathVariable("id") String id) {
+		Registration registration = this.userService.activateRegistration(id);
+		return new ResponseEntity<RegistrationDTO>(new RegistrationDTO(registration), HttpStatus.OK);
+	}
+
 }

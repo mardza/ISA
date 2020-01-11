@@ -5,6 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.isa.security.exception.TokenNotValidException;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +38,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             if (email != null) {
                 // uzmi user-a na osnovu username-a
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                if(userDetails == null) {
+                	throw new TokenNotValidException("Token not valid");
+                }
                 // logger.info("User " + username + " is accessing with token");
                 //proveri da li je prosledjeni token validan
                 if (tokenHelper.validateToken(authToken, userDetails)) {

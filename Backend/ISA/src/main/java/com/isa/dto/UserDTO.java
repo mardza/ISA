@@ -1,10 +1,10 @@
 package com.isa.dto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.isa.entity.User;
 
 public class UserDTO {
@@ -38,6 +38,8 @@ public class UserDTO {
 	@NotBlank
 	private String insuranceNumber;
 	
+	private RegistrationDTO registration;
+	
 	
 	public UserDTO() {}
 	
@@ -51,6 +53,22 @@ public class UserDTO {
 		this.country = user.getCountry();
 		this.phone = user.getPhone();
 		this.insuranceNumber = user.getInsuranceNumber();
+	}
+	
+	public UserDTO(User user, Boolean fillRegistration) {
+		this(user);
+		if(fillRegistration) {
+			this.registration = new RegistrationDTO(user.getRegistration());
+		}
+	}
+	
+	
+	public static List<UserDTO> toList(List<User> userList) {
+		return userList.stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
+	}
+	
+	public static List<UserDTO> toList(List<User> userList, Boolean fillRegistration) {
+		return userList.stream().map(user -> new UserDTO(user, fillRegistration)).collect(Collectors.toList());
 	}
 
 	
@@ -70,7 +88,6 @@ public class UserDTO {
 		this.email = email;
 	}
 
-	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
@@ -135,6 +152,13 @@ public class UserDTO {
 		this.insuranceNumber = insuranceNumber;
 	}
 
+	public RegistrationDTO getRegistration() {
+		return registration;
+	}
+
+	public void setRegistration(RegistrationDTO registration) {
+		this.registration = registration;
+	}
 
 	@Override
 	public String toString() {

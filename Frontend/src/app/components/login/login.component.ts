@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {skip} from 'rxjs/operators';
 
+
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        localStorage.removeItem('jwt');
         this.authSubscription = this.authService.loggedIn
             .pipe(skip(1)).subscribe(
             value => {

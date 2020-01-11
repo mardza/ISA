@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -56,6 +57,11 @@ public class User implements UserDetails {
 	@ManyToOne
 	@JoinColumn(name = "role_id", referencedColumnName = "id", unique = false, nullable = false)
 	private Role role;
+	
+	@OneToOne
+	@JoinColumn(name = "registration_id", referencedColumnName = "id")
+	private Registration registration;
+	
 
 	private Double ratingAverage;
 	private Integer ratingWeight;
@@ -164,6 +170,14 @@ public class User implements UserDetails {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public Registration getRegistration() {
+		return registration;
+	}
+
+	public void setRegistration(Registration registration) {
+		this.registration = registration;
 	}
 
 	@Override

@@ -22,12 +22,13 @@ export class RegisterComponent implements OnInit {
 
 
     ngOnInit() {
+        localStorage.removeItem('jwt');
         this.isLoading = false;
-        this.error = "";
+        this.error = '';
     }
 
     onSubmit(form: NgForm) {
-        if(form.valid) {
+        if (form.valid) {
             this.isLoading = true;
             let user: User = new User();
             user.email = form.value.email;
@@ -48,7 +49,7 @@ export class RegisterComponent implements OnInit {
                         this.isLoading = false;
                     },
                     error => {
-                        this.error = error
+                        this.error = error;
                         this.isLoading = false;
                     }
                 );

@@ -30,6 +30,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.isa.controller.exception.custom.BadLoginException;
 import com.isa.controller.exception.custom.EntityNotFoundException;
+import com.isa.security.exception.TokenNotValidException;
+import com.isa.service.exception.RegistrationAlreadyActivatedException;
 
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -46,7 +48,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return buildResponseEntity(new ApiError(HttpStatus.UNAUTHORIZED, ex));
 	}
 	
+	@ExceptionHandler(RegistrationAlreadyActivatedException.class)
+	protected ResponseEntity<Object> handleRegistrationAlreadyActivated(RegistrationAlreadyActivatedException ex) {
+		return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, ex));
+	}
 	
+	@ExceptionHandler(TokenNotValidException.class)
+	protected ResponseEntity<Object> handleTokenNotValid(TokenNotValidException ex) {
+		return buildResponseEntity(new ApiError(HttpStatus.UNAUTHORIZED, ex));
+	}
 	
 	/* OVERRIDE METHODS */
 	

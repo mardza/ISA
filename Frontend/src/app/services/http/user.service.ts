@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {User} from '../../models/User.model';
-import {map} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 import {globals} from '../../globals';
 
 @Injectable({providedIn: 'root'})
@@ -27,6 +27,23 @@ export class UserService {
             )
             .pipe(
                 map(response => User.toUser(response))
+            );
+    }
+
+    activateAccount(activationId: string): Observable<any> {
+        return this.http
+            .post(
+                this.url + '/activate-registration/' + activationId,
+                null
+            )
+            .pipe(
+                tap(x => {
+                    console.log(x);
+                }),
+                catchError(err => {
+                    console.log(err);
+                    return throwError(err);
+                })
             );
     }
 
