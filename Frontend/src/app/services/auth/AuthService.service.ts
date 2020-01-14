@@ -48,6 +48,7 @@ export class AuthService {
     logout() {
         console.log('Logging out');
         localStorage.removeItem('jwt');
+        localStorage.removeItem('role');
         this.loggedIn.next(false);
         this.router.navigate(['/login']);
     }

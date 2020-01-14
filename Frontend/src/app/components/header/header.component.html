@@ -1,0 +1,14 @@
+<mat-toolbar class="mat-elevation-z3">
+    <span>ISA</span>
+
+    <!-- This fills the remaining space of the current row -->
+    <span class="example-fill-remaining-space"></span>
+
+    <button mat-button [matMenuTriggerFor]="menu1">Menu1</button>
+    <mat-menu #menu1="matMenu">
+        <a mat-menu-item [routerLink]="['/x']">button1</a>
+        <a mat-menu-item [routerLink]="['/y']">button2</a>
+    </mat-menu>
+
+    <button mat-button (click)="onClickLogout()">Logout</button>
+</mat-toolbar>

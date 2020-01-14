@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {User} from '../../models/User.model';
 import {catchError, map} from 'rxjs/operators';
@@ -46,5 +46,41 @@ export class UserService {
                     responseType: 'text' as 'json' // so that http client does not parse response as json
                 }
             )
+    }
+
+    getUsers(query?: {approved?: boolean, activated?: boolean, roleName?: string, firstName?: string, lastName?: string, insuranceNumber?: string}): Observable<User[]> {
+        let params: HttpParams;
+        if(query){
+            params = new HttpParams();
+            if(query.approved !== null && query.approved !== undefined){
+                params = params.set('approved', query.approved.toString());
+            }
+            if(query.activated !== null && query.activated !== undefined){
+                params = params.set('activated', query.activated.toString());
+            }
+            if(query.roleName){
+                params = params.set('roleName', query.roleName);
+            }
+            if(query.firstName){
+                params = params.set('firstName', query.firstName);
+            }
+            if(query.lastName){
+                params = params.set('lastName', query.lastName);
+            }
+            if(query.insuranceNumber){
+                params = params.set('insuranceNumber', query.insuranceNumber);
+            }
+        }
+
+        return this.http
+            .get<User[]>(
+                this.url,
+                {
+                    params: params
+                }
+            )
+            .pipe(
+                map(response => User.toUserList(response))
+            );
     }
 }

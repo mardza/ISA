@@ -16,11 +16,15 @@ export class RoleGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         console.log('Starting RoleGuard on route: "' + state.url + '"');
         const allowedRoles: string[] = route.data.allowedRoles;
+        if(!allowedRoles){
+            console.log('Check route allowedRoles data parameter');
+        }
         return this.userService
             .getCurrentUserRole()
             .pipe(
                 map((role: string) => {
                     console.log('RoleGuard: user role is ' + role);
+                    localStorage.setItem('role', role);
                     if (allowedRoles.includes(role)) {
                         console.log('RoleGuard: good role');
                         return true;

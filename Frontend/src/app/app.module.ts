@@ -13,9 +13,12 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {TokenInterceptorService} from './services/auth/TokenInterceptor.service';
-import { ActivateAccountComponent } from './components/activate-account/activate-account.component';
-import { ApproveUserListComponent } from './components/admin/approve-user-list/approve-user-list.component';
-import { ApproveUserComponent } from './components/admin/approve-user-list/approve-user/approve-user.component';
+import {ActivateAccountComponent} from './components/activate-account/activate-account.component';
+import {ApproveUserListComponent} from './components/admin/approve-user-list/approve-user-list.component';
+import {ApproveUserComponent} from './components/admin/approve-user-list/approve-user/approve-user.component';
+import {HeaderComponent} from './components/header/header.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatIconModule, MatListModule, MatMenuModule, MatTableModule} from '@angular/material';
 
 @NgModule({
     declarations: [
@@ -24,7 +27,8 @@ import { ApproveUserComponent } from './components/admin/approve-user-list/appro
         RegisterComponent,
         ActivateAccountComponent,
         ApproveUserListComponent,
-        ApproveUserComponent
+        ApproveUserComponent,
+        HeaderComponent
     ],
     imports: [
         BrowserModule,
@@ -35,7 +39,12 @@ import { ApproveUserComponent } from './components/admin/approve-user-list/appro
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
-        MatCardModule
+        MatCardModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatMenuModule,
+        MatTableModule,
+        MatListModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}
