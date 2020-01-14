@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.isa.entity.User;
+import com.isa.security.exception.TokenNotValidException;
 import com.isa.service.UserService;
 
 
@@ -20,15 +21,21 @@ public class Util {
 		Authentication currentUserAuth;
 		currentUserAuth = SecurityContextHolder.getContext().getAuthentication();
 		if(currentUserAuth != null) {
-			email = currentUserAuth.getName();
-			if(email != null) {
-				if(userService != null) {
-					return userService.findByEmail(email);
-				}
-				System.out.println("USER SERVICE = NULL");
+			User user = (User)currentUserAuth.getPrincipal();
+			if(user == null) {
+				throw new TokenNotValidException("Could not get current user, Auth not valid");
 			}
-			return null;
+			return user;
+			
+//			email = currentUserAuth.getName();
+//			if(email != null) {
+//				if(userService != null) {
+//					return userService.findByEmail(email);
+//				}
+//				System.out.println("USER SERVICE = NULL");
+//			}
+//			return null;
 		}
-		return null;
+		throw new TokenNotValidException("Could not get current user, Auth not valid");
 	}
 }

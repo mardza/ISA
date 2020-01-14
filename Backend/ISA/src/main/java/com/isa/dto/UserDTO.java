@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.entity.User;
 
 public class UserDTO {
@@ -40,6 +41,8 @@ public class UserDTO {
 	
 	private RegistrationDTO registration;
 	
+	private String role;
+	
 	
 	public UserDTO() {}
 	
@@ -53,6 +56,7 @@ public class UserDTO {
 		this.country = user.getCountry();
 		this.phone = user.getPhone();
 		this.insuranceNumber = user.getInsuranceNumber();
+		this.role = user.getRole().getName();
 	}
 	
 	public UserDTO(User user, Boolean fillRegistration) {
@@ -88,6 +92,7 @@ public class UserDTO {
 		this.email = email;
 	}
 
+	//@JsonIgnore // if this is set then there is error 'password must not be empty'
 	public String getPassword() {
 		return password;
 	}
@@ -158,6 +163,10 @@ public class UserDTO {
 
 	public void setRegistration(RegistrationDTO registration) {
 		this.registration = registration;
+	}
+	
+	public String getRole() {
+		return role;
 	}
 
 	@Override

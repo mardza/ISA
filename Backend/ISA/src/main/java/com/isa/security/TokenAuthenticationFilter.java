@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.isa.entity.User;
 import com.isa.security.exception.TokenNotValidException;
 
 import javax.servlet.FilterChain;
@@ -20,11 +21,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private TokenHelper tokenHelper;
 
-    private UserDetailsService userDetailsService;
+    private CustomUserDetailsService customUserDetailsService;
 
-    public TokenAuthenticationFilter(TokenHelper tokenHelper, UserDetailsService userDetailsService) {
+    public TokenAuthenticationFilter(TokenHelper tokenHelper, CustomUserDetailsService customUserDetailsService) {
         this.tokenHelper = tokenHelper;
-        this.userDetailsService = userDetailsService;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
@@ -37,15 +38,17 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         	email = tokenHelper.getEmailFromToken(authToken);
             if (email != null) {
                 // uzmi user-a na osnovu username-a
-                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-                if(userDetails == null) {
+                User user = (User)customUserDetailsService.loadUserByUsername(email);
+                if(user == null) {
                 	throw new TokenNotValidException("Token not valid");
                 }
+                
+                
                 // logger.info("User " + username + " is accessing with token");
                 //proveri da li je prosledjeni token validan
-                if (tokenHelper.validateToken(authToken, userDetails)) {
+                if (tokenHelper.validateToken(authToken, user)) {
                     // kreiraj autentifikaciju
-                    TokenBasedAuthentication authentication = new TokenBasedAuthentication(authToken, userDetails);
+                    TokenBasedAuthentication authentication = new TokenBasedAuthentication(authToken, user);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     // logger.info("User " + username + " accessed with valid token");
                 }

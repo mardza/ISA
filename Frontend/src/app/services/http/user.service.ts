@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {User} from '../../models/User.model';
-import {catchError, map, tap} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {globals} from '../../globals';
 
 @Injectable({providedIn: 'root'})
@@ -35,20 +35,16 @@ export class UserService {
             .post(
                 this.url + '/activate-registration/' + activationId,
                 null
-            )
-            .pipe(
-                tap(x => {
-                    console.log(x);
-                }),
-                catchError(err => {
-                    console.log(err);
-                    return throwError(err);
-                })
             );
     }
 
-
-    handleError(error) {
-        return throwError(JSON.parse(error.error));
+    getCurrentUserRole(): Observable<String> {
+        return this.http
+            .get<String>(
+                `${globals.backend}/auth/current-user-role`,
+                {
+                    responseType: 'text' as 'json' // so that http client does not parse response as json
+                }
+            )
     }
 }

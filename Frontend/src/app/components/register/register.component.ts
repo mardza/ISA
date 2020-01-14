@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {User} from '../../models/User.model';
 import {UserService} from '../../services/http/user.service';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -16,7 +17,8 @@ export class RegisterComponent implements OnInit {
 
 
     constructor(
-        private userService: UserService
+        private userService: UserService,
+        private router: Router
     ) {
     }
 
@@ -40,12 +42,11 @@ export class RegisterComponent implements OnInit {
             user.country = form.value.country;
             user.phone = form.value.phone;
             user.insuranceNumber = form.value.insuranceNumber;
-            console.log(user);
             this.userService
                 .register(user)
                 .subscribe(
                     value => {
-                        console.log(value);
+                        this.router.navigate(['/login']);
                         this.isLoading = false;
                     },
                     error => {

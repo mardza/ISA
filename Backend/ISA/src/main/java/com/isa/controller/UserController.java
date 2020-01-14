@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.dto.RegistrationDTO;
@@ -28,11 +29,11 @@ public class UserController {
 	private UserService userService;
 	
 
-	@GetMapping()
-	public ResponseEntity<List<UserDTO>> getAll() {
-		List<User> userList = this.userService.findAll();
-		return new ResponseEntity<List<UserDTO>>(UserDTO.toList(userList), HttpStatus.OK);
-	}
+//	@GetMapping()
+//	public ResponseEntity<List<UserDTO>> getAll() {
+//		List<User> userList = this.userService.findAll();
+//		return new ResponseEntity<List<UserDTO>>(UserDTO.toList(userList), HttpStatus.OK);
+//	}
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<UserDTO> getById(@PathVariable("id") Integer id) {
@@ -49,6 +50,18 @@ public class UserController {
 	@GetMapping(path = "/unapproved")
 	public ResponseEntity<List<UserDTO>> getAllUnapproved() {
 		List<User> userList = this.userService.findAllUnapproved();
+		return new ResponseEntity<List<UserDTO>>(UserDTO.toList(userList, true), HttpStatus.OK);
+	}
+	
+	@GetMapping()
+	public ResponseEntity<List<UserDTO>> getAll(
+			@RequestParam(name = "approved", required = false) Boolean approved,
+			@RequestParam(name = "activated", required = false) Boolean activated,
+			@RequestParam(name = "roleName", required = false) String roleName,
+			@RequestParam(name = "firstName", required = false) String firstName,
+			@RequestParam(name = "lastName", required = false) String lastName,
+			@RequestParam(name = "insuranceNumber", required = false) String insuranceNumber){
+		List<User> userList = this.userService.findFiltered(approved, activated, roleName, firstName, lastName, insuranceNumber);
 		return new ResponseEntity<List<UserDTO>>(UserDTO.toList(userList, true), HttpStatus.OK);
 	}
 

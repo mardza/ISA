@@ -59,7 +59,7 @@ public class User implements UserDetails {
 	private Role role;
 	
 	@OneToOne
-	@JoinColumn(name = "registration_id", referencedColumnName = "id")
+	@JoinColumn(name = "registration_id", referencedColumnName = "id", nullable = false)
 	private Registration registration;
 	
 
@@ -68,6 +68,7 @@ public class User implements UserDetails {
 
 	private Boolean passwordSet;
 
+	
 	public User() {
 	}
 
@@ -83,6 +84,7 @@ public class User implements UserDetails {
 		phone = userDTO.getPhone();
 		insuranceNumber = userDTO.getInsuranceNumber();
 	}
+	
 
 	public Integer getId() {
 		return id;
@@ -193,7 +195,7 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return this.registration.getActivated();
 	}
 
 	@Override
@@ -208,7 +210,7 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return this.registration.getApproved();
 	}
 
 	@Override

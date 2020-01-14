@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ApiError {
 
@@ -31,9 +32,19 @@ public class ApiError {
 	public void setErrors(Object errors) {
 		this.data = errors;
 	}
+	
 
+	public String getStatusText() {
+		return this.status.name();
+	}
+
+	public Integer getStatusCode() {
+		return this.status.value();
+	}
+	
+	@JsonIgnore
 	public HttpStatus getStatus() {
-		return status;
+		return this.status;
 	}
 
 	@JsonFormat(shape = JsonFormat.Shape.NUMBER_INT)

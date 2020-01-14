@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.controller.exception.custom.BadLoginException;
 import com.isa.dto.LoginDTO;
+import com.isa.entity.Role;
 import com.isa.entity.User;
 import com.isa.security.CustomUserDetailsService;
 import com.isa.security.TokenHelper;
+import com.isa.security.Util;
 
 @RestController
 @RequestMapping("/auth")
@@ -41,6 +43,9 @@ public class AuthenticationController {
 	
 	@Autowired
     private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private Util util;
 	
 	
 	@PostMapping(path = "/login")
@@ -64,6 +69,12 @@ public class AuthenticationController {
 		return new ResponseEntity<String>(jwt, HttpStatus.OK);
 	}
 
+	@GetMapping(path = "/current-user-role")
+	public ResponseEntity<String> getCurrentUserRole() {
+		User user = this.util.getCurrentUser();
+		Role role = user.getRole();
+		return new ResponseEntity<String>(role.getName(), HttpStatus.OK);
+	}
 	
 	// TODO: remove this method
 	@GetMapping(path = "/toHash")

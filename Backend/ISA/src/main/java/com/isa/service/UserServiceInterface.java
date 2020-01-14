@@ -18,6 +18,10 @@ public interface UserServiceInterface {
 	
 	List<User> findAllUnapproved();
 	
+	List<User> findAllPatients();
+	
+	List<User> findFiltered(Boolean approved, Boolean activated, String roleName, String firstName, String lastName, String insuranceNumber);
+	
 	Registration approveRegistration(String registrationId);
 	
 	Registration activateRegistration(String registrationId);

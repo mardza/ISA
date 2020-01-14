@@ -31,7 +31,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.isa.controller.exception.custom.BadLoginException;
 import com.isa.controller.exception.custom.EntityNotFoundException;
 import com.isa.security.exception.TokenNotValidException;
-import com.isa.service.exception.RegistrationAlreadyActivatedException;
+import com.isa.service.exception.RegistrationActivatedException;
+import com.isa.service.exception.RegistrationApprovedException;
 
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -48,8 +49,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return buildResponseEntity(new ApiError(HttpStatus.UNAUTHORIZED, ex));
 	}
 	
-	@ExceptionHandler(RegistrationAlreadyActivatedException.class)
-	protected ResponseEntity<Object> handleRegistrationAlreadyActivated(RegistrationAlreadyActivatedException ex) {
+	@ExceptionHandler(RegistrationActivatedException.class)
+	protected ResponseEntity<Object> handleRegistrationActivated(RegistrationActivatedException ex) {
+		return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, ex));
+	}
+	
+	@ExceptionHandler(RegistrationApprovedException.class)
+	protected ResponseEntity<Object> handleRegistrationApproved(RegistrationApprovedException ex) {
 		return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, ex));
 	}
 	

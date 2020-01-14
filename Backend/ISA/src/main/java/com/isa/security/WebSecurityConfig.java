@@ -15,6 +15,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.session.SessionManagementFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -45,11 +47,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	TokenHelper tokenHelper;
+	
+	@Autowired
+	CorsFilter corsFilter;
 
 	// Definisemo prava pristupa odredjenim URL-ovima
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
+				.addFilterBefore(corsFilter, SessionManagementFilter.class) //adds your custom CorsFilter
+				.csrf().disable()
 				// komunikacija izmedju klijenta i servera je stateless
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				// za neautorizovane zahteve posalji 401 gresku
@@ -60,15 +67,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 	.antMatchers("/auth/login").permitAll()
                 	.antMatchers("/users/register").permitAll()
                 	.antMatchers("/users/activate-registration/**").permitAll()
-					.antMatchers("/users/currentUser").permitAll()
 					// svaki zahtev mora biti autorizovan
 					.anyRequest().authenticated()
 				// presretni svaki zahtev filterom
 				.and().addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService),
 						BasicAuthenticationFilter.class);
-		http.csrf().disable();
-		http.cors().disable();
 	}
+	
 
 	// Generalna bezbednost aplikacije
 	@Override
@@ -84,6 +89,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				"/js/**",
 				"/css/**"
 				);
-
 	}
+	
 }

@@ -3,6 +3,8 @@ package com.isa.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +15,8 @@ import com.isa.entity.Registration;
 import com.isa.entity.Role;
 import com.isa.entity.User;
 import com.isa.repository.UserRepository;
-import com.isa.service.exception.RegistrationAlreadyActivatedException;
+import com.isa.service.exception.RegistrationActivatedException;
+import com.isa.service.exception.RegistrationApprovedException;
 
 @Service
 public class UserService implements UserServiceInterface {
@@ -85,8 +88,41 @@ public class UserService implements UserServiceInterface {
 	}
 	
 	@Override
+	public List<User> findAllPatients() {
+		List<User> userList = this.userRepository.findByRoleName("ROLE_PATIENT");
+		return userList;
+	}
+	
+	@Override
+	public List<User> findFiltered(Boolean approved, Boolean activated, String roleName, String firstName, String lastName,
+			String insuranceNumber) {
+		
+//		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues();
+//		User exampleUser = new User();
+//		Registration exampleRegistration = new Registration();
+//		Role exampleRole = new Role();
+//		exampleRegistration.setApproved(approved);
+//		exampleRegistration.setActivated(activated);
+//		exampleRole.setName(roleName);
+//		exampleUser.setRegistration(exampleRegistration);
+//		exampleUser.setRole(exampleRole);
+//		exampleUser.setFirstName(firstName);
+//		exampleUser.setLastName(lastName);
+//		exampleUser.setInsuranceNumber(insuranceNumber);
+//		Example<User> exampleQuery = Example.of(exampleUser, matcher);
+//		System.out.println(exampleQuery);
+//		List<User> userList = userRepository.findAll(exampleQuery);
+		
+		List<User> userList = userRepository.findFiltered(approved, activated, roleName, firstName, lastName, insuranceNumber);
+		return userList;
+	}
+	
+	@Override
 	public Registration approveRegistration(String registrationId) {
 		Registration registration = this.registrationService.findById(registrationId);
+		if(registration.getApproved()) {
+			throw new RegistrationApprovedException("User account registration already approved");
+		}
 		registration.setApproved(true);
 		registration = this.registrationService.save(registration);
 		User user = this.userRepository.findByRegistrationId(registrationId);
@@ -97,8 +133,11 @@ public class UserService implements UserServiceInterface {
 	@Override
 	public Registration activateRegistration(String registrationId) {
 		Registration registration = this.registrationService.findById(registrationId);
+		if(!registration.getApproved()) {
+			throw new RegistrationApprovedException("User account registration not yet approved");
+		}
 		if(registration.getActivated()) {
-			throw new RegistrationAlreadyActivatedException("User account already activated.");
+			throw new RegistrationActivatedException("User account already activated.");
 		}
 		registration.setActivated(true);
 		registration = this.registrationService.save(registration);

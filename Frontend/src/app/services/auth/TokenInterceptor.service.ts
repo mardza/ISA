@@ -1,8 +1,9 @@
-import {HttpErrorResponse, HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {AuthService} from './AuthService.service';
-import {catchError, tap} from 'rxjs/operators';
+import {catchError} from 'rxjs/operators';
+import {HttpApiError} from '../../models/HttpApiError.model';
 
 @Injectable({providedIn: 'root'})
 export class TokenInterceptorService implements HttpInterceptor {
@@ -17,32 +18,14 @@ export class TokenInterceptorService implements HttpInterceptor {
             headers: new HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem('jwt'))
         });
 
-
-        // return next
-        //     .handle(modifiedReq)
-        //     .pipe(
-        //         tap((event: HttpEvent<any>) => {
-        //             if (event instanceof HttpResponse) {
-        //                 if (event.status === 401) {
-        //                     this.authService.logout();
-        //                 }
-        //             }
-        //         })
-        //     );
-
-
-
         return next
             .handle(modifiedReq)
             .pipe(
-                tap(x => {
-                   console.log(x);
-                }),
                 catchError((err: HttpErrorResponse) => {
                     if (err.status === 401) {
                         this.authService.logout();
                     }
-                    return throwError(err);
+                    return throwError(new HttpApiError(err));
                 })
             );
     }

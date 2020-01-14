@@ -14,13 +14,17 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {TokenInterceptorService} from './services/auth/TokenInterceptor.service';
 import { ActivateAccountComponent } from './components/activate-account/activate-account.component';
+import { ApproveUserListComponent } from './components/admin/approve-user-list/approve-user-list.component';
+import { ApproveUserComponent } from './components/admin/approve-user-list/approve-user/approve-user.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
         RegisterComponent,
-        ActivateAccountComponent
+        ActivateAccountComponent,
+        ApproveUserListComponent,
+        ApproveUserComponent
     ],
     imports: [
         BrowserModule,

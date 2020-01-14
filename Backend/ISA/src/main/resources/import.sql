@@ -18,8 +18,13 @@ VALUES ('ROLE_ADMIN_CENTER');
 --INSERT INTO users (email, password, firstName, lastName, address, city, country, phone, insuranceNumber)
 --VALUES ('', '', '', '', '', '', '', '', '');
 
-INSERT INTO users (email, password, first_name, last_name, address, city, country, phone, role_id)
-VALUES ('admin@g.com', '$2a$10$GGi3fzEAMIAgQE/lsADrueJsbTGbCYezOB/dAuXtMSUfkduNgTxX6', 'Admin first', 'Admin last', 'Admin address', 'Admin city', 'Admin country', '0631231231', 5);
+INSERT INTO registrations (id, approved, activated)
+VALUES (1, true, true);
+
+INSERT INTO users (email, password, first_name, last_name, address, city, country, phone, role_id, registration_id)
+VALUES ('admin@g.com', '$2a$10$GGi3fzEAMIAgQE/lsADrueJsbTGbCYezOB/dAuXtMSUfkduNgTxX6', 'Admin first', 'Admin last', 'Admin address', 'Admin city', 'Admin country', '0631231231', 5, 1);
+
+
 
 
 
