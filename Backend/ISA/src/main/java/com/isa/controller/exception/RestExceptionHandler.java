@@ -4,6 +4,7 @@ package com.isa.controller.exception;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
@@ -63,6 +64,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleTokenNotValid(TokenNotValidException ex) {
 		return buildResponseEntity(new ApiError(HttpStatus.UNAUTHORIZED, ex));
 	}
+	
+	@ExceptionHandler(ConstraintViolationException.class)
+	protected ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
+		return buildResponseEntity(new ApiError(HttpStatus.CONFLICT, ex));
+	}
+	
+	
 	
 	/* OVERRIDE METHODS */
 	

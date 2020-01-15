@@ -2,6 +2,7 @@ package com.isa.entity;
 
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -58,7 +59,7 @@ public class User implements UserDetails {
 	@JoinColumn(name = "role_id", referencedColumnName = "id", unique = false, nullable = false)
 	private Role role;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "registration_id", referencedColumnName = "id", nullable = false)
 	private Registration registration;
 	

@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.entity.User;
 
 public class UserDTO {

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.controller.exception.custom.BadLoginException;
 import com.isa.dto.LoginDTO;
+import com.isa.dto.UserDTO;
 import com.isa.entity.Role;
 import com.isa.entity.User;
 import com.isa.security.CustomUserDetailsService;
@@ -74,6 +75,12 @@ public class AuthenticationController {
 		User user = this.util.getCurrentUser();
 		Role role = user.getRole();
 		return new ResponseEntity<String>(role.getName(), HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/current-user")
+	public ResponseEntity<UserDTO> getCurrentUser() {
+		User user = this.util.getCurrentUser();
+		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
 	}
 	
 	// TODO: remove this method

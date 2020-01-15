@@ -1,7 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from '../../../models/User.model';
 import {UserService} from '../../../services/http/user.service';
-import {MatTable, MatTableDataSource} from '@angular/material';
+import {MatTableDataSource} from '@angular/material';
 
 @Component({
     selector: 'app-approve-user-list',
@@ -10,15 +10,10 @@ import {MatTable, MatTableDataSource} from '@angular/material';
 })
 export class ApproveUserListComponent implements OnInit {
 
-    // userList: User[];
     columnsToDisplay: string[];
-
     dataSource: MatTableDataSource<User>;
-
     loading: boolean;
 
-    @ViewChild('table', {static: false})
-    table: MatTable<User[]>;
 
     constructor(
         private userService: UserService
@@ -28,16 +23,13 @@ export class ApproveUserListComponent implements OnInit {
 
     ngOnInit() {
         this.columnsToDisplay = ['firstName', 'lastName', 'email', 'answerButton'];
-
         this.loading = true;
         this.userService
             .getUsers({approved: false, roleName: 'ROLE_PATIENT'})
             .subscribe(
                 value => {
-                    // this.userList = value;
                     this.dataSource = new MatTableDataSource<User>();
                     this.dataSource.data = value;
-
                     this.loading = false;
                 },
                 error => {

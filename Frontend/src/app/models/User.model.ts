@@ -1,5 +1,3 @@
-import {Role} from './Role.model';
-
 export class User {
     id: number;
     email: string;
@@ -11,7 +9,7 @@ export class User {
     country: string;
     phone: string;
     insuranceNumber: string;
-    role: Role;
+    role: string;
 
     constructor() {
     }
@@ -32,7 +30,7 @@ export class User {
         userToReturn.country = user.country;
         userToReturn.phone = user.phone;
         userToReturn.insuranceNumber = user.insuranceNumber;
-        userToReturn.role = Role.toRole(user.role);
+        userToReturn.role = user.role;
         return userToReturn;
     }
 

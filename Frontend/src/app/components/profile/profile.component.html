@@ -1,0 +1,59 @@
+<app-header></app-header>
+
+<div id="form-wrapper" class="mat-elevation-z3">
+    <p>User profile</p>
+    <form #form="ngForm">
+
+        <!-- First name -->
+        <mat-form-field>
+            <input matInput type="text" name="firstName" placeholder="First name" [ngModel]="user.firstName" #firstName="ngModel" [disabled]="!isEditActive" required>
+            <mat-error *ngIf="firstName.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Last name -->
+        <mat-form-field>
+            <input matInput type="text" name="lastName" placeholder="Last name" [ngModel]="user.lastName" #lastName="ngModel" [disabled]="!isEditActive" required>
+            <mat-error *ngIf="lastName.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field>
+            <input matInput placeholder="Email" [value]="user.email" disabled>
+        </mat-form-field>
+
+        <!-- Address -->
+        <mat-form-field>
+            <input matInput type="text" name="address" placeholder="Address" [ngModel]="user.address" #address="ngModel" [disabled]="!isEditActive" required>
+            <mat-error *ngIf="address.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- City -->
+        <mat-form-field>
+            <input matInput type="text" name="city" placeholder="City" [ngModel]="user.city" #city="ngModel" [disabled]="!isEditActive" required>
+            <mat-error *ngIf="city.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Country -->
+        <mat-form-field>
+            <input matInput type="text" name="country" placeholder="Country" [ngModel]="user.country" #country="ngModel" [disabled]="!isEditActive" required>
+            <mat-error *ngIf="country.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Phone -->
+        <mat-form-field>
+            <input matInput type="text" name="phone" placeholder="Phone" [ngModel]="user.phone" #phone="ngModel" [disabled]="!isEditActive" required>
+            <mat-error *ngIf="phone.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Insurance number" [value]="user.insuranceNumber" disabled>
+        </mat-form-field>
+
+        <div id="button-wrapper">
+            <button *ngIf="!isEditActive" mat-raised-button type="button" (click)="onEditClick()">Edit</button>
+            <a *ngIf="!isEditActive" mat-raised-button type="button" [routerLink]="['password']">Change password</a>
+            <button *ngIf="isEditActive" mat-raised-button type="button" (click)="onConfirmClick(form)">Confirm</button>
+            <button *ngIf="isEditActive" mat-button type="button" (click)="onCancelClick(form)">Cancel</button>
+        </div>
+    </form>
+</div>

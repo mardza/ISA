@@ -1,5 +1,5 @@
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {UserService} from '../http/user.service';
 import {catchError, map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
@@ -16,16 +16,20 @@ export class RoleGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         console.log('Starting RoleGuard on route: "' + state.url + '"');
         const allowedRoles: string[] = route.data.allowedRoles;
-        if(!allowedRoles){
-            console.log('Check route allowedRoles data parameter');
+        if (!allowedRoles) {
+            console.error('Check route allowedRoles data parameter');
         }
         return this.userService
             .getCurrentUserRole()
             .pipe(
+                catchError(err => {
+                    console.log(err);
+                    return of('UNDEFINED');
+                }),
                 map((role: string) => {
                     console.log('RoleGuard: user role is ' + role);
                     localStorage.setItem('role', role);
-                    if (allowedRoles.includes(role)) {
+                    if (allowedRoles.includes(role) || allowedRoles.includes('*')) {
                         console.log('RoleGuard: good role');
                         return true;
                     }

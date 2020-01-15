@@ -1,2 +1,48 @@
 <app-header></app-header>
-<p>approve-user works!</p>
+
+<div id="form-wrapper">
+    <p>Approve user</p>
+    <form>
+        <mat-form-field>
+            <input matInput placeholder="First name" [value]="user.firstName" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Last name" [value]="user.lastName" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Email" [value]="user.email" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Address" [value]="user.address" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="City" [value]="user.city" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Country" [value]="user.country" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Phone" [value]="user.phone" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Insurance number" [value]="user.insuranceNumber" disabled>
+        </mat-form-field>
+
+        <mat-form-field>
+            <textarea matInput placeholder="Rejection message" [(ngModel)]="message" [ngModelOptions]="{standalone: true}"></textarea>
+        </mat-form-field>
+
+        <div id="button-wrapper">
+            <button mat-raised-button type="button" (click)="onApproveClick(true)">Approve</button>
+            <button mat-button type="button" (click)="onApproveClick(false)">Reject</button>
+            <button mat-button type="button" [routerLink]="['/admin/approve-user-list']">Back</button>
+        </div>
+    </form>
+</div>

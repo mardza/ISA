@@ -19,6 +19,11 @@ import {ApproveUserComponent} from './components/admin/approve-user-list/approve
 import {HeaderComponent} from './components/header/header.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule, MatListModule, MatMenuModule, MatTableModule} from '@angular/material';
+import { UserListComponent } from './components/admin/user/user-list/user-list.component';
+import { UserComponent } from './components/admin/user/user/user.component';
+import { UserEditComponent } from './components/admin/user/user-edit/user-edit.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { PasswordComponent } from './components/profile/password/password.component';
 
 @NgModule({
     declarations: [
@@ -28,7 +33,12 @@ import {MatIconModule, MatListModule, MatMenuModule, MatTableModule} from '@angu
         ActivateAccountComponent,
         ApproveUserListComponent,
         ApproveUserComponent,
-        HeaderComponent
+        HeaderComponent,
+        UserListComponent,
+        UserComponent,
+        UserEditComponent,
+        ProfileComponent,
+        PasswordComponent
     ],
     imports: [
         BrowserModule,

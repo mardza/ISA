@@ -2,6 +2,7 @@ package com.isa.service;
 
 import java.util.List;
 
+import com.isa.dto.UpdateUserDTO;
 import com.isa.dto.UserDTO;
 import com.isa.entity.Registration;
 import com.isa.entity.User;
@@ -22,11 +23,17 @@ public interface UserServiceInterface {
 	
 	List<User> findFiltered(Boolean approved, Boolean activated, String roleName, String firstName, String lastName, String insuranceNumber);
 	
-	Registration approveRegistration(String registrationId);
+	Registration approveRegistration(String email);
+	
+	void rejectRegistration(String email, String message);
 	
 	Registration activateRegistration(String registrationId);
 		
 	User save(User user);
+	
+	User update(String email, UpdateUserDTO updateUserDTO);
+	
+	void changePassword(String password);
 	
 	User register(UserDTO userDTO);
 	

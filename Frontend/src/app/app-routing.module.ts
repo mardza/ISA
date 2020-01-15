@@ -6,6 +6,11 @@ import {ActivateAccountComponent} from './components/activate-account/activate-a
 import {ApproveUserListComponent} from './components/admin/approve-user-list/approve-user-list.component';
 import {ApproveUserComponent} from './components/admin/approve-user-list/approve-user/approve-user.component';
 import {RoleGuard} from './services/guards/Role.guard';
+import {UserResolver} from './services/resolvers/User.resolver';
+import {UserListComponent} from './components/admin/user/user-list/user-list.component';
+import {ProfileComponent} from './components/profile/profile.component';
+import {CurrentUserResolver} from './services/resolvers/CurrentUser.resolver';
+import {PasswordComponent} from './components/profile/password/password.component';
 
 
 const routes: Routes = [
@@ -22,6 +27,25 @@ const routes: Routes = [
     component: ActivateAccountComponent
   },
   {
+    path: 'profile',
+    component: ProfileComponent,
+    data: {
+      allowedRoles: ['*']
+    },
+    resolve: {
+      user: CurrentUserResolver,
+    },
+    canActivate: [RoleGuard]
+  },
+  {
+    path: 'profile/password',
+    component: PasswordComponent,
+    data: {
+      allowedRoles: ['*']
+    },
+    canActivate: [RoleGuard]
+  },
+  {
     path: 'admin/approve-user-list',
     component: ApproveUserListComponent,
     data: {
@@ -30,12 +54,27 @@ const routes: Routes = [
     canActivate: [RoleGuard]
   },
   {
-    path: 'admin/approve-user-list/:id',
+    path: 'admin/approve-user-list/:email',
     component: ApproveUserComponent,
     data: {
       allowedRoles: ['ROLE_ADMIN_CENTER']
     },
+    resolve: {
+      user: UserResolver
+    },
     canActivate: [RoleGuard]
+  },
+  {
+    path: 'admin/user-list',
+    component: UserListComponent,
+    data: {
+      allowedRoles: ['ROLE_ADMIN_CENTER']
+    },
+    canActivate: [RoleGuard]
+  },
+  {
+    path: '**',
+    redirectTo: '/'
   }
 ];
 

@@ -48,6 +48,13 @@ export class UserService {
             )
     }
 
+    getCurrentUser(): Observable<User> {
+        return this.http
+            .get<User>(
+                `${globals.backend}/auth/current-user`,
+            );
+    }
+
     getUsers(query?: {approved?: boolean, activated?: boolean, roleName?: string, firstName?: string, lastName?: string, insuranceNumber?: string}): Observable<User[]> {
         let params: HttpParams;
         if(query){
@@ -82,5 +89,48 @@ export class UserService {
             .pipe(
                 map(response => User.toUserList(response))
             );
+    }
+
+    getUserByEmail(email: string): Observable<User> {
+        return this.http
+            .get<User>(
+                this.url + '/' + email
+            )
+            .pipe(
+                map(response => User.toUser(response))
+            );
+    }
+
+    approveUser(email: string, approved: boolean, message?: string): Observable<void> {
+        return this.http
+            .post<void>(
+                this.url + '/approve-registration/' + email + '?approved=' + approved,
+                message,
+                {
+                    headers: this.headerContentTypeJson
+                }
+            );
+    }
+
+    updateUser(email: string, user: User): Observable<User> {
+        return this.http
+            .put<User>(
+                this.url + '/' + email,
+                user,
+                {
+                    headers: this.headerContentTypeJson
+                }
+            )
+            .pipe(
+                map(response => User.toUser(response))
+            );
+    }
+
+    changePassword(password: string): Observable<any> {
+        return this.http
+            .put(
+                this.url + '/password?password=' + password,
+                null
+            )
     }
 }

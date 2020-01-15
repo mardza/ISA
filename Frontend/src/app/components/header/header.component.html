@@ -4,10 +4,13 @@
     <!-- This fills the remaining space of the current row -->
     <span class="example-fill-remaining-space"></span>
 
-    <button mat-button [matMenuTriggerFor]="menu1">Menu1</button>
-    <mat-menu #menu1="matMenu">
-        <a mat-menu-item [routerLink]="['/x']">button1</a>
-        <a mat-menu-item [routerLink]="['/y']">button2</a>
+    <a mat-button [routerLink]="['/profile']">My profile</a>
+
+
+
+    <button *ngIf="role === 'ROLE_ADMIN_CENTER'" mat-button [matMenuTriggerFor]="adminMenu">Admin</button>
+    <mat-menu #adminMenu="matMenu">
+        <a mat-menu-item [routerLink]="['/admin/approve-user-list']">Approve patients</a>
     </mat-menu>
 
     <button mat-button (click)="onClickLogout()">Logout</button>
