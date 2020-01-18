@@ -34,7 +34,6 @@ export class ProfileComponent implements OnInit {
     onConfirmClick(form: NgForm) {
         if (form.valid) {
             this.loading = true;
-            console.log(form.value);
             this.userService
                 .updateUser(this.user.email, User.toUser(form.value))
                 .subscribe(

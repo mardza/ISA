@@ -1,0 +1,28 @@
+<app-header></app-header>
+
+<div id="form-wrapper" class="mat-elevation-z3">
+    <p>Rooms</p>
+    <form #form="ngForm">
+
+        <!-- Number -->
+        <mat-form-field>
+            <input matInput type="text" name="number" placeholder="Number" [ngModel]="room?.number" #number="ngModel" [disabled]="!isCreateMode && !isEditActive" required>
+            <mat-error *ngIf="number.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Name -->
+        <mat-form-field>
+            <input matInput type="text" name="name" placeholder="Name" [ngModel]="room?.name" #name="ngModel" [disabled]="!isCreateMode && !isEditActive" required>
+            <mat-error *ngIf="name.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+
+        <div id="button-wrapper">
+            <button *ngIf="!isCreateMode && !isEditActive" mat-raised-button type="button" (click)="onEditClick()">Edit</button>
+            <button *ngIf="isCreateMode || isEditActive" mat-raised-button type="button" (click)="onConfirmClick(form)">Confirm</button>
+            <button *ngIf="isCreateMode" mat-button type="button" [routerLink]="['/rooms']">Cancel</button>
+            <button *ngIf="isEditActive" mat-button type="button" (click)="onCancelClick(form)">Cancel</button>
+            <button *ngIf="!isCreateMode && !isEditActive" mat-button type="button" [routerLink]="['/rooms']">Back</button>
+        </div>
+    </form>
+</div>

@@ -4,9 +4,31 @@
     <!-- This fills the remaining space of the current row -->
     <span class="example-fill-remaining-space"></span>
 
+    <ng-container *ngIf="role === 'ROLE_PATIENT'">
+        <a mat-button [routerLink]="['/clinics']">Clinics</a>
+        <a mat-button [routerLink]="['/appointments']">Appointment history</a>
+        <a mat-button [routerLink]="['/appointments']">Medical record</a>
+        <a mat-button [routerLink]="['/profile']">My profile</a>
+    </ng-container>
+
+    <ng-container *ngIf="role === 'ROLE_DOCTOR'">
+        <a mat-button [routerLink]="['/patients']">Patients</a>
+        <a mat-button [routerLink]="['/appointments']">Appointments</a>
+        <a mat-button [routerLink]="['/work-calendar']">Work calendar</a>
+        <a mat-button [routerLink]="['/leave']">Leave</a>
+        <a mat-button [routerLink]="['/profile']">My profile</a>
+    </ng-container>
+
+    <ng-container *ngIf="role === 'ROLE_NURSE'">
+        <a mat-button [routerLink]="['/patients']">Patients</a>
+        <a mat-button [routerLink]="['/work-calendar']">Work calendar</a>
+        <a mat-button [routerLink]="['/leave']">Leave</a>
+        <a mat-button [routerLink]="['/profile']">My profile</a>
+        <a mat-button [routerLink]="['/prescriptions']">Prescriptions</a>
+    </ng-container>
+
     <a mat-button [routerLink]="['/profile']">My profile</a>
-
-
+    <a mat-button [routerLink]="['/rooms']">Rooms</a>
 
     <button *ngIf="role === 'ROLE_ADMIN_CENTER'" mat-button [matMenuTriggerFor]="adminMenu">Admin</button>
     <mat-menu #adminMenu="matMenu">

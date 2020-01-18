@@ -1,0 +1,34 @@
+<app-header></app-header>
+
+<div id="form-wrapper" class="mat-elevation-z3">
+    <p>Clinics</p>
+    <form #form="ngForm">
+
+        <!-- Name -->
+        <mat-form-field>
+            <input matInput type="text" name="name" placeholder="Name" [ngModel]="clinic?.name" #name="ngModel" [disabled]="!isCreateMode && !isEditActive" required>
+            <mat-error *ngIf="name.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Address -->
+        <mat-form-field>
+            <input matInput type="text" name="address" placeholder="Address" [ngModel]="clinic?.address" #address="ngModel" [disabled]="!isCreateMode && !isEditActive" required>
+            <mat-error *ngIf="address.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Description -->
+        <mat-form-field>
+            <input matInput type="text" name="description" placeholder="Description" [ngModel]="clinic?.description" #description="ngModel" [disabled]="!isCreateMode && !isEditActive" required>
+            <mat-error *ngIf="description.errors?.required">Can not be empty</mat-error>
+        </mat-form-field>
+
+
+        <div id="button-wrapper">
+            <button *ngIf="!isCreateMode && !isEditActive" mat-raised-button type="button" (click)="onEditClick()">Edit</button>
+            <button *ngIf="isCreateMode || isEditActive" mat-raised-button type="button" (click)="onConfirmClick(form)">Confirm</button>
+            <button *ngIf="isCreateMode" mat-button type="button" [routerLink]="['/clinics']">Cancel</button>
+            <button *ngIf="isEditActive" mat-button type="button" (click)="onCancelClick(form)">Cancel</button>
+            <button *ngIf="!isCreateMode && !isEditActive" mat-button type="button" [routerLink]="['/clinics']">Back</button>
+        </div>
+    </form>
+</div>

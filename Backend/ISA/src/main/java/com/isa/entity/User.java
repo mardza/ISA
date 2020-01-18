@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.dto.UserDTO;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
@@ -60,8 +61,12 @@ public class User implements UserDetails {
 	private Role role;
 	
 	@OneToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "registration_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "registration_id", referencedColumnName = "id", unique = true, nullable = false)
 	private Registration registration;
+	
+	@ManyToOne
+	@JoinColumn(name = "clinic_id", referencedColumnName = "id", nullable = true)
+	private Clinic clinic;
 	
 
 	private Double ratingAverage;
@@ -181,6 +186,14 @@ public class User implements UserDetails {
 
 	public void setRegistration(Registration registration) {
 		this.registration = registration;
+	}
+
+	public Clinic getClinic() {
+		return clinic;
+	}
+
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
 	}
 
 	@Override

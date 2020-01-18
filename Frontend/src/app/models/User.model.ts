@@ -1,3 +1,5 @@
+import {Clinic} from './Clinic.model';
+
 export class User {
     id: number;
     email: string;
@@ -10,6 +12,7 @@ export class User {
     phone: string;
     insuranceNumber: string;
     role: string;
+    clinic: Clinic;
 
     constructor() {
     }
@@ -31,10 +34,14 @@ export class User {
         userToReturn.phone = user.phone;
         userToReturn.insuranceNumber = user.insuranceNumber;
         userToReturn.role = user.role;
+        userToReturn.clinic = Clinic.toClinic(user.clinic);
         return userToReturn;
     }
 
     public static toUserList(userList: any[]): User[] {
+        if (!userList) {
+            return undefined;
+        }
         const userListToReturn: User[] = [];
         userList.forEach(user => {
             userListToReturn.push(User.toUser(user));
