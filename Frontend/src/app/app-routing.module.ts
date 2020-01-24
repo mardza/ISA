@@ -17,6 +17,10 @@ import {RoomComponent} from './components/room/room/room.component';
 import {RoomResolver} from './services/resolvers/Room.resolver';
 import {ClinicComponent} from './components/clinic/clinic/clinic.component';
 import {ClinicResolver} from './services/resolvers/Clinic.resolver';
+import {HomeComponent} from './components/home/home.component';
+import {PatientHomeComponentComponent} from './components/patient/patient-home-component/patient-home-component.component';
+import {PatientClinicListComponent} from './components/patient/clinic/patient-clinic-list/patient-clinic-list.component';
+import {PatientClinicComponent} from './components/patient/clinic/patient-clinic/patient-clinic.component';
 
 
 const routes: Routes = [
@@ -32,6 +36,39 @@ const routes: Routes = [
         path: 'activate-account/:activationId',
         component: ActivateAccountComponent
     },
+    {
+        path: 'home',
+        component: HomeComponent,
+        data: {
+            allowedRoles: ['*']
+        },
+        canActivate: [RoleGuard]
+    },
+
+
+    {
+        path: 'patient',
+        component: PatientHomeComponentComponent,
+        data: {
+            allowedRoles: ['ROLE_PATIENT']
+        },
+        canActivate: [RoleGuard],
+        canActivateChild: [RoleGuard],
+        children: [
+            {
+                path: 'clinics',
+                component: PatientClinicListComponent
+            },
+            {
+                path: 'clinics/:id',
+                component: PatientClinicComponent,
+                resolve: {
+                    clinic: ClinicResolver
+                }
+            }
+        ]
+    },
+
     {
         path: 'profile',
         component: ProfileComponent,
@@ -82,7 +119,7 @@ const routes: Routes = [
         path: 'clinics',
         component: ClinicListComponent,
         data: {
-            allowedRoles: ['ROLE_ADMIN_CENTER']
+            allowedRoles: ['ROLE_PATIENT', 'ROLE_ADMIN_CENTER']
         },
         canActivate: [RoleGuard]
     },
@@ -134,7 +171,7 @@ const routes: Routes = [
     },
     {
         path: '**',
-        redirectTo: '/'
+        redirectTo: '/home'
     }
 ];
 

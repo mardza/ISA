@@ -1,19 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {MatTableDataSource} from '@angular/material';
-import {ClinicService} from '../../../services/http/clinic.service';
-import {Clinic} from '../../../models/Clinic.model';
+import {Clinic} from '../../../../models/Clinic.model';
+import {ClinicService} from '../../../../services/http/clinic.service';
 
 @Component({
-    selector: 'app-clinic-list',
-    templateUrl: './clinic-list.component.html',
-    styleUrls: ['./clinic-list.component.scss']
+    selector: 'app-patient-clinic-list',
+    templateUrl: './patient-clinic-list.component.html',
+    styleUrls: ['./patient-clinic-list.component.scss']
 })
-export class ClinicListComponent implements OnInit {
+export class PatientClinicListComponent implements OnInit {
 
     columnsToDisplay: string[];
     dataSource: MatTableDataSource<Clinic>;
     loading: boolean;
-    role: string;
 
 
     constructor(
@@ -22,7 +21,6 @@ export class ClinicListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.role = localStorage.getItem('role');
         this.columnsToDisplay = ['name', 'address', 'description'];
         this.loading = true;
         this.clinicService
@@ -38,5 +36,4 @@ export class ClinicListComponent implements OnInit {
                 }
             );
     }
-
 }

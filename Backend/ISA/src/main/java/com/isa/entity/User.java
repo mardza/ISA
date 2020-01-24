@@ -1,6 +1,7 @@
 package com.isa.entity;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -64,10 +65,16 @@ public class User implements UserDetails {
 	@JoinColumn(name = "registration_id", referencedColumnName = "id", unique = true, nullable = false)
 	private Registration registration;
 	
+	@OneToOne(cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "work_calendar_id", referencedColumnName = "id", unique = true, nullable = true)
+	private WorkCalendar workCalendar;
+	
 	@ManyToOne
 	@JoinColumn(name = "clinic_id", referencedColumnName = "id", nullable = true)
 	private Clinic clinic;
 	
+	
+	private Date radnoVreme;
 
 	private Double ratingAverage;
 	private Integer ratingWeight;
@@ -196,6 +203,14 @@ public class User implements UserDetails {
 		this.clinic = clinic;
 	}
 
+	public WorkCalendar getWorkCalendar() {
+		return workCalendar;
+	}
+
+	public void setWorkCalendar(WorkCalendar workCalendar) {
+		this.workCalendar = workCalendar;
+	}
+
 	@Override
 	public String getUsername() {
 		return this.email;
@@ -229,8 +244,11 @@ public class User implements UserDetails {
 
 	@Override
 	public String toString() {
-		return "User [" + "id=" + id + ", " + "firstName=" + firstName + ", " + "lastname=" + lastName + ", " + "email="
-				+ email + ", " + "password=" + password + ", " + "address=" + address + ", " + "city=" + city + ", "
-				+ "country=" + country + ", " + "phone=" + phone + ", " + "insuranceNumber=" + insuranceNumber + "]";
+		return "User [id=" + id + ", email=" + email + ", password=" + password + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", address=" + address + ", city=" + city + ", country=" + country
+				+ ", phone=" + phone + ", insuranceNumber=" + insuranceNumber + ", role=" + role + ", registration="
+				+ registration + ", WorkCalendar=" + workCalendar + ", clinic=" + clinic + ", radnoVreme=" + radnoVreme
+				+ ", ratingAverage=" + ratingAverage + ", ratingWeight=" + ratingWeight + ", passwordSet=" + passwordSet
+				+ "]";
 	}
 }

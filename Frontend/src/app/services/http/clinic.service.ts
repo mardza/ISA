@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {Clinic} from '../../models/Clinic.model';
 import * as moment from 'moment';
 import {map} from 'rxjs/operators';
+import {Appointment} from '../../models/Appointment.model';
 
 
 @Injectable({providedIn: 'root'})
@@ -74,6 +75,16 @@ export class ClinicService {
             )
             .pipe(
                 map(response => Clinic.toClinic(response))
+            );
+    }
+
+    getPredefinedAppointments(id: number) {
+        return this.http
+            .get<Appointment[]>(
+                this.url + '/' + id + '/predefined-appointments'
+            )
+            .pipe(
+                map(response => Appointment.toAppointmentList(response))
             );
     }
 }

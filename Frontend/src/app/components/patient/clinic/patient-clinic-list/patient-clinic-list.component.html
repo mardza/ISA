@@ -1,9 +1,5 @@
-<app-header></app-header>
 <div id="table-wrapper" class="mat-elevation-z3">
-    <div>
-        <p>Clinics</p>
-        <a *ngIf="role === 'ROLE_ADMIN_CENTER'" mat-raised-button [routerLink]="['create']">New</a>
-    </div>
+    <p>Clinics</p>
     <table mat-table [dataSource]="dataSource">
 
         <ng-container matColumnDef="name">

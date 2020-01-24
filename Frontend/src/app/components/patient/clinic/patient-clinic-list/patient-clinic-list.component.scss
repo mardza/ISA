@@ -1,0 +1,16 @@
+#table-wrapper {
+  margin: 20px;
+  padding: 15px;
+
+  p {
+    text-align: center;
+  }
+
+  table {
+    width: 100%;
+
+    .clickable-row:hover {
+      cursor: pointer;
+    }
+  }
+}

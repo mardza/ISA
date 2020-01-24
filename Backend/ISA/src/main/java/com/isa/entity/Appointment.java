@@ -1,13 +1,18 @@
 package com.isa.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -32,6 +37,10 @@ public class Appointment {
 	private AppointmentType type;
 	
 	@ManyToOne
+	@JoinColumn(name = "clinic_id", referencedColumnName = "id", unique = false, nullable = false)
+	private Clinic clinic;
+	
+	@ManyToOne
 	@JoinColumn(name = "room_id", referencedColumnName = "id", unique = false, nullable = false)
 	private Room room;
 	
@@ -39,6 +48,17 @@ public class Appointment {
 	@JoinColumn(name = "doctor_id", referencedColumnName = "id", unique = false, nullable = false)
 	private User doctor;
 	
+	@ManyToOne
+	@JoinColumn(name = "patient_id", referencedColumnName = "id", unique = false, nullable = true)
+	private User patient;
+	
+	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.MERGE}, fetch = FetchType.EAGER)
+	@JoinTable(name = "appointments_work_calendars", joinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "work_calendar_id", referencedColumnName = "id"))
+	private List<WorkCalendar> workCalendars;
+	
+	
+	
+	// TODO: decide if price and discount should only be kept in appointmentType
 	@Column(name = "price", unique = false, nullable = false)
 	private Integer price;
 	
@@ -80,6 +100,14 @@ public class Appointment {
 	public void setType(AppointmentType type) {
 		this.type = type;
 	}
+	
+	public Clinic getClinic() {
+		return clinic;
+	}
+	
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
+	}
 
 	public Room getRoom() {
 		return room;
@@ -95,6 +123,14 @@ public class Appointment {
 
 	public void setDoctor(User doctor) {
 		this.doctor = doctor;
+	}
+
+	public User getPatient() {
+		return patient;
+	}
+
+	public void setPatient(User patient) {
+		this.patient = patient;
 	}
 
 	public Integer getPrice() {
@@ -113,10 +149,10 @@ public class Appointment {
 		this.discount = discount;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Appointment [id=" + id + ", time=" + time + ", duration=" + duration + ", type=" + type + ", room="
-				+ room + ", doctor=" + doctor + ", price=" + price + ", discount=" + discount + "]";
+		return "Appointment [id=" + id + ", time=" + time + ", duration=" + duration + ", type=" + type + ", clinic="
+				+ clinic + ", room=" + room + ", doctor=" + doctor + ", patient=" + patient + ", price=" + price
+				+ ", discount=" + discount + "]";
 	}
 }

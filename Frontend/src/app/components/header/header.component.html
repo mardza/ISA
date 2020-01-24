@@ -5,35 +5,50 @@
     <span class="example-fill-remaining-space"></span>
 
     <ng-container *ngIf="role === 'ROLE_PATIENT'">
-        <a mat-button [routerLink]="['/clinics']">Clinics</a>
-        <a mat-button [routerLink]="['/appointments']">Appointment history</a>
-        <a mat-button [routerLink]="['/appointments']">Medical record</a>
+        <a mat-button [routerLink]="['/patient/clinics']">Clinics</a>
+        <a mat-button [routerLink]="['/patient/appointments/find']">Create appointment</a>
+        <a mat-button [routerLink]="['/patient/appointments/history']">Appointment history</a>
+        <a mat-button [routerLink]="['/patient/appointments']">Medical record</a>
         <a mat-button [routerLink]="['/profile']">My profile</a>
     </ng-container>
 
     <ng-container *ngIf="role === 'ROLE_DOCTOR'">
-        <a mat-button [routerLink]="['/patients']">Patients</a>
-        <a mat-button [routerLink]="['/appointments']">Appointments</a>
+        <a mat-button [routerLink]="['/doctor/patients']">Patients</a>
+        <a mat-button [routerLink]="['/doctor/appointments']">Appointments</a>
         <a mat-button [routerLink]="['/work-calendar']">Work calendar</a>
         <a mat-button [routerLink]="['/leave']">Leave</a>
         <a mat-button [routerLink]="['/profile']">My profile</a>
     </ng-container>
 
     <ng-container *ngIf="role === 'ROLE_NURSE'">
-        <a mat-button [routerLink]="['/patients']">Patients</a>
+        <a mat-button [routerLink]="['/nurse/patients']">Patients</a>
         <a mat-button [routerLink]="['/work-calendar']">Work calendar</a>
         <a mat-button [routerLink]="['/leave']">Leave</a>
         <a mat-button [routerLink]="['/profile']">My profile</a>
         <a mat-button [routerLink]="['/prescriptions']">Prescriptions</a>
     </ng-container>
 
-    <a mat-button [routerLink]="['/profile']">My profile</a>
-    <a mat-button [routerLink]="['/rooms']">Rooms</a>
+    <ng-container *ngIf="role === 'ROLE_ADMIN_CLINIC'">
+        <a mat-button [routerLink]="['/admin-clinic/clinic']">Clinic</a>
+        <a mat-button [routerLink]="['/appointments']">Appointments</a>
+        <a mat-button [routerLink]="['/appointment-types']">Appointment types</a>
+        <a mat-button [routerLink]="['/staff']">Staff</a>
+        <a mat-button [routerLink]="['/rooms']">Rooms</a>
+        <a mat-button [routerLink]="['/report']">Report</a>
+    </ng-container>
 
-    <button *ngIf="role === 'ROLE_ADMIN_CENTER'" mat-button [matMenuTriggerFor]="adminMenu">Admin</button>
-    <mat-menu #adminMenu="matMenu">
-        <a mat-menu-item [routerLink]="['/admin/approve-user-list']">Approve patients</a>
-    </mat-menu>
+    <ng-container *ngIf="role === 'ROLE_ADMIN_CENTER'">
+        <a mat-button [routerLink]="['/admin/approve-user-list']">Approve patients</a>
+        <a mat-button [routerLink]="['/clinics']">Clinics</a>
+        <a mat-button [routerLink]="['/users']">Users</a>
+        <a mat-button [routerLink]="['/diagnoses']">Diagnoses</a>
+        <a mat-button [routerLink]="['/medicines']">Medicines</a>
+    </ng-container>
+
+<!--    <button *ngIf="role === 'ROLE_ADMIN_CENTER'" mat-button [matMenuTriggerFor]="adminMenu">Admin</button>-->
+<!--    <mat-menu #adminMenu="matMenu">-->
+<!--        <a mat-menu-item [routerLink]="['/admin/approve-user-list']">Approve patients</a>-->
+<!--    </mat-menu>-->
 
     <button mat-button (click)="onClickLogout()">Logout</button>
 </mat-toolbar>

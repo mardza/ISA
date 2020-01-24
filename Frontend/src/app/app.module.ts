@@ -30,6 +30,11 @@ import {RoomComponent} from './components/room/room/room.component';
 import {RoomListComponent} from './components/room/room-list/room-list.component';
 import { AppointmentTypeComponent } from './components/appointment-type/appointment-type/appointment-type.component';
 import { AppointmentTypeListComponent } from './components/appointment-type/appointment-type-list/appointment-type-list.component';
+import { HomeComponent } from './components/home/home.component';
+import { PatientHomeComponentComponent } from './components/patient/patient-home-component/patient-home-component.component';
+import { PatientClinicListComponent } from './components/patient/clinic/patient-clinic-list/patient-clinic-list.component';
+import { PatientClinicComponent } from './components/patient/clinic/patient-clinic/patient-clinic.component';
+import { NewAppointmentComponent } from './components/patient/appointment/new-appointment/new-appointment.component';
 
 @NgModule({
     declarations: [
@@ -50,7 +55,12 @@ import { AppointmentTypeListComponent } from './components/appointment-type/appo
         RoomComponent,
         RoomListComponent,
         AppointmentTypeComponent,
-        AppointmentTypeListComponent
+        AppointmentTypeListComponent,
+        HomeComponent,
+        PatientHomeComponentComponent,
+        PatientClinicListComponent,
+        PatientClinicComponent,
+        NewAppointmentComponent
     ],
     imports: [
         BrowserModule,
