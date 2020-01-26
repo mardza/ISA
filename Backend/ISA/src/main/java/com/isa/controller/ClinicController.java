@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isa.dto.AppointmentDTO;
 import com.isa.dto.ClinicDTO;
+import com.isa.entity.Appointment;
 import com.isa.entity.Clinic;
+import com.isa.service.AppointmentService;
 import com.isa.service.ClinicService;
 
 @RestController
@@ -28,6 +31,10 @@ public class ClinicController {
 
 	@Autowired
 	private ClinicService clinicService;
+	
+	@Autowired
+	private AppointmentService appointmentService;
+	
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<ClinicDTO> getById(@PathVariable("id") Integer id) {
@@ -54,5 +61,11 @@ public class ClinicController {
 	public ResponseEntity<ClinicDTO> updateClinic(@PathVariable("id") Integer id, @RequestBody @Valid ClinicDTO clinicDTO) {
 		Clinic clinic = this.clinicService.update(id, clinicDTO);
 		return new ResponseEntity<ClinicDTO>(new ClinicDTO(clinic), HttpStatus.OK);
+	}
+	
+	@GetMapping("/{id}/predefined-appointments")
+	public ResponseEntity<List<AppointmentDTO>> getPredefinedAppointments(@PathVariable("id") Integer id) {
+		List<Appointment> appointmentList = this.appointmentService.findPredefinedByClinicId(id);
+		return new ResponseEntity<List<AppointmentDTO>>(AppointmentDTO.toList(appointmentList), HttpStatus.OK);
 	}
 }

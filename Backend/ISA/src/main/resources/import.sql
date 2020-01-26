@@ -101,8 +101,17 @@ VALUES (2, 'Physical  exam', 3000, 50);
 
 
 -- if patient_id == null -> predefinisan pregled
---INSERT INTO appointments (time, duration, type_id, clinic_id, room_id, doctor_id, patient_id, price, discount) 
---VALUES ('YYYY-MM-DD hh:mm:ss', 1800000, 1, 1, 1, );
+INSERT INTO appointments (time, duration, type_id, clinic_id, room_id, doctor_id, patient_id) 
+VALUES ('2020-1-30 09:30:00', 1800000, 1, 1, 1, 5, 7);
+
+INSERT INTO appointments (time, duration, type_id, clinic_id, room_id, doctor_id, patient_id) 
+VALUES ('2020-1-30 10:00:00', 3600000, 1, 1, 1, 5, NULL);
+
+INSERT INTO appointments (time, duration, type_id, clinic_id, room_id, doctor_id, patient_id) 
+VALUES ('2020-1-30 12:00:00', 1800000, 2, 1, 1, 5, NULL);
+
+INSERT INTO appointments (time, duration, type_id, clinic_id, room_id, doctor_id, patient_id) 
+VALUES ('2020-1-30 09:30:00', 1800000, 3, 1, 2, 6, NULL);
 
 
 --INSERT INTO users_roles (user_id, role_id)

@@ -21,6 +21,7 @@ import {HomeComponent} from './components/home/home.component';
 import {PatientHomeComponentComponent} from './components/patient/patient-home-component/patient-home-component.component';
 import {PatientClinicListComponent} from './components/patient/clinic/patient-clinic-list/patient-clinic-list.component';
 import {PatientClinicComponent} from './components/patient/clinic/patient-clinic/patient-clinic.component';
+import {PatientClinicPredefinedAppointmentListComponent} from './components/patient/clinic/patient-clinic/patient-clinic-predefined-appointment-list/patient-clinic-predefined-appointment-list.component';
 
 
 const routes: Routes = [
@@ -62,6 +63,13 @@ const routes: Routes = [
             {
                 path: 'clinics/:id',
                 component: PatientClinicComponent,
+                resolve: {
+                    clinic: ClinicResolver
+                }
+            },
+            {
+                path: 'clinics/:id/predefined',
+                component: PatientClinicPredefinedAppointmentListComponent,
                 resolve: {
                     clinic: ClinicResolver
                 }

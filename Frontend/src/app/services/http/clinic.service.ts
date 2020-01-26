@@ -78,7 +78,7 @@ export class ClinicService {
             );
     }
 
-    getPredefinedAppointments(id: number) {
+    getPredefinedAppointments(id: number): Observable<Appointment[]> {
         return this.http
             .get<Appointment[]>(
                 this.url + '/' + id + '/predefined-appointments'

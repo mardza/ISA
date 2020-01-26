@@ -57,15 +57,6 @@ public class Appointment {
 	private List<WorkCalendar> workCalendars;
 	
 	
-	
-	// TODO: decide if price and discount should only be kept in appointmentType
-	@Column(name = "price", unique = false, nullable = false)
-	private Integer price;
-	
-	@Column(name = "discount", unique = false, nullable = false)
-	private Integer discount;
-	
-	
 	public Appointment() {}
 
 
@@ -133,26 +124,9 @@ public class Appointment {
 		this.patient = patient;
 	}
 
-	public Integer getPrice() {
-		return price;
-	}
-
-	public void setPrice(Integer price) {
-		this.price = price;
-	}
-
-	public Integer getDiscount() {
-		return discount;
-	}
-
-	public void setDiscount(Integer discount) {
-		this.discount = discount;
-	}
-
 	@Override
 	public String toString() {
 		return "Appointment [id=" + id + ", time=" + time + ", duration=" + duration + ", type=" + type + ", clinic="
-				+ clinic + ", room=" + room + ", doctor=" + doctor + ", patient=" + patient + ", price=" + price
-				+ ", discount=" + discount + "]";
+				+ clinic + ", room=" + room + ", doctor=" + doctor + ", patient=" + patient + "]";
 	}
 }

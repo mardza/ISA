@@ -1,0 +1,9 @@
+<div *ngFor="let appointment of appointments" class="mat-elevation-z3">
+    {{appointment.type.name}}
+    date {{appointment.time | date:'dd.MM.yyyy.'}}
+    time {{appointment.time | date:'HH:mm'}}
+    duration {{appointment.duration | minutes}} min
+    room {{appointment.room.name}}
+    doctor {{appointment.doctor.firstName}} {{appointment.doctor.lastName}}
+    price {{appointment.type.price}} {{appointment.type.discount}}%
+</div>

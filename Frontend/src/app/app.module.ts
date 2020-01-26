@@ -35,6 +35,8 @@ import { PatientHomeComponentComponent } from './components/patient/patient-home
 import { PatientClinicListComponent } from './components/patient/clinic/patient-clinic-list/patient-clinic-list.component';
 import { PatientClinicComponent } from './components/patient/clinic/patient-clinic/patient-clinic.component';
 import { NewAppointmentComponent } from './components/patient/appointment/new-appointment/new-appointment.component';
+import { PatientClinicPredefinedAppointmentListComponent } from './components/patient/clinic/patient-clinic/patient-clinic-predefined-appointment-list/patient-clinic-predefined-appointment-list.component';
+import {MinutesPipe} from './services/pipes/minutes.pipe';
 
 @NgModule({
     declarations: [
@@ -60,7 +62,9 @@ import { NewAppointmentComponent } from './components/patient/appointment/new-ap
         PatientHomeComponentComponent,
         PatientClinicListComponent,
         PatientClinicComponent,
-        NewAppointmentComponent
+        NewAppointmentComponent,
+        PatientClinicPredefinedAppointmentListComponent,
+        MinutesPipe
     ],
     imports: [
         BrowserModule,

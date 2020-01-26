@@ -9,8 +9,7 @@ export class Appointment {
     type: AppointmentType;
     room: Room;
     doctor: User;
-    price: number;
-    discount: number;
+
 
     constructor() {
     }
@@ -27,8 +26,6 @@ export class Appointment {
         appointmentToReturn.type = AppointmentType.toAppointmentType(appointment.type);
         appointmentToReturn.room = Room.toRoom(appointment.room);
         appointmentToReturn.doctor = User.toUser(appointment.doctor);
-        appointmentToReturn.price = appointment.price;
-        appointmentToReturn.discount = appointment.discount;
         return appointmentToReturn;
     }
 

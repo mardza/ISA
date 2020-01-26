@@ -4,6 +4,8 @@ import {Room} from './Room.model';
 export class AppointmentType {
     id: number;
     name: string;
+    price: number;
+    discount: number;
 
     constructor() {
     }
@@ -16,6 +18,8 @@ export class AppointmentType {
         const appointmentTypeToReturn: AppointmentType = new AppointmentType();
         appointmentTypeToReturn.id = appointmentType.id;
         appointmentTypeToReturn.name = appointmentType.name;
+        appointmentTypeToReturn.price = appointmentType.price;
+        appointmentTypeToReturn.discount = appointmentType.discount;
         return appointmentTypeToReturn;
     }
 
