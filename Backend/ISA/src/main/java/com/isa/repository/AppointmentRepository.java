@@ -13,7 +13,7 @@ import com.isa.entity.Appointment;
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
 
 	@Query("SELECT a " + 
-			"FROM Appointment a " + 
-			"WHERE a.patient IS NULL")
+			"FROM Appointment a JOIN FETCH a.clinic c " + 
+			"WHERE c.id = :id AND a.patient IS NULL")
 	List<Appointment> findPredefinedByClinicId(@Param("id") Integer id);
 }

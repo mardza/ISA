@@ -1,0 +1,47 @@
+#appointment-div {
+  margin: 10px;
+  padding: 7px;
+  border-radius: 4px;
+
+  mat-icon {
+    transform: scale(0.9);
+    vertical-align: text-bottom;
+  }
+
+  p {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+
+  .predefined-type {
+    margin-right: 1em;
+  }
+
+  .predefined-date {
+    margin-right: 1em;
+  }
+
+  .predefined-time {
+    margin-right: 1em;
+  }
+
+  .predefined-duration {
+
+  }
+
+  .predefined-room {
+    margin-right: 1em;
+  }
+
+  .predefined-doctor {
+    margin-right: 1em;
+  }
+
+  .predefined-price {
+  }
+
+  .price-crossed {
+    text-decoration: line-through;
+  }
+}

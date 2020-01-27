@@ -1,1 +1,9 @@
-<p>patient-clinic works!</p>
+<mat-card id="clinic-profile">
+    <mat-card-title>{{clinic.name}}</mat-card-title>
+    <mat-card-subtitle>{{clinic.address}}</mat-card-subtitle>
+    <mat-card-content>{{clinic.description}}</mat-card-content>
+    <p></p>
+</mat-card>
+<div class="mat-elevation-z3" id="clinic-predefined-list">
+    <app-patient-clinic-predefined-appointment-list></app-patient-clinic-predefined-appointment-list>
+</div>

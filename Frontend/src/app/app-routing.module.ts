@@ -66,13 +66,6 @@ const routes: Routes = [
                 resolve: {
                     clinic: ClinicResolver
                 }
-            },
-            {
-                path: 'clinics/:id/predefined',
-                component: PatientClinicPredefinedAppointmentListComponent,
-                resolve: {
-                    clinic: ClinicResolver
-                }
             }
         ]
     },
