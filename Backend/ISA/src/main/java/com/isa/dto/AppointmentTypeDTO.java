@@ -14,18 +14,12 @@ public class AppointmentTypeDTO {
 	@NotBlank
 	private String name;
 	
-	private Integer price;
-	
-	private Integer discount;
-	
 	
 	public AppointmentTypeDTO() {}
 	
 	public AppointmentTypeDTO(AppointmentType appointmentType) {
 		this.id = appointmentType.getId();
 		this.name = appointmentType.getName();
-		this.price = appointmentType.getPrice();
-		this.discount = appointmentType.getDiscount();
 	}
 	
 	public static List<AppointmentTypeDTO> toList(List<AppointmentType> appointmentTypeList) {
@@ -49,24 +43,8 @@ public class AppointmentTypeDTO {
 		this.name = name;
 	}
 
-	public Integer getPrice() {
-		return price;
-	}
-
-	public void setPrice(Integer price) {
-		this.price = price;
-	}
-
-	public Integer getDiscount() {
-		return discount;
-	}
-
-	public void setDiscount(Integer discount) {
-		this.discount = discount;
-	}
-
 	@Override
 	public String toString() {
-		return "AppointmentTypeDTO [id=" + id + ", name=" + name + ", price=" + price + ", discount=" + discount + "]";
+		return "AppointmentTypeDTO [id=" + id + ", name=" + name + "]";
 	}
 }

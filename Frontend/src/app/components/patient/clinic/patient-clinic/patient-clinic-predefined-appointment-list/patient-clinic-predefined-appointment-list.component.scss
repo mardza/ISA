@@ -1,7 +1,12 @@
-#appointment-div {
+#list-header {
+  text-align: center;
+}
+
+.appointment-div {
   margin: 10px;
   padding: 7px;
   border-radius: 4px;
+  cursor: pointer;
 
   mat-icon {
     transform: scale(0.9);
@@ -26,10 +31,6 @@
     margin-right: 1em;
   }
 
-  .predefined-duration {
-
-  }
-
   .predefined-room {
     margin-right: 1em;
   }
@@ -38,10 +39,12 @@
     margin-right: 1em;
   }
 
-  .predefined-price {
-  }
+  #predefined-price-wrapper {
+    display: inline-block;
+    float: right;
 
-  .price-crossed {
-    text-decoration: line-through;
+    .price-crossed {
+      text-decoration: line-through;
+    }
   }
 }

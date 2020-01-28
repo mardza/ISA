@@ -12,9 +12,11 @@ public class AppointmentDTO {
 	private Date time;
 	private Integer duration;
 	private AppointmentTypeDTO type;
+	private PriceDTO price;
 	private ClinicDTO clinic;
 	private RoomDTO room;
 	private UserDTO doctor;
+	private UserDTO patient;
 	
 	
 	public AppointmentDTO() {}
@@ -23,10 +25,30 @@ public class AppointmentDTO {
 		this.id = appointment.getId();
 		this.time = appointment.getTime();
 		this.duration = appointment.getDuration();
-		this.type = new AppointmentTypeDTO(appointment.getType());
-		this.clinic = new ClinicDTO(appointment.getClinic());
-		this.room = new RoomDTO(appointment.getRoom());
-		this.doctor = new UserDTO(appointment.getDoctor());
+		
+		if(appointment.getType() != null) {
+			this.type = new AppointmentTypeDTO(appointment.getType());
+		}
+		
+		if(appointment.getPrice() != null) {
+			this.price = new PriceDTO(appointment.getPrice());
+		}
+		
+		if(appointment.getClinic() != null) {
+			this.clinic = new ClinicDTO(appointment.getClinic());
+		}
+		
+		if(appointment.getRoom() != null) {
+			this.room = new RoomDTO(appointment.getRoom());
+		}
+		
+		if(appointment.getDoctor() != null) {
+			this.doctor = new UserDTO(appointment.getDoctor());
+		}
+		
+		if(appointment.getPatient() != null) {
+			this.doctor = new UserDTO(appointment.getPatient());
+		}
 	}
 	
 	public static List<AppointmentDTO> toList(List<Appointment> appointmentList) {
@@ -66,6 +88,14 @@ public class AppointmentDTO {
 		this.type = type;
 	}
 
+	public PriceDTO getPrice() {
+		return price;
+	}
+
+	public void setPrice(PriceDTO price) {
+		this.price = price;
+	}
+
 	public ClinicDTO getClinic() {
 		return clinic;
 	}
@@ -90,9 +120,17 @@ public class AppointmentDTO {
 		this.doctor = doctor;
 	}
 
+	public UserDTO getPatient() {
+		return patient;
+	}
+
+	public void setPatient(UserDTO patient) {
+		this.patient = patient;
+	}
+
 	@Override
 	public String toString() {
-		return "AppointmentDTO [id=" + id + ", time=" + time + ", duration=" + duration + ", type=" + type + ", clinic="
-				+ clinic + ", room=" + room + ", doctor=" + doctor + "]";
+		return "AppointmentDTO [id=" + id + ", time=" + time + ", duration=" + duration + ", type=" + type + ", price="
+				+ price + ", clinic=" + clinic + ", room=" + room + ", doctor=" + doctor + ", patient=" + patient + "]";
 	}
 }

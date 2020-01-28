@@ -14,8 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 
 @Entity
 @Table(name = "appointments")
@@ -35,6 +35,10 @@ public class Appointment {
 	@ManyToOne
 	@JoinColumn(name = "type_id", referencedColumnName = "id", unique = false, nullable = false)
 	private AppointmentType type;
+	
+	@OneToOne
+	@JoinColumn(name = "price_id", referencedColumnName = "id", unique = false, nullable = true)
+	private Price price;
 	
 	@ManyToOne
 	@JoinColumn(name = "clinic_id", referencedColumnName = "id", unique = false, nullable = false)
@@ -92,6 +96,14 @@ public class Appointment {
 		this.type = type;
 	}
 	
+	public Price getPrice() {
+		return price;
+	}
+
+	public void setPrice(Price price) {
+		this.price = price;
+	}
+
 	public Clinic getClinic() {
 		return clinic;
 	}

@@ -21,7 +21,8 @@ import {HomeComponent} from './components/home/home.component';
 import {PatientHomeComponentComponent} from './components/patient/patient-home-component/patient-home-component.component';
 import {PatientClinicListComponent} from './components/patient/clinic/patient-clinic-list/patient-clinic-list.component';
 import {PatientClinicComponent} from './components/patient/clinic/patient-clinic/patient-clinic.component';
-import {PatientClinicPredefinedAppointmentListComponent} from './components/patient/clinic/patient-clinic/patient-clinic-predefined-appointment-list/patient-clinic-predefined-appointment-list.component';
+import {PatientFindClinicComponent} from './components/patient/appointment/patient-find-clinic/patient-find-clinic.component';
+import {AppointmentTypeListResolver} from './services/resolvers/AppointmentTypeList.resolver';
 
 
 const routes: Routes = [
@@ -66,9 +67,17 @@ const routes: Routes = [
                 resolve: {
                     clinic: ClinicResolver
                 }
+            },
+            {
+                path: 'find-clinic',
+                component: PatientFindClinicComponent,
+                resolve: {
+                    appointmentTypeList: AppointmentTypeListResolver
+                }
             }
         ]
     },
+
 
     {
         path: 'profile',

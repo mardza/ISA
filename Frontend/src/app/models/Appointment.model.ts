@@ -1,12 +1,14 @@
 import {AppointmentType} from './AppointmentType.model';
 import {Room} from './Room.model';
 import {User} from './User.model';
+import {Price} from './Price.model';
 
 export class Appointment {
     id: number;
     time: Date;
     duration: number;
     type: AppointmentType;
+    price: Price;
     room: Room;
     doctor: User;
 
@@ -24,6 +26,7 @@ export class Appointment {
         appointmentToReturn.time = appointment.time;
         appointmentToReturn.duration = appointment.duration;
         appointmentToReturn.type = AppointmentType.toAppointmentType(appointment.type);
+        appointmentToReturn.price = Price.toPrice(appointment.price)
         appointmentToReturn.room = Room.toRoom(appointment.room);
         appointmentToReturn.doctor = User.toUser(appointment.doctor);
         return appointmentToReturn;

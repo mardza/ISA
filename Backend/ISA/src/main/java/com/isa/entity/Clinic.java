@@ -46,7 +46,7 @@ public class Clinic {
 	private List<Room> rooms;
 	
 	@OneToMany(mappedBy = "clinic")
-	private List<AppointmentType> appointmentTypes;
+	private List<Price> priceList;
 	
 	
 	public Clinic() {}
@@ -107,17 +107,17 @@ public class Clinic {
 		this.rooms = rooms;
 	}
 
-	public List<AppointmentType> getAppointmentTypes() {
-		return appointmentTypes;
+	public List<Price> getPriceList() {
+		return priceList;
 	}
 
-	public void setAppointmentTypes(List<AppointmentType> appointmentTypes) {
-		this.appointmentTypes = appointmentTypes;
+	public void setPriceList(List<Price> priceList) {
+		this.priceList = priceList;
 	}
 
 	@Override
 	public String toString() {
 		return "Clinic [id=" + id + ", name=" + name + ", address=" + address + ", description=" + description
-				+ ", users=" + users + ", rooms=" + rooms + ", appointmentTypes=" + appointmentTypes + "]";
+				+ ", users=" + users + ", rooms=" + rooms + ", priceList=" + priceList + "]";
 	}
 }

@@ -1,16 +1,24 @@
-<div *ngFor="let appointment of appointments" class="mat-elevation-z3 mat-" id="appointment-div">
+<div id="list-header">
+    <p>Predefined appointments</p>
+</div>
+<div *ngFor="let appointment of appointments" class="mat-elevation-z3 appointment-div" (click)="onAppointmentClick(appointment)">
     <p class="predefined-type"><b>Type:</b> {{appointment.type.name}}</p>
     <p><b>Date:</b> {{appointment.time | date:'dd.MM.yyyy.'}}</p>&nbsp;
     <p class="predefined-time">at {{appointment.time | date:'HH:mm'}}</p>
-    <p class="predefined-duration"><mat-icon >access_time</mat-icon> {{appointment.duration | minutes}} min</p>
+    <p>
+        <mat-icon>access_time</mat-icon>
+        {{appointment.duration | minutes}} min
+    </p>
     <br>
     <p class="predefined-room"><b>Room:</b> {{appointment.room.name}}</p>
     <p class="predefined-doctor"><b>Doctor:</b> {{appointment.doctor.firstName}} {{appointment.doctor.lastName}}</p>
-    <p class="predefined-price"><b>Price:</b>&nbsp;</p>
-    <p *ngIf="appointment.type.discount === 0">{{appointment.type.price}} rsd</p>
-    <ng-container *ngIf="appointment.type.discount > 0">
-        <p class="price-crossed">{{appointment.type.price}}</p>
-        <p>(-{{appointment.type.discount}}%)</p>&nbsp;
-        <p>{{appointment.type.price * ((100 - appointment.type.discount) / 100)}}rsd</p>
-    </ng-container>
+    <div id="predefined-price-wrapper">
+        <p><b>Price:</b>&nbsp;</p>
+        <p *ngIf="appointment.price?.discount === 0">{{appointment.price?.price}} rsd</p>
+        <ng-container *ngIf="appointment.price?.discount > 0">
+            <p class="price-crossed">{{appointment.price?.price}}</p>
+            <p>(-{{appointment.price?.discount}}%)</p>&nbsp;
+            <p>{{appointment.price?.price * ((100 - appointment.price?.discount) / 100)}}rsd</p>
+        </ng-container>
+    </div>
 </div>

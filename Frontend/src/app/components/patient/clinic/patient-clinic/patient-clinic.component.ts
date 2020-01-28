@@ -21,7 +21,6 @@ export class PatientClinicComponent implements OnInit {
 
   ngOnInit() {
     this.clinic = this.route.snapshot.data.clinic;
-    console.log(this.clinic);
   }
 
 }
