@@ -18,7 +18,7 @@ import {ApproveUserListComponent} from './components/admin/approve-user-list/app
 import {ApproveUserComponent} from './components/admin/approve-user-list/approve-user/approve-user.component';
 import {HeaderComponent} from './components/header/header.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatIconModule, MatListModule, MatMenuModule, MatTableModule} from '@angular/material';
+import {MatDatepickerModule, MatIconModule, MatListModule, MatMenuModule, MatSelectModule, MatTableModule} from '@angular/material';
 import {UserListComponent} from './components/admin/user/user-list/user-list.component';
 import {UserComponent} from './components/admin/user/user/user.component';
 import {UserEditComponent} from './components/admin/user/user-edit/user-edit.component';
@@ -37,6 +37,8 @@ import { PatientClinicComponent } from './components/patient/clinic/patient-clin
 import { PatientClinicPredefinedAppointmentListComponent } from './components/patient/clinic/patient-clinic/patient-clinic-predefined-appointment-list/patient-clinic-predefined-appointment-list.component';
 import {MinutesPipe} from './services/pipes/minutes.pipe';
 import { PatientFindClinicComponent } from './components/patient/appointment/patient-find-clinic/patient-find-clinic.component';
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
+import { EmptyComponent } from './components/empty/empty.component';
 
 @NgModule({
     declarations: [
@@ -64,7 +66,11 @@ import { PatientFindClinicComponent } from './components/patient/appointment/pat
         PatientClinicComponent,
         PatientClinicPredefinedAppointmentListComponent,
         MinutesPipe,
-        PatientFindClinicComponent
+        PatientFindClinicComponent,
+        EmptyComponent
+    ],
+    entryComponents: [
+      EmptyComponent
     ],
     imports: [
         BrowserModule,
@@ -80,7 +86,10 @@ import { PatientFindClinicComponent } from './components/patient/appointment/pat
         MatIconModule,
         MatMenuModule,
         MatTableModule,
-        MatListModule
+        MatListModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatMomentDateModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}

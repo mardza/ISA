@@ -29,9 +29,6 @@ public class Appointment {
 	@Column(name = "time", unique = false, nullable = false)
 	private Date time;
 	
-	@Column(name = "duration", unique = false, nullable = false)
-	private Integer duration;
-	
 	@ManyToOne
 	@JoinColumn(name = "type_id", referencedColumnName = "id", unique = false, nullable = false)
 	private AppointmentType type;
@@ -78,14 +75,6 @@ public class Appointment {
 
 	public void setTime(Date time) {
 		this.time = time;
-	}
-
-	public Integer getDuration() {
-		return duration;
-	}
-
-	public void setDuration(Integer duration) {
-		this.duration = duration;
 	}
 
 	public AppointmentType getType() {
@@ -138,7 +127,7 @@ public class Appointment {
 
 	@Override
 	public String toString() {
-		return "Appointment [id=" + id + ", time=" + time + ", duration=" + duration + ", type=" + type + ", clinic="
+		return "Appointment [id=" + id + ", time=" + time + ", type=" + type + ", clinic="
 				+ clinic + ", room=" + room + ", doctor=" + doctor + ", patient=" + patient + "]";
 	}
 }

@@ -21,12 +21,16 @@ public class AppointmentType {
 	@Column(name = "name", unique = false, nullable = false, length = 65)
 	private String name;
 	
+	@Column(name = "duration", unique = false, nullable = false)
+	private Long duration;
+	
 	
 	public AppointmentType() {}
 	
 	public AppointmentType(AppointmentTypeDTO appointmentTypeDTO) {
 		this.id = appointmentTypeDTO.getId();
 		this.name = appointmentTypeDTO.getName();
+		this.duration = appointmentTypeDTO.getDuration();
 	}
 
 	
@@ -46,8 +50,16 @@ public class AppointmentType {
 		this.name = name;
 	}
 
+	public Long getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Long duration) {
+		this.duration = duration;
+	}
+
 	@Override
 	public String toString() {
-		return "AppointmentType [id=" + id + ", name=" + name + "]";
+		return "AppointmentType [id=" + id + ", name=" + name + ", duration=" + duration + "]";
 	}
 }

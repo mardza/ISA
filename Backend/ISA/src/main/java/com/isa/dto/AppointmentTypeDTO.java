@@ -14,12 +14,15 @@ public class AppointmentTypeDTO {
 	@NotBlank
 	private String name;
 	
+	private Long duration;
+	
 	
 	public AppointmentTypeDTO() {}
 	
 	public AppointmentTypeDTO(AppointmentType appointmentType) {
 		this.id = appointmentType.getId();
 		this.name = appointmentType.getName();
+		this.duration = appointmentType.getDuration();
 	}
 	
 	public static List<AppointmentTypeDTO> toList(List<AppointmentType> appointmentTypeList) {
@@ -43,8 +46,16 @@ public class AppointmentTypeDTO {
 		this.name = name;
 	}
 
+	public Long getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Long duration) {
+		this.duration = duration;
+	}
+
 	@Override
 	public String toString() {
-		return "AppointmentTypeDTO [id=" + id + ", name=" + name + "]";
+		return "AppointmentTypeDTO [id=" + id + ", name=" + name + ", duration=" + duration + "]";
 	}
 }

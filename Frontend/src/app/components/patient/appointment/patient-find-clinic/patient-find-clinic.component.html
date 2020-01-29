@@ -1,3 +1,22 @@
 <div class="mat-elevation-z3" id="search-div">
 
+    <form (ngSubmit)="onSubmit(form)" #form="ngForm">
+
+        <mat-form-field>
+            <mat-label>Appointment type</mat-label>
+            <mat-select name="selectedAppointmentTypeId" ngModel required>
+                <mat-option *ngFor="let appointmentType of appointmentTypeList" [value]="appointmentType.id">
+                    {{appointmentType.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field style="width: 180px">
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date" [matDatepickerFilter]="myFilter" name="selectedDate" ngModel readonly required (click)="picker.open()">
+            <mat-datepicker-toggle style="margin-right: 0" matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker startView="multi-year" [calendarHeaderComponent]="customHeader"></mat-datepicker>
+        </mat-form-field>
+
+        <button mat-raised-button type="submit" [disabled]="!form.valid">Search</button>
+    </form>
 </div>

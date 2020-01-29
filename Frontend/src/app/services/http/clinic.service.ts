@@ -6,6 +6,8 @@ import {Clinic} from '../../models/Clinic.model';
 import * as moment from 'moment';
 import {map} from 'rxjs/operators';
 import {Appointment} from '../../models/Appointment.model';
+import {Price} from '../../models/Price.model';
+import {ClinicPriceWrapper} from '../../models/custom/ClinicPriceWrapper.model';
 
 
 @Injectable({providedIn: 'root'})
@@ -85,6 +87,29 @@ export class ClinicService {
             )
             .pipe(
                 map(response => Appointment.toAppointmentList(response))
+            );
+    }
+
+    search(query?: { appointmentTypeId?: number, date?: Date }): Observable<ClinicPriceWrapper[]> {
+        let params: HttpParams;
+        if (query) {
+            params = new HttpParams();
+            if(query.appointmentTypeId){
+                params = params.set('appointmentTypeId', query.appointmentTypeId.toString());
+            }
+            if (query.date) {
+                params = params.set('date', moment(query.date).format('YYYY-MM-DD'));
+            }
+        }
+        return this.http
+            .get<ClinicPriceWrapper[]>(
+                this.url + '/search',
+                {
+                    params: params
+                }
+            )
+            .pipe(
+                map(response => ClinicPriceWrapper.toClinicPriceWrapperList(response))
             );
     }
 }

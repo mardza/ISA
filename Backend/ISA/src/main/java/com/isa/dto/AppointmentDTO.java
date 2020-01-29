@@ -10,7 +10,6 @@ public class AppointmentDTO {
 	
 	private Integer id;
 	private Date time;
-	private Integer duration;
 	private AppointmentTypeDTO type;
 	private PriceDTO price;
 	private ClinicDTO clinic;
@@ -24,7 +23,6 @@ public class AppointmentDTO {
 	public AppointmentDTO(Appointment appointment) {
 		this.id = appointment.getId();
 		this.time = appointment.getTime();
-		this.duration = appointment.getDuration();
 		
 		if(appointment.getType() != null) {
 			this.type = new AppointmentTypeDTO(appointment.getType());
@@ -71,15 +69,7 @@ public class AppointmentDTO {
 	public void setTime(Date time) {
 		this.time = time;
 	}
-
-	public Integer getDuration() {
-		return duration;
-	}
-
-	public void setDuration(Integer duration) {
-		this.duration = duration;
-	}
-
+	
 	public AppointmentTypeDTO getType() {
 		return type;
 	}
@@ -130,7 +120,7 @@ public class AppointmentDTO {
 
 	@Override
 	public String toString() {
-		return "AppointmentDTO [id=" + id + ", time=" + time + ", duration=" + duration + ", type=" + type + ", price="
+		return "AppointmentDTO [id=" + id + ", time=" + time + ", type=" + type + ", price="
 				+ price + ", clinic=" + clinic + ", room=" + room + ", doctor=" + doctor + ", patient=" + patient + "]";
 	}
 }

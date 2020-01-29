@@ -40,13 +40,16 @@ public class Clinic {
 	//private Integer ratingWeight;
 	
 	@OneToMany(mappedBy = "clinic")
-	private List<User> users;
+	private List<User> employees;
 	
 	@OneToMany(mappedBy = "clinic")
 	private List<Room> rooms;
 	
 	@OneToMany(mappedBy = "clinic")
 	private List<Price> priceList;
+	
+	@OneToMany(mappedBy = "clinic")
+	private List<Appointment> appointmentList;
 	
 	
 	public Clinic() {}
@@ -91,12 +94,12 @@ public class Clinic {
 		this.description = description;
 	}
 
-	public List<User> getUsers() {
-		return users;
+	public List<User> getEmployees() {
+		return employees;
 	}
 
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setEmployees(List<User> employees) {
+		this.employees = employees;
 	}
 
 	public List<Room> getRooms() {
@@ -115,9 +118,17 @@ public class Clinic {
 		this.priceList = priceList;
 	}
 
+	public List<Appointment> getAppointmentList() {
+		return appointmentList;
+	}
+
+	public void setAppointmentList(List<Appointment> appointmentList) {
+		this.appointmentList = appointmentList;
+	}
+
 	@Override
 	public String toString() {
 		return "Clinic [id=" + id + ", name=" + name + ", address=" + address + ", description=" + description
-				+ ", users=" + users + ", rooms=" + rooms + ", priceList=" + priceList + "]";
+				+ ", employees=" + employees + ", rooms=" + rooms + ", priceList=" + priceList + "]";
 	}
 }

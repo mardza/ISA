@@ -24,3 +24,13 @@ form {
   }
   // end fix
 }
+
+// Fix for datepicker calendar height when using custom empty header
+.mat-calendar {
+  height: initial !important;
+
+  mat-month-view .mat-calendar-table {
+    margin-top: 8px;
+  }
+}
+// end fix

@@ -1,7 +1,7 @@
 package com.isa.entity;
 
 import java.util.Collection;
-import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -73,8 +74,19 @@ public class User implements UserDetails {
 	@JoinColumn(name = "clinic_id", referencedColumnName = "id", nullable = true)
 	private Clinic clinic;
 	
+	@ManyToOne
+	@JoinColumn(name = "appointmenttype_id", referencedColumnName = "id", nullable = true)
+	private AppointmentType specialisation;
 	
-	private Date radnoVreme;
+	@OneToMany(mappedBy = "doctor")
+	private List<Appointment> doctorAppointmentList;
+	
+	
+	@Column(name = "workStart", unique = false, nullable = true)
+	private Integer workStart;
+	
+	@Column(name = "workEnd", unique = false, nullable = true)
+	private Integer workEnd;
 
 	private Double ratingAverage;
 	private Integer ratingWeight;
@@ -211,6 +223,38 @@ public class User implements UserDetails {
 		this.workCalendar = workCalendar;
 	}
 
+	public AppointmentType getSpecialisation() {
+		return specialisation;
+	}
+
+	public void setSpecialisation(AppointmentType specialisation) {
+		this.specialisation = specialisation;
+	}
+
+	public List<Appointment> getDoctorAppointmentList() {
+		return doctorAppointmentList;
+	}
+
+	public void setDoctorAppointmentList(List<Appointment> doctorAppointmentList) {
+		this.doctorAppointmentList = doctorAppointmentList;
+	}
+
+	public Integer getWorkStart() {
+		return workStart;
+	}
+
+	public void setWorkStart(Integer workStart) {
+		this.workStart = workStart;
+	}
+
+	public Integer getWorkEnd() {
+		return workEnd;
+	}
+
+	public void setWorkEnd(Integer workEnd) {
+		this.workEnd = workEnd;
+	}
+
 	@Override
 	public String getUsername() {
 		return this.email;
@@ -247,7 +291,7 @@ public class User implements UserDetails {
 		return "User [id=" + id + ", email=" + email + ", password=" + password + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", address=" + address + ", city=" + city + ", country=" + country
 				+ ", phone=" + phone + ", insuranceNumber=" + insuranceNumber + ", role=" + role + ", registration="
-				+ registration + ", WorkCalendar=" + workCalendar + ", clinic=" + clinic + ", radnoVreme=" + radnoVreme
+				+ registration + ", WorkCalendar=" + workCalendar + ", clinic=" + clinic
 				+ ", ratingAverage=" + ratingAverage + ", ratingWeight=" + ratingWeight + ", passwordSet=" + passwordSet
 				+ "]";
 	}

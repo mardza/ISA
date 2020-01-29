@@ -12,7 +12,7 @@ public interface ClinicServiceInterface {
 	
 	Clinic findById(Integer id);
 	
-	List<Clinic> findFiltered(Date date, String appointmentType, String address);
+	List<Clinic> findFiltered(Date date, Integer appointmentTypeId);
 	
 	Clinic create(ClinicDTO clinicDTO);
 	
