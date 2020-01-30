@@ -70,7 +70,7 @@ public class Registration {
 
 	@Override
 	public String toString() {
-		return "Registration [id=" + id + ", user=" + user + ", approved=" + approved + ", activated=" + activated
+		return "Registration [id=" + id + ", approved=" + approved + ", activated=" + activated
 				+ "]";
 	}
 }

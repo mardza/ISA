@@ -17,23 +17,23 @@
             <mat-datepicker #picker startView="multi-year" [calendarHeaderComponent]="customHeader"></mat-datepicker>
         </mat-form-field>
 
+        <mat-form-field>
+            <input matInput placeholder="First name">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Last name">
+        </mat-form-field>
+
+        <mat-radio-group>
+            <span>Stars: </span>
+            <mat-radio-button value="1">1</mat-radio-button>
+            <mat-radio-button value="2">2</mat-radio-button>
+            <mat-radio-button value="3">3</mat-radio-button>
+            <mat-radio-button value="4">4</mat-radio-button>
+            <mat-radio-button value="5">5</mat-radio-button>
+        </mat-radio-group>
+
         <button mat-raised-button type="submit" [disabled]="!form.valid">Search</button>
     </form>
-</div>
-
-<div class="mat-elevation-z3" id="results-div">
-    <div class="mat-elevation-z3 result-div" *ngFor="let clinicPriceWrapper of clinicPriceWrapperList" [routerLink]="[clinicPriceWrapper.clinic.id, 'doctors']" [queryParams]="{appointmentTypeId: selectedAppointmentTypeId, date: selectedDate}">
-        <p class="result-clinic-name">{{clinicPriceWrapper.clinic.name}}</p>
-        <p class="result-clinic-address">{{clinicPriceWrapper.clinic.address}}</p>
-        <br>
-        <div class="result-clinic-rating">ocena</div>
-        <div class="predefined-price-wrapper">
-            <p *ngIf="clinicPriceWrapper.price?.discount === 0">{{clinicPriceWrapper.price?.price}} rsd</p>
-            <ng-container *ngIf="clinicPriceWrapper.price?.discount > 0">
-                <p class="price-crossed">{{clinicPriceWrapper.price?.price}}</p>
-                <p>(-{{clinicPriceWrapper.price?.discount}}%)</p>&nbsp;
-                <p>{{clinicPriceWrapper.price?.price * ((100 - clinicPriceWrapper.price?.discount) / 100)}}rsd</p>
-            </ng-container>
-        </div>
-    </div>
 </div>

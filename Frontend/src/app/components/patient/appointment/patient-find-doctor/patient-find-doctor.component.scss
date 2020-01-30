@@ -1,0 +1,30 @@
+#search-div {
+  border-radius: 4px;
+  margin: 20px;
+  padding: 5px 10px 0px 10px;
+  text-align: center;
+
+  form {
+    > * {
+      margin-right: 15px;
+    }
+
+    mat-radio-group {
+      display: block;
+      margin: 15px;
+
+      span {
+        color: rgba(0, 0, 0, .54);
+        margin-right: 10px;
+      }
+
+      mat-radio-button {
+        margin-right: 10px;
+      }
+    }
+
+    button {
+      margin-bottom: 10px;
+    }
+  }
+}

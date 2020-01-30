@@ -6,7 +6,6 @@ import {Price} from './Price.model';
 export class Appointment {
     id: number;
     time: Date;
-    duration: number;
     type: AppointmentType;
     price: Price;
     room: Room;
@@ -24,7 +23,6 @@ export class Appointment {
         const appointmentToReturn: Appointment = new Appointment();
         appointmentToReturn.id = appointment.id;
         appointmentToReturn.time = appointment.time;
-        appointmentToReturn.duration = appointment.duration;
         appointmentToReturn.type = AppointmentType.toAppointmentType(appointment.type);
         appointmentToReturn.price = Price.toPrice(appointment.price)
         appointmentToReturn.room = Room.toRoom(appointment.room);

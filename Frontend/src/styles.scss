@@ -34,3 +34,9 @@ form {
   }
 }
 // end fix
+
+// Fix for radio button label being too far from button itself
+.mat-radio-label-content {
+  padding-left: 5px !important;
+}
+// end fix

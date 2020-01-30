@@ -90,7 +90,7 @@ export class ClinicService {
             );
     }
 
-    search(query?: { appointmentTypeId?: number, date?: Date }): Observable<ClinicPriceWrapper[]> {
+    search(query?: { appointmentTypeId?: number, date?: string }): Observable<ClinicPriceWrapper[]> {
         let params: HttpParams;
         if (query) {
             params = new HttpParams();
@@ -98,7 +98,7 @@ export class ClinicService {
                 params = params.set('appointmentTypeId', query.appointmentTypeId.toString());
             }
             if (query.date) {
-                params = params.set('date', moment(query.date).format('YYYY-MM-DD'));
+                params = params.set('date', query.date);
             }
         }
         return this.http

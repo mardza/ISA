@@ -18,7 +18,15 @@ import {ApproveUserListComponent} from './components/admin/approve-user-list/app
 import {ApproveUserComponent} from './components/admin/approve-user-list/approve-user/approve-user.component';
 import {HeaderComponent} from './components/header/header.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatDatepickerModule, MatIconModule, MatListModule, MatMenuModule, MatSelectModule, MatTableModule} from '@angular/material';
+import {
+    MatDatepickerModule,
+    MatIconModule,
+    MatListModule,
+    MatMenuModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatTableModule
+} from '@angular/material';
 import {UserListComponent} from './components/admin/user/user-list/user-list.component';
 import {UserComponent} from './components/admin/user/user/user.component';
 import {UserEditComponent} from './components/admin/user/user-edit/user-edit.component';
@@ -39,6 +47,7 @@ import {MinutesPipe} from './services/pipes/minutes.pipe';
 import { PatientFindClinicComponent } from './components/patient/appointment/patient-find-clinic/patient-find-clinic.component';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import { EmptyComponent } from './components/empty/empty.component';
+import { PatientFindDoctorComponent } from './components/patient/appointment/patient-find-doctor/patient-find-doctor.component';
 
 @NgModule({
     declarations: [
@@ -67,7 +76,8 @@ import { EmptyComponent } from './components/empty/empty.component';
         PatientClinicPredefinedAppointmentListComponent,
         MinutesPipe,
         PatientFindClinicComponent,
-        EmptyComponent
+        EmptyComponent,
+        PatientFindDoctorComponent
     ],
     entryComponents: [
       EmptyComponent
@@ -89,7 +99,8 @@ import { EmptyComponent } from './components/empty/empty.component';
         MatListModule,
         MatSelectModule,
         MatDatepickerModule,
-        MatMomentDateModule
+        MatMomentDateModule,
+        MatRadioModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}

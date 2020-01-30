@@ -7,6 +7,7 @@ import {Moment} from 'moment';
 import {EmptyComponent} from '../../../empty/empty.component';
 import * as moment from 'moment';
 import {ClinicService} from '../../../../services/http/clinic.service';
+import {ClinicPriceWrapper} from '../../../../models/custom/ClinicPriceWrapper.model';
 
 
 const YEAR_FORMAT = {
@@ -31,6 +32,11 @@ export class PatientFindClinicComponent implements OnInit {
     appointmentTypeList: AppointmentType[];
     customHeader = EmptyComponent;
     currentMoment: Moment;
+    clinicPriceWrapperList: ClinicPriceWrapper[];
+
+    selectedAppointmentTypeId: number;
+    selectedDate: string;
+
 
     constructor(
         private route: ActivatedRoute,
@@ -45,12 +51,16 @@ export class PatientFindClinicComponent implements OnInit {
     }
 
     onSubmit(form: NgForm) {
+        this.selectedAppointmentTypeId = form.value.selectedAppointmentTypeId;
+        this.selectedDate = form.value.selectedDate.format('YYYY-MM-DD');
+
         console.log(form.value);
         this.clinicService
-            .search({appointmentTypeId: form.value.selectedAppointmentTypeId, date: (<Moment>form.value.selectedDate).toDate()})
+            .search({appointmentTypeId: this.selectedAppointmentTypeId, date: this.selectedDate})
             .subscribe(
                 value => {
                     console.log(value);
+                    this.clinicPriceWrapperList = value;
                 },
                 error => {
                     console.log(error);

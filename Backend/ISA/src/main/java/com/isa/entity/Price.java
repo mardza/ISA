@@ -83,7 +83,7 @@ public class Price {
 
 	@Override
 	public String toString() {
-		return "Price [id=" + id + ", clinic=" + clinic + ", appointmentType=" + appointmentType + ", price=" + price
+		return "Price [id=" + id + ", appointmentType=" + appointmentType + ", price=" + price
 				+ ", discount=" + discount + "]";
 	}	
 }

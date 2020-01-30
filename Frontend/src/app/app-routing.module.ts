@@ -23,6 +23,7 @@ import {PatientClinicListComponent} from './components/patient/clinic/patient-cl
 import {PatientClinicComponent} from './components/patient/clinic/patient-clinic/patient-clinic.component';
 import {PatientFindClinicComponent} from './components/patient/appointment/patient-find-clinic/patient-find-clinic.component';
 import {AppointmentTypeListResolver} from './services/resolvers/AppointmentTypeList.resolver';
+import {PatientFindDoctorComponent} from './components/patient/appointment/patient-find-doctor/patient-find-doctor.component';
 
 
 const routes: Routes = [
@@ -71,6 +72,13 @@ const routes: Routes = [
             {
                 path: 'find-clinic',
                 component: PatientFindClinicComponent,
+                resolve: {
+                    appointmentTypeList: AppointmentTypeListResolver
+                }
+            },
+            {
+                path: 'find-clinic/:clinicId/doctors',
+                component: PatientFindDoctorComponent,
                 resolve: {
                     appointmentTypeList: AppointmentTypeListResolver
                 }

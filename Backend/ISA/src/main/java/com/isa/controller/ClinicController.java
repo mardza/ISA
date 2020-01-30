@@ -22,10 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isa.dto.AppointmentDTO;
 import com.isa.dto.ClinicDTO;
 import com.isa.dto.ClinicSearchDTO;
+import com.isa.dto.PriceDTO;
 import com.isa.entity.Appointment;
 import com.isa.entity.Clinic;
+import com.isa.entity.Price;
 import com.isa.service.AppointmentService;
 import com.isa.service.ClinicService;
+import com.isa.service.PriceService;
 
 @RestController
 @RequestMapping("/clinics")
@@ -37,6 +40,9 @@ public class ClinicController {
 	@Autowired
 	private AppointmentService appointmentService;
 	
+	@Autowired
+	private PriceService priceService;
+	
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<ClinicDTO> getById(@PathVariable("id") Integer id) {
@@ -44,14 +50,15 @@ public class ClinicController {
 		return new ResponseEntity<ClinicDTO>(new ClinicDTO(clinic), HttpStatus.OK);
 	}
 
-//	@GetMapping
-//	public ResponseEntity<List<ClinicDTO>> getAllFiltered(
-//			@RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date,
-//			@RequestParam(name = "appointmentType", required = false) String appointmentType,
-//			@RequestParam(name = "address", required = false) String address) {
-//		List<Clinic> clinicList = this.clinicService.findFiltered(date, appointmentType, address);
-//		return new ResponseEntity<List<ClinicDTO>>(ClinicDTO.toList(clinicList), HttpStatus.OK);
-//	}
+	@GetMapping
+	public ResponseEntity<List<ClinicDTO>> getAllFiltered(
+			@RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date,
+			@RequestParam(name = "appointmentType", required = false) String appointmentType,
+			@RequestParam(name = "address", required = false) String address) {
+		//List<Clinic> clinicList = this.clinicService.findFiltered(date, appointmentType, address);
+		List<Clinic> clinicList = this.clinicService.findAll();
+		return new ResponseEntity<List<ClinicDTO>>(ClinicDTO.toList(clinicList), HttpStatus.OK);
+	}
 
 	@PostMapping
 	public ResponseEntity<ClinicDTO> createClinic(@RequestBody @Valid ClinicDTO clinicDTO) {
@@ -81,8 +88,8 @@ public class ClinicController {
 		clinicList.forEach(clinic -> {
 			ClinicSearchDTO clinicSearchDTO = new ClinicSearchDTO();
 			clinicSearchDTO.setClinic(new ClinicDTO(clinic));
-			//Price price = this.appointmentService.fin)
-			//clinicSearchDTO.setPrice();
+			Price price = this.priceService.findByClinicAndAppointmentType(clinic.getId(), appointmentTypeId);
+			clinicSearchDTO.setPrice(new PriceDTO(price));
 			clinicSearchDTOList.add(clinicSearchDTO);
 		});
 		

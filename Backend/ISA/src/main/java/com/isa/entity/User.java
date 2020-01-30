@@ -66,9 +66,9 @@ public class User implements UserDetails {
 	@JoinColumn(name = "registration_id", referencedColumnName = "id", unique = true, nullable = false)
 	private Registration registration;
 	
-	@OneToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "work_calendar_id", referencedColumnName = "id", unique = true, nullable = true)
-	private WorkCalendar workCalendar;
+//	@OneToOne(cascade = CascadeType.REMOVE)
+//	@JoinColumn(name = "work_calendar_id", referencedColumnName = "id", unique = true, nullable = true)
+//	private WorkCalendar workCalendar;
 	
 	@ManyToOne
 	@JoinColumn(name = "clinic_id", referencedColumnName = "id", nullable = true)
@@ -82,10 +82,10 @@ public class User implements UserDetails {
 	private List<Appointment> doctorAppointmentList;
 	
 	
-	@Column(name = "workStart", unique = false, nullable = true)
+	@Column(name = "work_start", unique = false, nullable = true)
 	private Integer workStart;
 	
-	@Column(name = "workEnd", unique = false, nullable = true)
+	@Column(name = "work_end", unique = false, nullable = true)
 	private Integer workEnd;
 
 	private Double ratingAverage;
@@ -215,13 +215,13 @@ public class User implements UserDetails {
 		this.clinic = clinic;
 	}
 
-	public WorkCalendar getWorkCalendar() {
-		return workCalendar;
-	}
-
-	public void setWorkCalendar(WorkCalendar workCalendar) {
-		this.workCalendar = workCalendar;
-	}
+//	public WorkCalendar getWorkCalendar() {
+//		return workCalendar;
+//	}
+//
+//	public void setWorkCalendar(WorkCalendar workCalendar) {
+//		this.workCalendar = workCalendar;
+//	}
 
 	public AppointmentType getSpecialisation() {
 		return specialisation;
@@ -290,9 +290,9 @@ public class User implements UserDetails {
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", password=" + password + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", address=" + address + ", city=" + city + ", country=" + country
-				+ ", phone=" + phone + ", insuranceNumber=" + insuranceNumber + ", role=" + role + ", registration="
-				+ registration + ", WorkCalendar=" + workCalendar + ", clinic=" + clinic
-				+ ", ratingAverage=" + ratingAverage + ", ratingWeight=" + ratingWeight + ", passwordSet=" + passwordSet
-				+ "]";
+				+ ", phone=" + phone + ", insuranceNumber=" + insuranceNumber + ", role=" + role.getName() + ", clinic=" + clinic.getId()
+				+ ", specialisation=" + specialisation.getId() + ", workStart=" + workStart + ", workEnd=" + workEnd + "]";
 	}
+	
+
 }

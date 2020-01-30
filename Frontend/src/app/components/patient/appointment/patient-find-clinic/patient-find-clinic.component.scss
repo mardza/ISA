@@ -15,3 +15,49 @@
   }
 }
 
+#results-div {
+  padding: 15px;
+  margin: 20px;
+  border-radius: 4px;
+
+  .result-div {
+    border-radius: 4px;
+    padding: 7px;
+    overflow: hidden;
+    cursor: pointer;
+
+    p {
+      display: inline-block;
+    }
+
+    .result-clinic-name {
+      margin-right: 20px;
+    }
+    .result-clinic-address {
+      font-size: 0.9em;
+      color: lightslategray;
+    }
+
+    .result-clinic-rating {
+      display: inline-block;
+    }
+
+    .predefined-price-wrapper {
+      display: inline-block;
+      float: right;
+
+      p {
+        margin: 0;
+      }
+
+      .price-crossed {
+        text-decoration: line-through;
+      }
+    }
+  }
+
+  .result-div:not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+

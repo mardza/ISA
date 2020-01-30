@@ -70,18 +70,18 @@ VALUES ('nurse@g.com', '$2a$10$GGi3fzEAMIAgQE/lsADrueJsbTGbCYezOB/dAuXtMSUfkduNg
 
 INSERT INTO registrations (id, approved, activated)
 VALUES (5, true, true);
-INSERT INTO users (email, password, first_name, last_name, address, city, country, phone, role_id, registration_id, clinic_id, appointmenttype_id, workStart, workEnd)
+INSERT INTO users (email, password, first_name, last_name, address, city, country, phone, role_id, registration_id, clinic_id, appointmenttype_id, work_start, work_end)
 VALUES ('doctor1@g.com', '$2a$10$GGi3fzEAMIAgQE/lsADrueJsbTGbCYezOB/dAuXtMSUfkduNgTxX6', 'Doctor1 first', 'Doctor1 last', 'Doctor address', 'Doctor city', 'Doctor country', '0631231231', 2, 5, 1, 1, 8, 16);
 
 INSERT INTO registrations (id, approved, activated)
 VALUES (6, true, true);
-INSERT INTO users (email, password, first_name, last_name, address, city, country, phone, role_id, registration_id, clinic_id, appointmenttype_id, workStart, workEnd)
+INSERT INTO users (email, password, first_name, last_name, address, city, country, phone, role_id, registration_id, clinic_id, appointmenttype_id, work_start, work_end)
 VALUES ('doctor2@g.com', '$2a$10$GGi3fzEAMIAgQE/lsADrueJsbTGbCYezOB/dAuXtMSUfkduNgTxX6', 'Doctor2 first', 'Doctor2 last', 'Doctor address', 'Doctor city', 'Doctor country', '0631231231', 2, 6, 1, 2, 8, 16);
 
 INSERT INTO registrations (id, approved, activated)
 VALUES (7, true, true);
-INSERT INTO users (email, password, first_name, last_name, address, city, country, phone, role_id, registration_id, clinic_id, appointmenttype_id, workStart, workEnd)
-VALUES ('doctor3@g.com', '$2a$10$GGi3fzEAMIAgQE/lsADrueJsbTGbCYezOB/dAuXtMSUfkduNgTxX6', 'Doctor3 first', 'Doctor3 last', 'Doctor address', 'Doctor city', 'Doctor country', '0631231231', 2, 7, 2, 3, 8, 16);
+INSERT INTO users (email, password, first_name, last_name, address, city, country, phone, role_id, registration_id, clinic_id, appointmenttype_id, work_start, work_end)
+VALUES ('doctor3@g.com', '$2a$10$GGi3fzEAMIAgQE/lsADrueJsbTGbCYezOB/dAuXtMSUfkduNgTxX6', 'Doctor3 first', 'Doctor3 last', 'Doctor address', 'Doctor city', 'Doctor country', '0631231231', 2, 7, 2, 2, 8, 16);
 
 
 
@@ -115,6 +115,9 @@ VALUES (1, 3, 3500, 10);
 
 
 INSERT INTO prices (clinic_id, appointmenttype_id, price, discount) 
+VALUES (2, 2, 2900, 0);
+
+INSERT INTO prices (clinic_id, appointmenttype_id, price, discount) 
 VALUES (2, 3, 3500, 0);
 
 INSERT INTO prices (clinic_id, appointmenttype_id, price, discount) 
@@ -127,16 +130,16 @@ INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id
 VALUES ('2020-1-30 09:30:00', 1, 1, 1, 1, 5, 8);
 
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id) 
-VALUES ('2020-1-30 10:00:00', 1, 1, 1, 1, 5, NULL);
+VALUES ('2020-1-30 08:00:00', 1, 1, 1, 1, 5, NULL);
 
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id) 
-VALUES ('2020-1-30 12:00:00', 2, 1, 2, 1, 5, NULL);
+VALUES ('2020-1-30 12:00:00', 1, 1, 1, 1, 5, NULL);
 
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id) 
-VALUES ('2020-1-30 09:30:00', 3, 1, 3, 2, 6, NULL);
+VALUES ('2020-1-30 09:30:00', 2, 1, 2, 2, 6, NULL);
 
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id) 
-VALUES ('2020-1-30 12:30:00', 4, 2, 5, 3, 7, NULL);
+VALUES ('2020-1-30 12:30:00', 2, 2, 4, 3, 7, NULL);
 
 
 --INSERT INTO users_roles (user_id, role_id)

@@ -1,18 +1,13 @@
 package com.isa.entity;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -53,9 +48,9 @@ public class Appointment {
 	@JoinColumn(name = "patient_id", referencedColumnName = "id", unique = false, nullable = true)
 	private User patient;
 	
-	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.MERGE}, fetch = FetchType.EAGER)
-	@JoinTable(name = "appointments_work_calendars", joinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "work_calendar_id", referencedColumnName = "id"))
-	private List<WorkCalendar> workCalendars;
+//	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.MERGE}, fetch = FetchType.EAGER)
+//	@JoinTable(name = "appointments_work_calendars", joinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "work_calendar_id", referencedColumnName = "id"))
+//	private List<WorkCalendar> workCalendars;
 	
 	
 	public Appointment() {}
@@ -125,9 +120,12 @@ public class Appointment {
 		this.patient = patient;
 	}
 
+
 	@Override
 	public String toString() {
-		return "Appointment [id=" + id + ", time=" + time + ", type=" + type + ", clinic="
-				+ clinic + ", room=" + room + ", doctor=" + doctor + ", patient=" + patient + "]";
+		return "Appointment [id=" + id + ", time=" + time + ", type=" + type.getName() + ", clinic=" + clinic.getId() + ", price=" + price.getPrice() + ", room=" + room.getName()
+				+ "]";
 	}
+
+	
 }

@@ -1,6 +1,7 @@
 export class AppointmentType {
     id: number;
     name: string;
+    duration: number;
 
     constructor() {
     }
@@ -13,6 +14,7 @@ export class AppointmentType {
         const appointmentTypeToReturn: AppointmentType = new AppointmentType();
         appointmentTypeToReturn.id = appointmentType.id;
         appointmentTypeToReturn.name = appointmentType.name;
+        appointmentTypeToReturn.duration = appointmentType.duration;
         return appointmentTypeToReturn;
     }
 

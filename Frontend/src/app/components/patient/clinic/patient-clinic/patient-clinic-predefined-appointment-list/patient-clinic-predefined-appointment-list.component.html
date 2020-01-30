@@ -7,7 +7,7 @@
     <p class="predefined-time">at {{appointment.time | date:'HH:mm'}}</p>
     <p>
         <mat-icon>access_time</mat-icon>
-        {{appointment.duration | minutes}} min
+        {{appointment.type.duration | minutes}} min
     </p>
     <br>
     <p class="predefined-room"><b>Room:</b> {{appointment.room.name}}</p>
