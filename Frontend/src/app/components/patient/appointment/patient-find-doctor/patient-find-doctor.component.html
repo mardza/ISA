@@ -4,7 +4,7 @@
 
         <mat-form-field>
             <mat-label>Appointment type</mat-label>
-            <mat-select name="selectedAppointmentTypeId" ngModel required>
+            <mat-select name="selectedAppointmentTypeId" [ngModel]="selectedAppointmentTypeId" required>
                 <mat-option *ngFor="let appointmentType of appointmentTypeList" [value]="appointmentType.id">
                     {{appointmentType.name}}
                 </mat-option>
@@ -12,20 +12,20 @@
         </mat-form-field>
 
         <mat-form-field style="width: 180px">
-            <input matInput [matDatepicker]="picker" placeholder="Choose a date" [matDatepickerFilter]="myFilter" name="selectedDate" ngModel readonly required (click)="picker.open()">
+            <input name="selectedDate" matInput [matDatepicker]="picker" placeholder="Choose a date" [matDatepickerFilter]="myFilter" [ngModel]="selectedMoment" readonly required (click)="picker.open()">
             <mat-datepicker-toggle style="margin-right: 0" matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker startView="multi-year" [calendarHeaderComponent]="customHeader"></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput placeholder="First name">
+            <input name="selectedFirstName" matInput ngModel placeholder="First name">
         </mat-form-field>
 
         <mat-form-field>
-            <input matInput placeholder="Last name">
+            <input name="selectedLastName" matInput ngModel placeholder="Last name">
         </mat-form-field>
 
-        <mat-radio-group>
+        <mat-radio-group name="selectedRating" ngModel>
             <span>Stars: </span>
             <mat-radio-button value="1">1</mat-radio-button>
             <mat-radio-button value="2">2</mat-radio-button>

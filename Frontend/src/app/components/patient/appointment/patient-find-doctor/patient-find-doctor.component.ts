@@ -30,6 +30,11 @@ export class PatientFindDoctorComponent implements OnInit {
     customHeader = EmptyComponent;
     currentMoment: Moment;
 
+    selectedDate: string;
+    selectedAppointmentTypeId: number;
+    selectedMoment: Moment;
+
+
     constructor(
         private route: ActivatedRoute
     ) {
@@ -40,11 +45,14 @@ export class PatientFindDoctorComponent implements OnInit {
 
     ngOnInit() {
         this.appointmentTypeList = this.route.snapshot.data.appointmentTypeList;
+        this.selectedAppointmentTypeId = +this.route.snapshot.queryParams.appointmentTypeId;
+        this.selectedDate = this.route.snapshot.queryParams.date;
+        this.selectedMoment = moment(this.selectedDate);
         this.currentMoment = moment();
     }
 
     onSubmit(form: NgForm) {
-
+        console.log(form.value);
     }
 
     myFilter = (moment: Moment): boolean => {

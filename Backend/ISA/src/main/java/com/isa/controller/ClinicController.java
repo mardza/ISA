@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isa.dto.AppointmentDTO;
 import com.isa.dto.ClinicDTO;
 import com.isa.dto.ClinicSearchDTO;
+import com.isa.dto.DoctorAvailableDTO;
 import com.isa.dto.PriceDTO;
 import com.isa.entity.Appointment;
 import com.isa.entity.Clinic;
@@ -79,7 +80,7 @@ public class ClinicController {
 	}
 	
 	@GetMapping("/search")
-	public ResponseEntity<List<ClinicSearchDTO>> searchClinics(
+	public ResponseEntity<List<ClinicSearchDTO>> searchClinics (
 			@RequestParam(name = "appointmentTypeId", required = true) Integer appointmentTypeId,
 			@RequestParam(name = "date", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date){
 		List<Clinic> clinicList = this.clinicService.findFiltered(date, appointmentTypeId);
@@ -94,5 +95,18 @@ public class ClinicController {
 		});
 		
 		return new ResponseEntity<List<ClinicSearchDTO>>(clinicSearchDTOList, HttpStatus.OK);
+	}
+	
+	@GetMapping("/{id}/search-doctors")
+	public ResponseEntity<List<DoctorAvailableDTO>> searchClinicDoctors(
+			@PathVariable("id") Integer id,
+			@RequestParam(name = "appointmentTypeId", required = true) Integer appointmentTypeId,
+			@RequestParam(name = "date", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date,
+			@RequestParam(name = "firstName", required = false) String firstName,
+			@RequestParam(name = "lastName", required = false) String lastName,
+			@RequestParam(name = "rating", required = false) Integer rating
+			){
+		List<DoctorAvailableDTO> doctorAvailableDTOList = this.clinicService.findByClinicAvailableDoctors();
+		return new ResponseEntity<List<DoctorAvailableDTO>>(HttpStatus.OK);
 	}
 }

@@ -8,6 +8,7 @@ import {map} from 'rxjs/operators';
 import {Appointment} from '../../models/Appointment.model';
 import {Price} from '../../models/Price.model';
 import {ClinicPriceWrapper} from '../../models/custom/ClinicPriceWrapper.model';
+import {DoctorAvailableWrapper} from '../../models/custom/DoctorAvailableWrapper.model';
 
 
 @Injectable({providedIn: 'root'})
@@ -110,6 +111,38 @@ export class ClinicService {
             )
             .pipe(
                 map(response => ClinicPriceWrapper.toClinicPriceWrapperList(response))
+            );
+    }
+
+    searchDoctors(clinicId: number, query?: { appointmentTypeId?: number, date?: string, firstName?: string, lastName?: string, rating?: number }): Observable<DoctorAvailableWrapper[]> {
+        let params: HttpParams;
+        if(query){
+            params = new HttpParams();
+            if(query.appointmentTypeId){
+                params = params.set('appointmentTypeId', query.appointmentTypeId.toString());
+            }
+            if (query.date) {
+                params = params.set('date', query.date);
+            }
+            if(query.firstName){
+                params = params.set('firstName', query.firstName);
+            }
+            if (query.lastName) {
+                params = params.set('lastName', query.lastName);
+            }
+            if (query.rating) {
+                params = params.set('rating', query.rating.toString());
+            }
+        }
+        return this.http
+            .get<DoctorAvailableWrapper[]>(
+                this.url + '/'+ clinicId +'/search-doctors',
+                {
+                    params: params
+                }
+            )
+            .pipe(
+                map(result => DoctorAvailableWrapper.toDoctorAvailableWrapperList(result))
             );
     }
 }
