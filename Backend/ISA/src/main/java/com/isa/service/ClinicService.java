@@ -1,6 +1,7 @@
 package com.isa.service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.isa.controller.exception.custom.EntityNotFoundException;
 import com.isa.dto.ClinicDTO;
+import com.isa.dto.DoctorAvailableDTO;
+import com.isa.dto.UserDTO;
+import com.isa.dto.PeriodDTO;
 import com.isa.entity.Clinic;
 import com.isa.entity.User;
 import com.isa.entity.Appointment;
@@ -53,7 +57,6 @@ public class ClinicService implements ClinicServiceInterface {
 			doctors.removeIf(employee -> {
 				return !employee.getRole().getName().equals("ROLE_DOCTOR");
 			});
-
 			doctors.removeIf(doctor -> {
 				return !(doctor.getSpecialisation().getId() == appointmentType.getId());
 			});
@@ -68,14 +71,16 @@ public class ClinicService implements ClinicServiceInterface {
 				appointmentList.removeIf(appointment -> {
 					return !checkIfSameDay(date, appointment.getTime());
 				});
-
 				appointmentList.sort(Comparator.comparing(appointment -> appointment.getTime()));
 
 				Date doctorStartDate = new Date();
 				doctorStartDate.setHours(doctor.getWorkStart());
+				doctorStartDate.setMinutes(0);
+				doctorStartDate.setSeconds(0);
 				Date doctorEndDate = new Date();
 				doctorEndDate.setHours(doctor.getWorkEnd());
-
+				doctorEndDate.setMinutes(0);
+				doctorEndDate.setSeconds(0);
 				System.out.println("Doctor start time: " + doctorStartDate);
 				System.out.println("Doctor end time: " + doctorEndDate);
 
@@ -83,13 +88,12 @@ public class ClinicService implements ClinicServiceInterface {
 
 				// uporediti pocetak radnog vremena za pocetkom prvog appointmenta, pa onda
 				// svaki apointment, pa poslednji sa krajem
-
 				if (appointmentList.size() == 0) {
 					max = doctorEndDate.getTime() - doctorStartDate.getTime();
 				} else {
 					max = appointmentList.get(0).getTime().getTime() - doctorStartDate.getTime();
 					if (appointmentList.size() > 1) {
-						for (int i = 0; i < appointmentList.size() - 2; i++) {
+						for (int i = 0; i <= appointmentList.size() - 2; i++) {
 							Long a1End = appointmentList.get(i).getTime().getTime() + appointmentType.getDuration();
 							Long a2Start = appointmentList.get(i + 1).getTime().getTime();
 							if(a2Start - a1End > max) {
@@ -109,6 +113,111 @@ public class ClinicService implements ClinicServiceInterface {
 			return doctors.size() == 0;
 		});
 		return clinicList;
+	}
+	
+	@Override
+	public List<DoctorAvailableDTO> findAvailableDoctorsByClinic(Integer clinicId, Integer appointmentTypeId, Date date, String firstName, String lastName, Integer rating) {
+		
+		System.out.println("Searching doctors for clinic: " + clinicId);
+		System.out.println("appointmentId: " + appointmentTypeId);
+		System.out.println("date: " + date);
+		System.out.println("firstName: '" + firstName + "'");
+		System.out.println("lastName: '" + lastName + "'");
+		System.out.println("rating: " + rating);
+		
+		Clinic clinic = this.findById(clinicId);
+		AppointmentType appointmentType = this.appointmentTypeService.findById(appointmentTypeId);
+		
+		List<User> doctors = clinic.getEmployees();
+		doctors.removeIf(employee -> {
+			return !employee.getRole().getName().equals("ROLE_DOCTOR");
+		});
+		doctors.removeIf(doctor -> {
+			return !(doctor.getSpecialisation().getId() == appointmentType.getId());
+		});
+		doctors.removeIf(doctor -> {
+			return !doctor.getFirstName().toLowerCase().contains(firstName.toLowerCase());
+		});
+		doctors.removeIf(doctor -> {
+			return !doctor.getLastName().toLowerCase().contains(lastName.toLowerCase());
+		});
+		doctors.removeIf(doctor -> {
+			return doctor.getRatingAverage() < rating;
+		});
+		
+		
+		// TODO: filter doctors based on vacation (list of vacation periods for each doctor)
+		
+		
+		List<DoctorAvailableDTO> doctorAvailableDTOList = new ArrayList<DoctorAvailableDTO>();
+		doctors.forEach(doctor -> {
+			
+			List<Appointment> appointmentList = doctor.getDoctorAppointmentList();
+			appointmentList.removeIf(appointment -> {
+				return !checkIfSameDay(date, appointment.getTime());
+			});
+			appointmentList.sort(Comparator.comparing(appointment -> appointment.getTime()));
+			
+			Date doctorStartDate = new Date();
+			doctorStartDate.setHours(doctor.getWorkStart());
+			doctorStartDate.setMinutes(0);
+			doctorStartDate.setSeconds(0);
+			Date doctorEndDate = new Date();
+			doctorEndDate.setHours(doctor.getWorkEnd());
+			doctorEndDate.setMinutes(0);
+			doctorEndDate.setSeconds(0);
+			System.out.println("Doctor start time: " + doctorStartDate);
+			System.out.println("Doctor end time: " + doctorEndDate);
+			
+			Long max = 0L;
+			
+			List<PeriodDTO> periodDTOList = new ArrayList<PeriodDTO>();
+
+			// uporediti pocetak radnog vremena za pocetkom prvog appointmenta, pa onda
+			// svaki apointment, pa poslednji sa krajem
+			if (appointmentList.size() == 0) { // if no appointments, then take start and end of doctors shift
+				max = doctorEndDate.getTime() - doctorStartDate.getTime();
+				if(max >= appointmentType.getDuration()) {
+					periodDTOList.add(new PeriodDTO(doctorStartDate.getTime(), doctorEndDate.getTime()));
+				}
+			} else { // if there are appointments
+				max = appointmentList.get(0).getTime().getTime() - doctorStartDate.getTime(); // time between start of shift and start of first appointment
+				if(max >= appointmentType.getDuration()) {
+					periodDTOList.add(new PeriodDTO(doctorStartDate.getTime(), appointmentList.get(0).getTime().getTime()));
+				}
+				
+				if (appointmentList.size() > 1) { // if there is more then one, go trough appointments
+					for (int i = 0; i <= appointmentList.size() - 2; i++) {
+						Long a1End = appointmentList.get(i).getTime().getTime() + appointmentType.getDuration();
+						Long a2Start = appointmentList.get(i + 1).getTime().getTime();
+						if(a2Start - a1End > max) {
+							max = a2Start - a1End;
+						}
+						if(a2Start - a1End >= appointmentType.getDuration()) {
+							periodDTOList.add(new PeriodDTO(a1End, a2Start));
+						}
+					}
+				}
+				if (doctorEndDate.getTime() - (appointmentList.get(appointmentList.size() - 1).getTime().getTime() + appointmentType.getDuration()) > max) { // compare last appointment end with end of shift
+					max = doctorEndDate.getTime() - (appointmentList.get(appointmentList.size() - 1).getTime().getTime() + appointmentType.getDuration());
+				}
+				if(doctorEndDate.getTime() - (appointmentList.get(appointmentList.size() - 1).getTime().getTime() + appointmentType.getDuration()) >= appointmentType.getDuration()) {
+					periodDTOList.add(new PeriodDTO(appointmentList.get(appointmentList.size() - 1).getTime().getTime() + appointmentType.getDuration(), doctorEndDate.getTime()));
+				}
+			}
+
+			appointmentList.forEach(appointment -> System.out.println(appointment));
+
+			if(max >= appointmentType.getDuration()) {
+				DoctorAvailableDTO doctorAvailableDTO = new DoctorAvailableDTO();
+				doctorAvailableDTO.setDoctor(new UserDTO(doctor));
+				doctorAvailableDTO.setPeriodList(periodDTOList);
+				doctorAvailableDTO.setAppointmentTypeDuration(appointmentType.getDuration());
+				doctorAvailableDTOList.add(doctorAvailableDTO);
+			}
+		});
+		
+		return doctorAvailableDTOList;
 	}
 
 	@Override

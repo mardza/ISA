@@ -66,10 +66,6 @@ public class User implements UserDetails {
 	@JoinColumn(name = "registration_id", referencedColumnName = "id", unique = true, nullable = false)
 	private Registration registration;
 	
-//	@OneToOne(cascade = CascadeType.REMOVE)
-//	@JoinColumn(name = "work_calendar_id", referencedColumnName = "id", unique = true, nullable = true)
-//	private WorkCalendar workCalendar;
-	
 	@ManyToOne
 	@JoinColumn(name = "clinic_id", referencedColumnName = "id", nullable = true)
 	private Clinic clinic;
@@ -81,15 +77,18 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "doctor")
 	private List<Appointment> doctorAppointmentList;
 	
-	
 	@Column(name = "work_start", unique = false, nullable = true)
 	private Integer workStart;
 	
 	@Column(name = "work_end", unique = false, nullable = true)
 	private Integer workEnd;
 
+	@Column(name = "rating_average", unique = false, nullable = true)
 	private Double ratingAverage;
+	
+	@Column(name = "rating_weight", unique = false, nullable = true)
 	private Integer ratingWeight;
+	
 
 	private Boolean passwordSet;
 
@@ -215,14 +214,6 @@ public class User implements UserDetails {
 		this.clinic = clinic;
 	}
 
-//	public WorkCalendar getWorkCalendar() {
-//		return workCalendar;
-//	}
-//
-//	public void setWorkCalendar(WorkCalendar workCalendar) {
-//		this.workCalendar = workCalendar;
-//	}
-
 	public AppointmentType getSpecialisation() {
 		return specialisation;
 	}
@@ -253,6 +244,22 @@ public class User implements UserDetails {
 
 	public void setWorkEnd(Integer workEnd) {
 		this.workEnd = workEnd;
+	}
+
+	public Double getRatingAverage() {
+		return ratingAverage;
+	}
+
+	public void setRatingAverage(Double ratingAverage) {
+		this.ratingAverage = ratingAverage;
+	}
+
+	public Integer getRatingWeight() {
+		return ratingWeight;
+	}
+
+	public void setRatingWeight(Integer ratingWeight) {
+		this.ratingWeight = ratingWeight;
 	}
 
 	@Override
@@ -293,6 +300,5 @@ public class User implements UserDetails {
 				+ ", phone=" + phone + ", insuranceNumber=" + insuranceNumber + ", role=" + role.getName() + ", clinic=" + clinic.getId()
 				+ ", specialisation=" + specialisation.getId() + ", workStart=" + workStart + ", workEnd=" + workEnd + "]";
 	}
-	
 
 }

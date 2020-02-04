@@ -1,8 +1,9 @@
 #search-div {
   border-radius: 4px;
-  margin: 20px;
-  padding: 5px 10px 0px 10px;
+  margin: 20px auto;
+  padding: 10px 10px 0px 10px;
   text-align: center;
+  max-width: 450px;
 
   form {
     > * {
@@ -25,6 +26,36 @@
 
     button {
       margin-bottom: 10px;
+    }
+  }
+}
+
+#results-div {
+  padding: 15px;
+  margin: 20px auto;
+  border-radius: 4px;
+  max-width: 560px;
+
+  .result-div {
+    border-radius: 4px;
+    padding: 7px;
+    overflow: hidden;
+
+    > p {
+      margin-left: 16px;
+    }
+
+    mat-icon {
+      transform: scale(0.9);
+      vertical-align: text-bottom;
+    }
+
+    .time-wrapper {
+      margin-top: 10px;
+
+      div {
+        display: inline-block;
+      }
     }
   }
 }

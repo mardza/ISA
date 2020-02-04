@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {MatTableDataSource} from '@angular/material';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MatSort, MatTableDataSource} from '@angular/material';
 import {Clinic} from '../../../../models/Clinic.model';
 import {ClinicService} from '../../../../services/http/clinic.service';
+import {NgForm} from '@angular/forms';
 
 @Component({
     selector: 'app-patient-clinic-list',
@@ -14,6 +15,8 @@ export class PatientClinicListComponent implements OnInit {
     dataSource: MatTableDataSource<Clinic>;
     loading: boolean;
 
+    @ViewChild(MatSort, {static: true}) sort: MatSort;
+
 
     constructor(
         private clinicService: ClinicService
@@ -21,7 +24,7 @@ export class PatientClinicListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.columnsToDisplay = ['name', 'address', 'description'];
+        this.columnsToDisplay = ['name', 'address', 'city', 'country', 'description'];
         this.loading = true;
         this.clinicService
             .getClinics()
@@ -29,11 +32,16 @@ export class PatientClinicListComponent implements OnInit {
                 value => {
                     this.dataSource = new MatTableDataSource<Clinic>();
                     this.dataSource.data = value;
+                    this.dataSource.sort = this.sort;
                     this.loading = false;
                 },
                 error => {
                     this.loading = false;
                 }
             );
+    }
+
+    onSubmit(form: NgForm) {
+
     }
 }

@@ -13,8 +13,14 @@ export class User {
     insuranceNumber: string;
     role: string;
     clinic: Clinic;
+    ratingAverage: number;
+    ratingWeight: number;
 
     constructor() {
+    }
+
+    get fullName() {
+        return this.firstName + ' ' + this.lastName;
     }
 
     public static toUser(user: any): User {
@@ -35,6 +41,8 @@ export class User {
         userToReturn.insuranceNumber = user.insuranceNumber;
         userToReturn.role = user.role;
         userToReturn.clinic = Clinic.toClinic(user.clinic);
+        userToReturn.ratingAverage = user.ratingAverage;
+        userToReturn.ratingWeight = user.ratingWeight;
         return userToReturn;
     }
 

@@ -4,8 +4,19 @@ import {Period} from '../Period.model';
 export class DoctorAvailableWrapper {
     doctor: User;
     periodList: Period[];
+    appointmentTypeDuration: number;
 
     constructor() {
+    }
+
+    public getAllTimes(): number[] {
+        const times: number[] = [];
+        this.periodList.forEach(period => {
+            for(let t = period.start; t + this.appointmentTypeDuration <= period.end; t += 900000){
+                times.push(t);
+            }
+        });
+        return times;
     }
 
     public static toDoctorAvailableWrapper(doctorAvailableWrapper: any): DoctorAvailableWrapper {
@@ -20,6 +31,7 @@ export class DoctorAvailableWrapper {
         if(doctorAvailableWrapper.periodList) {
             doctorAvailableWrapperToReturn.periodList = Period.toPeriodList(doctorAvailableWrapper.periodList);
         }
+        doctorAvailableWrapperToReturn.appointmentTypeDuration = doctorAvailableWrapper.appointmentTypeDuration;
         return doctorAvailableWrapperToReturn;
     }
 

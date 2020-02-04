@@ -1,5 +1,7 @@
 <div class="mat-elevation-z3" id="search-div">
 
+    <p>{{clinic.name}}</p>
+
     <form (ngSubmit)="onSubmit(form)" #form="ngForm">
 
         <mat-form-field>
@@ -25,15 +27,25 @@
             <input name="selectedLastName" matInput ngModel placeholder="Last name">
         </mat-form-field>
 
-        <mat-radio-group name="selectedRating" ngModel>
-            <span>Stars: </span>
-            <mat-radio-button value="1">1</mat-radio-button>
-            <mat-radio-button value="2">2</mat-radio-button>
-            <mat-radio-button value="3">3</mat-radio-button>
-            <mat-radio-button value="4">4</mat-radio-button>
-            <mat-radio-button value="5">5</mat-radio-button>
+        <mat-radio-group name="selectedRating" [ngModel]="1">
+            <span>Min. rating: </span>
+            <mat-radio-button [value]="1">1</mat-radio-button>
+            <mat-radio-button [value]="2">2</mat-radio-button>
+            <mat-radio-button [value]="3">3</mat-radio-button>
+            <mat-radio-button [value]="4">4</mat-radio-button>
+            <mat-radio-button [value]="5">5</mat-radio-button>
         </mat-radio-group>
 
         <button mat-raised-button type="submit" [disabled]="!form.valid">Search</button>
     </form>
+</div>
+
+<div class="mat-elevation-z3" id="results-div">
+    <div class="mat-elevation-z3 result-div" *ngFor="let doctorAvailableWrapper of doctorAvailableWrapperList">
+        <p>{{doctorAvailableWrapper.doctor.fullName}}&nbsp;&nbsp;&nbsp;<b>{{doctorAvailableWrapper.doctor.ratingAverage}}</b> <mat-icon>star_border</mat-icon></p>
+        <mat-divider></mat-divider>
+        <div class="time-wrapper">
+            <a mat-button *ngFor="let time of doctorAvailableWrapper.getAllTimes()">{{time | date:'HH:mm'}}-{{time + doctorAvailableWrapper.appointmentTypeDuration | date:'HH:mm'}}</a>
+        </div>
+    </div>
 </div>

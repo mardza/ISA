@@ -1,5 +1,4 @@
 <div class="mat-elevation-z3" id="search-div">
-
     <form (ngSubmit)="onSubmit(form)" #form="ngForm">
 
         <mat-form-field>
@@ -25,15 +24,16 @@
     <div class="mat-elevation-z3 result-div" *ngFor="let clinicPriceWrapper of clinicPriceWrapperList" [routerLink]="[clinicPriceWrapper.clinic.id, 'doctors']" [queryParams]="{appointmentTypeId: selectedAppointmentTypeId, date: selectedDate}">
         <p class="result-clinic-name">{{clinicPriceWrapper.clinic.name}}</p>
         <p class="result-clinic-address">{{clinicPriceWrapper.clinic.address}}</p>
-        <br>
-        <div class="result-clinic-rating">ocena</div>
-        <div class="predefined-price-wrapper">
-            <p *ngIf="clinicPriceWrapper.price?.discount === 0">{{clinicPriceWrapper.price?.price}} rsd</p>
-            <ng-container *ngIf="clinicPriceWrapper.price?.discount > 0">
-                <p class="price-crossed">{{clinicPriceWrapper.price?.price}}</p>
-                <p>(-{{clinicPriceWrapper.price?.discount}}%)</p>&nbsp;
-                <p>{{clinicPriceWrapper.price?.price * ((100 - clinicPriceWrapper.price?.discount) / 100)}}rsd</p>
-            </ng-container>
+        <div>
+            <p class="result-clinic-rating"><b>{{clinicPriceWrapper.clinic.ratingAverage}}</b> <mat-icon>star_border</mat-icon></p>
+            <div class="predefined-price-wrapper">
+                <p *ngIf="clinicPriceWrapper.price?.discount === 0">{{clinicPriceWrapper.price?.price}} rsd</p>
+                <ng-container *ngIf="clinicPriceWrapper.price?.discount > 0">
+                    <p class="price-crossed">{{clinicPriceWrapper.price?.price}}</p>
+                    <p>(-{{clinicPriceWrapper.price?.discount}}%)</p>&nbsp;
+                    <p>{{clinicPriceWrapper.price?.price * ((100 - clinicPriceWrapper.price?.discount) / 100)}}rsd</p>
+                </ng-container>
+            </div>
         </div>
     </div>
 </div>

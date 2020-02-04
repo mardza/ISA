@@ -17,8 +17,16 @@ public class ClinicDTO {
 	@NotBlank
 	private String address;
 	
+	private String city;
+	
+	private String country;
+	
 	@NotBlank
 	private String description;
+	
+	private Double ratingAverage;
+	
+	private Integer ratingWeight;
 	
 	
 	public ClinicDTO() {}
@@ -28,6 +36,10 @@ public class ClinicDTO {
 		this.name = clinic.getName();
 		this.address = clinic.getAddress();
 		this.description = clinic.getDescription();
+		this.ratingAverage = clinic.getRatingAverage();
+		this.ratingWeight = clinic.getRatingWeight();
+		this.city = clinic.getCity();
+		this.country = clinic.getCountry();
 	}
 	
 	public static List<ClinicDTO> toList(List<Clinic> clinicList) {
@@ -59,12 +71,44 @@ public class ClinicDTO {
 		this.address = address;
 	}
 
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Double getRatingAverage() {
+		return ratingAverage;
+	}
+
+	public void setRatingAverage(Double ratingAverage) {
+		this.ratingAverage = ratingAverage;
+	}
+
+	public Integer getRatingWeight() {
+		return ratingWeight;
+	}
+
+	public void setRatingWeight(Integer ratingWeight) {
+		this.ratingWeight = ratingWeight;
 	}
 
 	@Override

@@ -1,19 +1,29 @@
 <div id="table-wrapper" class="mat-elevation-z3">
     <p>Clinics</p>
-    <table mat-table [dataSource]="dataSource">
+    <table mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
             <td mat-cell *matCellDef="let clinic">{{clinic.name}}</td>
         </ng-container>
 
         <ng-container matColumnDef="address">
-            <th mat-header-cell *matHeaderCellDef>Address</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
             <td mat-cell *matCellDef="let clinic">{{clinic.address}}</td>
         </ng-container>
 
+        <ng-container matColumnDef="city">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>City</th>
+            <td mat-cell *matCellDef="let clinic">{{clinic.city}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="country">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Country</th>
+            <td mat-cell *matCellDef="let clinic">{{clinic.country}}</td>
+        </ng-container>
+
         <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
             <td mat-cell *matCellDef="let clinic">{{clinic.description}}</td>
         </ng-container>
 

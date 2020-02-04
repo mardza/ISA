@@ -27,6 +27,12 @@ public class Clinic {
 	@Column(name = "address", unique = false, nullable = false, length = 65)
 	private String address;
 	
+	@Column(name = "city", unique = false, nullable = false, length = 65)
+	private String city;
+	
+	@Column(name = "country", unique = false, nullable = false, length = 65)
+	private String country;
+	
 	//@Column(name = "latitude", unique = true, nullable = false, length = 65)
 	//private Double latitude;
 	
@@ -50,6 +56,12 @@ public class Clinic {
 	
 	@OneToMany(mappedBy = "clinic")
 	private List<Appointment> appointmentList;
+	
+	@Column(name = "rating_average", unique = false, nullable = true)
+	private Double ratingAverage;
+	
+	@Column(name = "rating_weight", unique = false, nullable = true)
+	private Integer ratingWeight;
 	
 	
 	public Clinic() {}
@@ -84,6 +96,22 @@ public class Clinic {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 	public String getDescription() {
@@ -124,6 +152,22 @@ public class Clinic {
 
 	public void setAppointmentList(List<Appointment> appointmentList) {
 		this.appointmentList = appointmentList;
+	}
+
+	public Double getRatingAverage() {
+		return ratingAverage;
+	}
+
+	public void setRatingAverage(Double ratingAverage) {
+		this.ratingAverage = ratingAverage;
+	}
+
+	public Integer getRatingWeight() {
+		return ratingWeight;
+	}
+
+	public void setRatingWeight(Integer ratingWeight) {
+		this.ratingWeight = ratingWeight;
 	}
 
 	@Override

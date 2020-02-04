@@ -77,10 +77,11 @@ const routes: Routes = [
                 }
             },
             {
-                path: 'find-clinic/:clinicId/doctors',
+                path: 'find-clinic/:id/doctors',
                 component: PatientFindDoctorComponent,
                 resolve: {
-                    appointmentTypeList: AppointmentTypeListResolver
+                    appointmentTypeList: AppointmentTypeListResolver,
+                    clinic: ClinicResolver
                 }
             }
         ]

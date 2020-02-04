@@ -124,10 +124,10 @@ export class ClinicService {
             if (query.date) {
                 params = params.set('date', query.date);
             }
-            if(query.firstName){
+            if(query.firstName != null){
                 params = params.set('firstName', query.firstName);
             }
-            if (query.lastName) {
+            if (query.lastName != null) {
                 params = params.set('lastName', query.lastName);
             }
             if (query.rating) {

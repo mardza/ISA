@@ -42,6 +42,14 @@ public class UserDTO {
 	
 	private String role;
 	
+	private Integer workStart;
+	
+	private Integer workEnd;
+
+	private Double ratingAverage;
+	
+	private Integer ratingWeight;
+	
 	
 	public UserDTO() {}
 	
@@ -56,6 +64,10 @@ public class UserDTO {
 		this.phone = user.getPhone();
 		this.insuranceNumber = user.getInsuranceNumber();
 		this.role = user.getRole().getName();
+		this.workStart = user.getWorkStart();
+		this.workEnd = user.getWorkEnd();
+		this.ratingAverage = user.getRatingAverage();
+		this.ratingWeight = user.getRatingWeight();
 	}
 	
 	public UserDTO(User user, Boolean fillRegistration) {
@@ -166,6 +178,38 @@ public class UserDTO {
 	
 	public String getRole() {
 		return role;
+	}
+
+	public Integer getWorkStart() {
+		return workStart;
+	}
+
+	public void setWorkStart(Integer workStart) {
+		this.workStart = workStart;
+	}
+
+	public Integer getWorkEnd() {
+		return workEnd;
+	}
+
+	public void setWorkEnd(Integer workEnd) {
+		this.workEnd = workEnd;
+	}
+
+	public Double getRatingAverage() {
+		return ratingAverage;
+	}
+
+	public void setRatingAverage(Double ratingAverage) {
+		this.ratingAverage = ratingAverage;
+	}
+
+	public Integer getRatingWeight() {
+		return ratingWeight;
+	}
+
+	public void setRatingWeight(Integer ratingWeight) {
+		this.ratingWeight = ratingWeight;
 	}
 
 	@Override

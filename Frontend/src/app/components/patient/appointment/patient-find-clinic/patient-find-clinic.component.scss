@@ -1,8 +1,9 @@
 #search-div {
   border-radius: 4px;
-  margin: 20px;
+  margin: 20px auto;
   padding: 5px 10px 0px 10px;
   text-align: center;
+  max-width: 450px;
 
   form {
     * {
@@ -17,17 +18,19 @@
 
 #results-div {
   padding: 15px;
-  margin: 20px;
+  margin: 20px auto;
   border-radius: 4px;
+  max-width: 450px;
 
   .result-div {
     border-radius: 4px;
-    padding: 7px;
+    padding: 8px;
     overflow: hidden;
     cursor: pointer;
 
     p {
       display: inline-block;
+      margin: 8px 0px;
     }
 
     .result-clinic-name {
@@ -38,20 +41,32 @@
       color: lightslategray;
     }
 
-    .result-clinic-rating {
-      display: inline-block;
+    mat-icon {
+      transform: scale(0.9);
+      vertical-align: text-bottom;
     }
 
-    .predefined-price-wrapper {
-      display: inline-block;
-      float: right;
+    div {
+      position: relative;
 
-      p {
+      .result-clinic-rating{
         margin: 0;
       }
 
-      .price-crossed {
-        text-decoration: line-through;
+      .predefined-price-wrapper {
+        display: inline-block;
+        position: absolute;
+        right: 0px;
+        top: 50%;
+        transform: translateY(-50%);
+
+        p {
+          margin: 0;
+        }
+
+        .price-crossed {
+          text-decoration: line-through;
+        }
       }
     }
   }

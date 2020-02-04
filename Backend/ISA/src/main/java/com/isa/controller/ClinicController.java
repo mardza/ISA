@@ -99,14 +99,14 @@ public class ClinicController {
 	
 	@GetMapping("/{id}/search-doctors")
 	public ResponseEntity<List<DoctorAvailableDTO>> searchClinicDoctors(
-			@PathVariable("id") Integer id,
+			@PathVariable("id") Integer clinicId,
 			@RequestParam(name = "appointmentTypeId", required = true) Integer appointmentTypeId,
 			@RequestParam(name = "date", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date,
 			@RequestParam(name = "firstName", required = false) String firstName,
 			@RequestParam(name = "lastName", required = false) String lastName,
 			@RequestParam(name = "rating", required = false) Integer rating
 			){
-		List<DoctorAvailableDTO> doctorAvailableDTOList = this.clinicService.findByClinicAvailableDoctors();
-		return new ResponseEntity<List<DoctorAvailableDTO>>(HttpStatus.OK);
+		List<DoctorAvailableDTO> doctorAvailableDTOList = this.clinicService.findAvailableDoctorsByClinic(clinicId, appointmentTypeId, date, firstName, lastName, rating);
+		return new ResponseEntity<List<DoctorAvailableDTO>>(doctorAvailableDTOList, HttpStatus.OK);
 	}
 }

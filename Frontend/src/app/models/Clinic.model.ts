@@ -5,9 +5,13 @@ export class Clinic {
     id: number;
     name: string;
     address: string;
+    city: string;
+    country: string;
     description: string;
     users: User[];
     rooms: Room[];
+    ratingAverage: number;
+    ratingWeight: number;
 
     constructor() {
     }
@@ -21,9 +25,13 @@ export class Clinic {
         clinicToReturn.id = clinic.id;
         clinicToReturn.name = clinic.name;
         clinicToReturn.address = clinic.address;
+        clinicToReturn.city = clinic.city;
+        clinicToReturn.country = clinic.country;
         clinicToReturn.description = clinic.description;
         clinicToReturn.users = User.toUserList(clinic.users);
         clinicToReturn.rooms = Room.toRoomList(clinic.rooms);
+        clinicToReturn.ratingAverage = clinic.ratingAverage;
+        clinicToReturn.ratingWeight = clinic.ratingWeight;
         return clinicToReturn;
     }
 

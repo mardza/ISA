@@ -24,7 +24,7 @@ import {
     MatListModule,
     MatMenuModule,
     MatRadioModule,
-    MatSelectModule,
+    MatSelectModule, MatSortModule,
     MatTableModule
 } from '@angular/material';
 import {UserListComponent} from './components/admin/user/user-list/user-list.component';
@@ -48,6 +48,7 @@ import { PatientFindClinicComponent } from './components/patient/appointment/pat
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import { EmptyComponent } from './components/empty/empty.component';
 import { PatientFindDoctorComponent } from './components/patient/appointment/patient-find-doctor/patient-find-doctor.component';
+import { ConfirmAppointmentComponent } from './components/patient/confirm-appointment/confirm-appointment.component';
 
 @NgModule({
     declarations: [
@@ -77,7 +78,8 @@ import { PatientFindDoctorComponent } from './components/patient/appointment/pat
         MinutesPipe,
         PatientFindClinicComponent,
         EmptyComponent,
-        PatientFindDoctorComponent
+        PatientFindDoctorComponent,
+        ConfirmAppointmentComponent
     ],
     entryComponents: [
       EmptyComponent
@@ -100,7 +102,8 @@ import { PatientFindDoctorComponent } from './components/patient/appointment/pat
         MatSelectModule,
         MatDatepickerModule,
         MatMomentDateModule,
-        MatRadioModule
+        MatRadioModule,
+        MatSortModule
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}
