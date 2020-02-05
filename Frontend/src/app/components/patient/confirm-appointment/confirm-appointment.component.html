@@ -1,1 +1,36 @@
-<p>confirm-appointment works!</p>
+<div id="form-wrapper" class="mat-elevation-z3">
+    <p>Confirm appointment</p>
+    <form #form="ngForm">
+
+        <!-- Clinic -->
+        <mat-form-field>
+            <input matInput type="text" placeholder="Clinic" [value]="clinic.name" disabled>
+        </mat-form-field>
+
+        <!-- Patient -->
+        <mat-form-field>
+            <input matInput type="text" placeholder="Patient" [value]="patient.fullName" disabled>
+        </mat-form-field>
+
+        <!-- Doctor -->
+        <mat-form-field>
+            <input matInput type="text" placeholder="Doctor" [value]="doctor.fullName" disabled>
+        </mat-form-field>
+
+        <!-- Appointment type -->
+        <mat-form-field>
+            <input matInput type="text" placeholder="Appointment type" [value]="doctor.specialisation" disabled>
+        </mat-form-field>
+
+        <!-- Date and time -->
+        <mat-form-field>
+            <input matInput type="text" placeholder="Date and time" value="{{datetime | date:'dd.MM.yyyy HH:mm'}}" disabled>
+        </mat-form-field>
+
+        <div id="button-wrapper">
+            <button mat-raised-button type="button" (click)="onConfirmClick(form)">Confirm</button>
+            <button mat-button type="button" (click)="onCancelClick()">Cancel</button>
+        </div>
+    </form>
+
+</div>

@@ -71,7 +71,7 @@ public class User implements UserDetails {
 	private Clinic clinic;
 	
 	@ManyToOne
-	@JoinColumn(name = "appointmenttype_id", referencedColumnName = "id", nullable = true)
+	@JoinColumn(name = "appointmenttype_id", referencedColumnName = "id", unique = false, nullable = true)
 	private AppointmentType specialisation;
 	
 	@OneToMany(mappedBy = "doctor")

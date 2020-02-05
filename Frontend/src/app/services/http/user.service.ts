@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {Observable} from 'rxjs';
 import {User} from '../../models/User.model';
-import {catchError, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {globals} from '../../globals';
 
 @Injectable({providedIn: 'root'})
@@ -51,7 +51,10 @@ export class UserService {
     getCurrentUser(): Observable<User> {
         return this.http
             .get<User>(
-                `${globals.backend}/auth/current-user`,
+                this.url + '/current-user',
+            )
+            .pipe(
+                map(response => User.toUser(response))
             );
     }
 

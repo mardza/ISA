@@ -13,13 +13,14 @@ export class User {
     insuranceNumber: string;
     role: string;
     clinic: Clinic;
+    specialisation: string;
     ratingAverage: number;
     ratingWeight: number;
 
     constructor() {
     }
 
-    get fullName() {
+    get fullName(): string {
         return this.firstName + ' ' + this.lastName;
     }
 
@@ -41,6 +42,7 @@ export class User {
         userToReturn.insuranceNumber = user.insuranceNumber;
         userToReturn.role = user.role;
         userToReturn.clinic = Clinic.toClinic(user.clinic);
+        userToReturn.specialisation = user.specialisation;
         userToReturn.ratingAverage = user.ratingAverage;
         userToReturn.ratingWeight = user.ratingWeight;
         return userToReturn;

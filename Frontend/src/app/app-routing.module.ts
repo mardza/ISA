@@ -24,6 +24,8 @@ import {PatientClinicComponent} from './components/patient/clinic/patient-clinic
 import {PatientFindClinicComponent} from './components/patient/appointment/patient-find-clinic/patient-find-clinic.component';
 import {AppointmentTypeListResolver} from './services/resolvers/AppointmentTypeList.resolver';
 import {PatientFindDoctorComponent} from './components/patient/appointment/patient-find-doctor/patient-find-doctor.component';
+import {ConfirmAppointmentComponent} from './components/patient/confirm-appointment/confirm-appointment.component';
+import {DoctorResolver} from './services/resolvers/Doctor.resolver';
 
 
 const routes: Routes = [
@@ -63,7 +65,7 @@ const routes: Routes = [
                 component: PatientClinicListComponent
             },
             {
-                path: 'clinics/:id',
+                path: 'clinics/:clinicId',
                 component: PatientClinicComponent,
                 resolve: {
                     clinic: ClinicResolver
@@ -77,11 +79,20 @@ const routes: Routes = [
                 }
             },
             {
-                path: 'find-clinic/:id/doctors',
+                path: 'find-clinic/:clinicId/doctors',
                 component: PatientFindDoctorComponent,
                 resolve: {
                     appointmentTypeList: AppointmentTypeListResolver,
                     clinic: ClinicResolver
+                }
+            },
+            {
+                path: 'find-clinic/:clinicId/doctors/:doctorEmail/confirm-appointment',
+                component: ConfirmAppointmentComponent,
+                resolve: {
+                    clinic: ClinicResolver,
+                    doctor: DoctorResolver,
+                    patient: CurrentUserResolver
                 }
             }
         ]
@@ -151,7 +162,7 @@ const routes: Routes = [
         canActivate: [RoleGuard]
     },
     {
-        path: 'clinics/:id',
+        path: 'clinics/:clinicId',
         component: ClinicComponent,
         data: {
             allowedRoles: ['ROLE_ADMIN_CENTER']

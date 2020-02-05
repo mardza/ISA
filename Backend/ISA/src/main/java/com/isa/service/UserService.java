@@ -3,6 +3,8 @@ package com.isa.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +16,7 @@ import com.isa.entity.Registration;
 import com.isa.entity.Role;
 import com.isa.entity.User;
 import com.isa.repository.UserRepository;
-import com.isa.security.Util;
+import com.isa.security.exception.TokenNotValidException;
 import com.isa.service.exception.RegistrationActivatedException;
 import com.isa.service.exception.RegistrationApprovedException;
 
@@ -36,13 +38,26 @@ public class UserService implements UserServiceInterface {
 	@Autowired 
 	private MailService mailService;
 	
-	@Autowired
-	private Util util;
 	
 
 	@Override
 	public List<User> findAll() {
 		return userRepository.findAll();
+	}
+	
+	public User getCurrentUser() {
+		String email;
+		Authentication currentUserAuth;
+		currentUserAuth = SecurityContextHolder.getContext().getAuthentication();
+		if(currentUserAuth != null) {
+			email = currentUserAuth.getName();
+			User user = this.findByEmail(email);
+			if(user == null) {
+				throw new TokenNotValidException("Could not get current user, Auth not valid");
+			}
+			return user;
+		}
+		throw new TokenNotValidException("Could not get current user, Auth not valid");
 	}
 
 	@Override
@@ -172,7 +187,7 @@ public class UserService implements UserServiceInterface {
 	
 	@Override
 	public void changePassword(String password) {
-		User user = util.getCurrentUser();
+		User user = this.getCurrentUser();
 		user.setPassword(passwordEncoder.encode(password));
 		save(user);		
 	}

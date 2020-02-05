@@ -26,7 +26,7 @@ import com.isa.entity.Role;
 import com.isa.entity.User;
 import com.isa.security.CustomUserDetailsService;
 import com.isa.security.TokenHelper;
-import com.isa.security.Util;
+import com.isa.service.UserService;
 
 @RestController
 @RequestMapping("/auth")
@@ -46,7 +46,7 @@ public class AuthenticationController {
     private PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	private Util util;
+	private UserService userService;
 	
 	
 	@PostMapping(path = "/login")
@@ -72,15 +72,9 @@ public class AuthenticationController {
 
 	@GetMapping(path = "/current-user-role")
 	public ResponseEntity<String> getCurrentUserRole() {
-		User user = this.util.getCurrentUser();
+		User user = this.userService.getCurrentUser();
 		Role role = user.getRole();
 		return new ResponseEntity<String>(role.getName(), HttpStatus.OK);
-	}
-	
-	@GetMapping(path = "/current-user")
-	public ResponseEntity<UserDTO> getCurrentUser() {
-		User user = this.util.getCurrentUser();
-		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
 	}
 	
 	// TODO: remove this method

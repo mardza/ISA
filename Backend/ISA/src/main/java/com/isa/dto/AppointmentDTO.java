@@ -16,6 +16,7 @@ public class AppointmentDTO {
 	private RoomDTO room;
 	private UserDTO doctor;
 	private UserDTO patient;
+	private Boolean approved;
 	
 	
 	public AppointmentDTO() {}
@@ -45,8 +46,10 @@ public class AppointmentDTO {
 		}
 		
 		if(appointment.getPatient() != null) {
-			this.doctor = new UserDTO(appointment.getPatient());
+			this.patient = new UserDTO(appointment.getPatient());
 		}
+		
+		this.approved = appointment.getApproved();
 	}
 	
 	public static List<AppointmentDTO> toList(List<Appointment> appointmentList) {
@@ -116,6 +119,14 @@ public class AppointmentDTO {
 
 	public void setPatient(UserDTO patient) {
 		this.patient = patient;
+	}
+
+	public Boolean getApproved() {
+		return approved;
+	}
+
+	public void setApproved(Boolean approved) {
+		this.approved = approved;
 	}
 
 	@Override

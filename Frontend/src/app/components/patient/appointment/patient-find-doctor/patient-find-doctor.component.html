@@ -40,12 +40,14 @@
     </form>
 </div>
 
-<div class="mat-elevation-z3" id="results-div">
+<div class="mat-elevation-z3" id="results-div" *ngIf="doctorAvailableWrapperList?.length">
     <div class="mat-elevation-z3 result-div" *ngFor="let doctorAvailableWrapper of doctorAvailableWrapperList">
         <p>{{doctorAvailableWrapper.doctor.fullName}}&nbsp;&nbsp;&nbsp;<b>{{doctorAvailableWrapper.doctor.ratingAverage}}</b> <mat-icon>star_border</mat-icon></p>
         <mat-divider></mat-divider>
         <div class="time-wrapper">
-            <a mat-button *ngFor="let time of doctorAvailableWrapper.getAllTimes()">{{time | date:'HH:mm'}}-{{time + doctorAvailableWrapper.appointmentTypeDuration | date:'HH:mm'}}</a>
+            <a mat-button *ngFor="let time of doctorAvailableWrapper.getAllTimes()" [routerLink]="[doctorAvailableWrapper.doctor.email, 'confirm-appointment']" [queryParams]="{time: time}">
+                {{time | date:'HH:mm'}}-{{time + doctorAvailableWrapper.appointmentTypeDuration | date:'HH:mm'}}
+            </a>
         </div>
     </div>
 </div>

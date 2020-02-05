@@ -20,7 +20,7 @@
     </form>
 </div>
 
-<div class="mat-elevation-z3" id="results-div">
+<div class="mat-elevation-z3" id="results-div" *ngIf="clinicPriceWrapperList?.length">
     <div class="mat-elevation-z3 result-div" *ngFor="let clinicPriceWrapper of clinicPriceWrapperList" [routerLink]="[clinicPriceWrapper.clinic.id, 'doctors']" [queryParams]="{appointmentTypeId: selectedAppointmentTypeId, date: selectedDate}">
         <p class="result-clinic-name">{{clinicPriceWrapper.clinic.name}}</p>
         <p class="result-clinic-address">{{clinicPriceWrapper.clinic.address}}</p>

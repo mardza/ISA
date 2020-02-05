@@ -42,6 +42,8 @@ public class UserDTO {
 	
 	private String role;
 	
+	private String specialisation;
+	
 	private Integer workStart;
 	
 	private Integer workEnd;
@@ -64,6 +66,9 @@ public class UserDTO {
 		this.phone = user.getPhone();
 		this.insuranceNumber = user.getInsuranceNumber();
 		this.role = user.getRole().getName();
+		if(user.getSpecialisation() != null) {
+			this.specialisation = user.getSpecialisation().getName();
+		}
 		this.workStart = user.getWorkStart();
 		this.workEnd = user.getWorkEnd();
 		this.ratingAverage = user.getRatingAverage();
@@ -178,6 +183,14 @@ public class UserDTO {
 	
 	public String getRole() {
 		return role;
+	}
+
+	public String getSpecialisation() {
+		return specialisation;
+	}
+
+	public void setSpecialisation(String specialisation) {
+		this.specialisation = specialisation;
 	}
 
 	public Integer getWorkStart() {

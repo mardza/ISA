@@ -48,6 +48,9 @@ public class Appointment {
 	@JoinColumn(name = "patient_id", referencedColumnName = "id", unique = false, nullable = true)
 	private User patient;
 	
+	@Column(name = "approved", unique = false, nullable = false)
+	private Boolean approved;
+	
 //	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.MERGE}, fetch = FetchType.EAGER)
 //	@JoinTable(name = "appointments_work_calendars", joinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "work_calendar_id", referencedColumnName = "id"))
 //	private List<WorkCalendar> workCalendars;
@@ -120,6 +123,13 @@ public class Appointment {
 		this.patient = patient;
 	}
 
+	public Boolean getApproved() {
+		return approved;
+	}
+
+	public void setApproved(Boolean approved) {
+		this.approved = approved;
+	}
 
 	@Override
 	public String toString() {

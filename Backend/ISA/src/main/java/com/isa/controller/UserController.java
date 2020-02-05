@@ -44,6 +44,12 @@ public class UserController {
 		User user = this.userService.findByEmail(email);
 		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
 	}
+	
+	@GetMapping(path = "/current-user")
+	public ResponseEntity<UserDTO> getCurrentUser() {
+		User user = this.userService.getCurrentUser();
+		return new ResponseEntity<UserDTO>(new UserDTO(user), HttpStatus.OK);
+	}
 
 	@PostMapping(path = "/register")
 	public ResponseEntity<UserDTO> register(@RequestBody @Valid UserDTO userDTO) {

@@ -13,7 +13,7 @@ export class ClinicResolver implements Resolve<Clinic> {
     }
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Clinic> | Promise<Clinic> | Clinic {
-        const id: number = route.params.id;
+        const id: number = route.params.clinicId;
         return this.clinicService.getClinicById(id);
     }
 }

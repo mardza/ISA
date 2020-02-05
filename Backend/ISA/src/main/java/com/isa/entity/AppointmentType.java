@@ -1,12 +1,16 @@
 package com.isa.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.dto.AppointmentTypeDTO;
 
 @Entity
@@ -23,6 +27,10 @@ public class AppointmentType {
 	
 	@Column(name = "duration", unique = false, nullable = false)
 	private Long duration;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "specialisation")
+	private List<User> users;
 	
 	
 	public AppointmentType() {}
@@ -56,6 +64,14 @@ public class AppointmentType {
 
 	public void setDuration(Long duration) {
 		this.duration = duration;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 	@Override
