@@ -50,6 +50,8 @@ import { EmptyComponent } from './components/empty/empty.component';
 import { PatientFindDoctorComponent } from './components/patient/appointment/patient-find-doctor/patient-find-doctor.component';
 import { ConfirmAppointmentComponent } from './components/patient/confirm-appointment/confirm-appointment.component';
 import { PatientAppointmentListComponent } from './components/patient/patient-appointment-list/patient-appointment-list.component';
+import { AdminClinicHomeComponentComponent } from './components/admin-clinic/admin-clinic-home-component/admin-clinic-home-component.component';
+import { AdminClinicAppointmentRequestListComponent } from './components/admin-clinic/admin-clinic-appointment-request-list/admin-clinic-appointment-request-list.component';
 
 @NgModule({
     declarations: [
@@ -81,7 +83,9 @@ import { PatientAppointmentListComponent } from './components/patient/patient-ap
         EmptyComponent,
         PatientFindDoctorComponent,
         ConfirmAppointmentComponent,
-        PatientAppointmentListComponent
+        PatientAppointmentListComponent,
+        AdminClinicHomeComponentComponent,
+        AdminClinicAppointmentRequestListComponent
     ],
     entryComponents: [
       EmptyComponent

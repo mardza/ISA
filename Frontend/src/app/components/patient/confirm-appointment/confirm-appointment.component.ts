@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {User} from '../../../models/User.model';
 import {Clinic} from '../../../models/Clinic.model';
 import {NgForm} from '@angular/forms';
 import {Location} from '@angular/common';
 import {AppointmentService} from '../../../services/http/appointment.service';
 import {AppointmentCreate} from '../../../models/custom/AppointmentCreate.model';
+import {Appointment} from '../../../models/Appointment.model';
 
 @Component({
     selector: 'app-confirm-appointment',
@@ -14,6 +15,7 @@ import {AppointmentCreate} from '../../../models/custom/AppointmentCreate.model'
 })
 export class ConfirmAppointmentComponent implements OnInit {
 
+    appointment: Appointment;
     clinic: Clinic;
     doctor: User;
     patient: User;
@@ -23,37 +25,59 @@ export class ConfirmAppointmentComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private location: Location,
-        private appointmentService: AppointmentService
+        private appointmentService: AppointmentService,
+        private router: Router
     ) {
     }
 
     ngOnInit() {
-        this.clinic = this.route.snapshot.data.clinic;
-        this.doctor = this.route.snapshot.data.doctor;
+        this.appointment = this.route.snapshot.data.appointment;
+        if (this.appointment) {
+            this.clinic = this.appointment.clinic;
+            this.doctor = this.appointment.doctor;
+            this.datetime = this.appointment.time;
+        } else {
+            this.clinic = this.route.snapshot.data.clinic;
+            this.doctor = this.route.snapshot.data.doctor;
+            this.datetime = new Date(+this.route.snapshot.queryParams.time);
+        }
         this.patient = this.route.snapshot.data.patient;
-        this.datetime = new Date(+this.route.snapshot.queryParams.time);
     }
 
     onConfirmClick(form: NgForm) {
-        const appointmentCreate: AppointmentCreate = new AppointmentCreate();
-        appointmentCreate.time = this.datetime.getTime();
-        appointmentCreate.doctorEmail = this.doctor.email;
-        appointmentCreate.patientEmail = this.patient.email;
-        appointmentCreate.clinicId = this.clinic.id;
-        this.appointmentService
-            .createAppointment(
-                appointmentCreate
-            )
-            .subscribe(
-                value => {
-                    console.log(value);
 
-                    // TODO: redirect to appointment list
-                },
-                error => {
-                    console.log(error);
-                }
-            )
+        if (this.appointment) {
+            this.appointmentService
+                .activateAppointment(this.appointment.id)
+                .subscribe(
+                    value => {
+                        console.log(value);
+                        this.router.navigate(['/patient/appointments']);
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                )
+        } else {
+            const appointmentCreate: AppointmentCreate = new AppointmentCreate();
+            appointmentCreate.time = this.datetime.getTime();
+            appointmentCreate.doctorEmail = this.doctor.email;
+            appointmentCreate.patientEmail = this.patient.email;
+            appointmentCreate.clinicId = this.clinic.id;
+            this.appointmentService
+                .createAppointment(
+                    appointmentCreate
+                )
+                .subscribe(
+                    value => {
+                        console.log(value);
+                        this.router.navigate(['/patient/appointments']);
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                );
+        }
     }
 
     onCancelClick() {

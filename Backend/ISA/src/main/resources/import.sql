@@ -87,8 +87,8 @@ VALUES ('doctor3@g.com', '$2a$10$GGi3fzEAMIAgQE/lsADrueJsbTGbCYezOB/dAuXtMSUfkdu
 
 INSERT INTO registrations (id, approved, activated)
 VALUES (8, true, true);
-INSERT INTO users (email, password, first_name, last_name, address, city, country, phone, role_id, registration_id)
-VALUES ('patient@g.com', '$2a$10$GGi3fzEAMIAgQE/lsADrueJsbTGbCYezOB/dAuXtMSUfkduNgTxX6', 'Patient first', 'Patient last', 'Patient address', 'Patient city', 'Patient country', '0631231231', 1, 8);
+INSERT INTO users (email, password, first_name, last_name, address, city, country, phone, role_id, registration_id, insurance_number)
+VALUES ('patient@g.com', '$2a$10$GGi3fzEAMIAgQE/lsADrueJsbTGbCYezOB/dAuXtMSUfkduNgTxX6', 'Patient first', 'Patient last', 'Patient address', 'Patient city', 'Patient country', '0631231231', 1, 8, '123456789');
 
 
 
@@ -127,19 +127,19 @@ VALUES (2, 4, 3000, 50);
 
 -- if patient_id == null -> predefinisan pregled
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved) 
-VALUES ('2020-2-4 09:30:00', 1, 1, 1, 1, 5, 8, true);
+VALUES ('2020-1-14 09:30:00', 1, 1, 1, 1, 5, 8, true);
 
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved) 
-VALUES ('2020-2-4 08:00:00', 1, 1, 1, 1, 5, NULL, false);
+VALUES ('2020-3-25 08:00:00', 1, 1, 1, 1, 5, NULL, false);
 
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved) 
-VALUES ('2020-2-4 12:00:00', 1, 1, 1, 1, 5, NULL, false);
+VALUES ('2020-3-25 12:00:00', 1, 1, 1, 1, 5, NULL, false);
 
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved) 
-VALUES ('2020-2-4 09:30:00', 2, 1, 2, 2, 6, NULL, false);
+VALUES ('2020-3-25 09:30:00', 2, 1, 2, 2, 6, NULL, false);
 
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved) 
-VALUES ('2020-2-4 12:30:00', 2, 2, 4, 3, 7, NULL, false);
+VALUES ('2020-3-25 12:30:00', 2, 2, 4, 3, 7, NULL, false);
 
 
 --INSERT INTO users_roles (user_id, role_id)

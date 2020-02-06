@@ -1,6 +1,5 @@
 <div id="table-wrapper" class="mat-elevation-z3">
-    <p *ngIf="old">Appointment history</p>
-    <p *ngIf="!old">Scheduled appointments</p>
+    <p>Appointment requests</p>
     <table mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="clinicName">

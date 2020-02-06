@@ -1,6 +1,7 @@
 package com.isa.service;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -155,8 +156,10 @@ public class ClinicService implements ClinicServiceInterface {
 			});
 			appointmentList.sort(Comparator.comparing(appointment -> appointment.getTime()));
 			
-			Date doctorStartDate = todayAtHours(doctor.getWorkStart());
-			Date doctorEndDate = todayAtHours(doctor.getWorkEnd());
+//			Date doctorStartDate = todayAtHours(doctor.getWorkStart());
+//			Date doctorEndDate = todayAtHours(doctor.getWorkEnd());
+			Date doctorStartDate = dateAtHours(date, doctor.getWorkStart());
+			Date doctorEndDate = dateAtHours(date, doctor.getWorkEnd());
 			System.out.println("Doctor start time: " + doctorStartDate);
 			System.out.println("Doctor end time: " + doctorEndDate);
 			
@@ -245,5 +248,9 @@ public class ClinicService implements ClinicServiceInterface {
 	
 	private Date todayAtHours(Integer hours) {
 		return Date.from(LocalDateTime.now().truncatedTo(ChronoUnit.HOURS).withHour(hours).atZone(ZoneId.systemDefault()).toInstant());
+	}
+	
+	private Date dateAtHours(Date date, Integer hours) {
+		return Date.from(Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime().truncatedTo(ChronoUnit.HOURS).withHour(hours).atZone(ZoneId.systemDefault()).toInstant());
 	}
 }

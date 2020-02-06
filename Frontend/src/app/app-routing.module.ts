@@ -27,6 +27,9 @@ import {PatientFindDoctorComponent} from './components/patient/appointment/patie
 import {ConfirmAppointmentComponent} from './components/patient/confirm-appointment/confirm-appointment.component';
 import {DoctorResolver} from './services/resolvers/Doctor.resolver';
 import {PatientAppointmentListComponent} from './components/patient/patient-appointment-list/patient-appointment-list.component';
+import {AppointmentResolver} from './services/resolvers/Appointment.resolver';
+import {AdminClinicHomeComponentComponent} from './components/admin-clinic/admin-clinic-home-component/admin-clinic-home-component.component';
+import {AdminClinicAppointmentRequestListComponent} from './components/admin-clinic/admin-clinic-appointment-request-list/admin-clinic-appointment-request-list.component';
 
 
 const routes: Routes = [
@@ -73,6 +76,14 @@ const routes: Routes = [
                 }
             },
             {
+                path: 'clinics/:clinicId/appointments/:appointmentId/confirm-appointment',
+                component: ConfirmAppointmentComponent,
+                resolve: {
+                    appointment: AppointmentResolver,
+                    patient: CurrentUserResolver
+                }
+            },
+            {
                 path: 'find-clinic',
                 component: PatientFindClinicComponent,
                 resolve: {
@@ -109,6 +120,23 @@ const routes: Routes = [
                 data: {
                     old: true
                 }
+            }
+        ]
+    },
+
+
+    {
+        path: 'admin-clinic',
+        component: AdminClinicHomeComponentComponent,
+        data: {
+            allowedRoles: ['ROLE_ADMIN_CLINIC']
+        },
+        canActivate: [RoleGuard],
+        canActivateChild: [RoleGuard],
+        children: [
+            {
+                path: 'appointment-requests',
+                component: AdminClinicAppointmentRequestListComponent
             }
         ]
     },

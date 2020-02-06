@@ -7,6 +7,10 @@ export class Price {
     constructor() {
     }
 
+    get finalPrice(): number {
+        return this.price * (1 - this.discount / 100);
+    }
+
     public static toPrice(price: any): Price {
         if(!price) {
             return undefined;

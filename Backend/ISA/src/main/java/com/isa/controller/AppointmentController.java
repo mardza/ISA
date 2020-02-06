@@ -34,12 +34,13 @@ public class AppointmentController {
 	public ResponseEntity<List<AppointmentDTO>> getAll(
 			@RequestParam(name = "doctorEmail", required = false) String doctorEmail,
 			@RequestParam(name = "patientEmail", required = false) String patientEmail,
+			@RequestParam(name = "adminEmail", required = false) String adminEmail,
 			@RequestParam(name = "approved", required = false) Boolean approved,
 			@RequestParam(name = "clinicId", required = false) Integer clinicId,
 			@RequestParam(name = "predefined", required = false) Boolean predefined,
 			@RequestParam(name = "old", required = false) Boolean old
 			){
-		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(doctorEmail, patientEmail, approved, clinicId, predefined, old);
+		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(doctorEmail, patientEmail, adminEmail, approved, clinicId, predefined, old);
 		return new ResponseEntity<List<AppointmentDTO>>(appointmentDTOList, HttpStatus.OK);
 	}
 	
@@ -48,7 +49,13 @@ public class AppointmentController {
 			@RequestParam(name = "old", required = false) Boolean old
 			){
 		User patient = this.userService.getCurrentUser();
-		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(null, patient.getEmail(), null, null, null, old);
+		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(null, patient.getEmail(), null, null, null, null, old);
+		return new ResponseEntity<List<AppointmentDTO>>(appointmentDTOList, HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/admin-clinic-requests")
+	public ResponseEntity<List<AppointmentDTO>> getAllAdminClinic() {
+		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findAdminClinicAppointmentRequests();
 		return new ResponseEntity<List<AppointmentDTO>>(appointmentDTOList, HttpStatus.OK);
 	}
 	
@@ -64,15 +71,17 @@ public class AppointmentController {
 		return new ResponseEntity<AppointmentDTO>(appointmentDTO, HttpStatus.OK);
 	}
 	
-	@PostMapping(path = "/activate")
-	public ResponseEntity<AppointmentDTO> activateAppointment(){
-		
-		return new ResponseEntity<AppointmentDTO>(HttpStatus.OK);
+	// when patient confirms predefined appointment
+	@PostMapping(path = "/{id}/activate")
+	public ResponseEntity<AppointmentDTO> activateAppointment(@PathVariable("id") Integer id){
+		AppointmentDTO appointmentDTO = this.appointmentService.activateAppointment(id);
+		return new ResponseEntity<AppointmentDTO>(appointmentDTO, HttpStatus.OK);
 	}
 	
-	@PostMapping(path = "/approve")
-	public ResponseEntity<AppointmentDTO> approveAppointment(){
-		
-		return new ResponseEntity<AppointmentDTO>(HttpStatus.OK);
+	// when clinic admin approves appointment request
+	@PostMapping(path = "/{id}/approve")
+	public ResponseEntity<AppointmentDTO> approveAppointment(@PathVariable("id") Integer id){
+		AppointmentDTO appointmentDTO = this.appointmentService.approveAppointment(id);
+		return new ResponseEntity<AppointmentDTO>(appointmentDTO, HttpStatus.OK);
 	}
 }

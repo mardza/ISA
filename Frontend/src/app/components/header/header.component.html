@@ -31,11 +31,12 @@
 
     <ng-container *ngIf="role === 'ROLE_ADMIN_CLINIC'">
         <a mat-button [routerLink]="['/admin-clinic/clinic']">Clinic</a>
-        <a mat-button [routerLink]="['/appointments']">Appointments</a>
-        <a mat-button [routerLink]="['/appointment-types']">Appointment types</a>
-        <a mat-button [routerLink]="['/staff']">Staff</a>
-        <a mat-button [routerLink]="['/rooms']">Rooms</a>
-        <a mat-button [routerLink]="['/report']">Report</a>
+        <a mat-button [routerLink]="['/admin-clinic/appointments']">Appointments</a>
+        <a mat-button [routerLink]="['/admin-clinic/appointment-types']">Appointment types</a>
+        <a mat-button [routerLink]="['/admin-clinic/appointment-requests']">Appointment requests</a>
+        <a mat-button [routerLink]="['/admin-clinic/staff']">Staff</a>
+        <a mat-button [routerLink]="['/admin-clinic/rooms']">Rooms</a>
+        <a mat-button [routerLink]="['/admin-clinic/report']">Report</a>
     </ng-container>
 
     <ng-container *ngIf="role === 'ROLE_ADMIN_CENTER'">

@@ -1,17 +1,15 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {MatSort, MatTableDataSource} from '@angular/material';
 import {Appointment} from '../../../models/Appointment.model';
 import {AppointmentService} from '../../../services/http/appointment.service';
-import {MatSort, MatTableDataSource} from '@angular/material';
 
 @Component({
-    selector: 'app-patient-appointment-list',
-    templateUrl: './patient-appointment-list.component.html',
-    styleUrls: ['./patient-appointment-list.component.scss']
+    selector: 'app-admin-clinic-appointment-request-list',
+    templateUrl: './admin-clinic-appointment-request-list.component.html',
+    styleUrls: ['./admin-clinic-appointment-request-list.component.scss']
 })
-export class PatientAppointmentListComponent implements OnInit {
+export class AdminClinicAppointmentRequestListComponent implements OnInit {
 
-    old: boolean;
     columnsToDisplay: string[];
     dataSource: MatTableDataSource<Appointment>;
     loading: boolean;
@@ -20,7 +18,6 @@ export class PatientAppointmentListComponent implements OnInit {
 
 
     constructor(
-        private route: ActivatedRoute,
         private appointmentService: AppointmentService
     ) {
     }
@@ -29,20 +26,19 @@ export class PatientAppointmentListComponent implements OnInit {
     ngOnInit() {
         this.columnsToDisplay = ['clinicName', 'typeName', 'roomName', 'doctorName', 'approved', 'finalPrice', 'time'];
         this.loading = true;
-        this.old = this.route.snapshot.data.old;
         this.appointmentService
-            .getCurrentUserAppointments(this.old)
+            .getAdminClinicAppointmentRequests()
             .subscribe(
                 value => {
                     this.dataSource = new MatTableDataSource<Appointment>();
                     this.dataSource.data = value;
                     this.dataSource.sort = this.sort;
-                    this.loading = false
+                    this.loading = false;
                 },
                 error => {
                     console.log(error);
                     this.loading = false;
                 }
-            )
+            );
     }
 }

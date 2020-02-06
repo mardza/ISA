@@ -1,7 +1,7 @@
 <div id="list-header">
     <p>Predefined appointments</p>
 </div>
-<div *ngFor="let appointment of appointments" class="mat-elevation-z3 appointment-div" (click)="onAppointmentClick(appointment)">
+<div *ngFor="let appointment of appointments" class="mat-elevation-z3 appointment-div" [routerLink]="['appointments', appointment.id, 'confirm-appointment']">
     <p class="predefined-type"><b>Type:</b> {{appointment.type.name}}</p>
     <p><b>Date:</b> {{appointment.time | date:'dd.MM.yyyy.'}}</p>&nbsp;
     <p class="predefined-time">at {{appointment.time | date:'HH:mm'}}</p>

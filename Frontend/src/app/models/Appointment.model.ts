@@ -19,6 +19,26 @@ export class Appointment {
     constructor() {
     }
 
+    // These getters are for sorting in tables
+    get typeName(): string {
+        return this.type?this.type.name:'-';
+    }
+    get clinicName(): string {
+        return this.clinic?this.clinic.name:'-';
+    }
+    get finalPrice(): number|string {
+        return this.price?this.price.finalPrice:'-';
+    }
+    get roomName(): string {
+        return this.room?this.room.name:'-';
+    }
+    get doctorName(): string {
+        return this.doctor?this.doctor.fullName:'-';
+    }
+    get patientName(): string {
+        return this.patient?this.patient.fullName:'-';
+    }
+
     public static toAppointment(appointment: any): Appointment {
         if(!appointment) {
             return undefined;

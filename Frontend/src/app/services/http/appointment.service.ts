@@ -70,6 +70,16 @@ export class AppointmentService {
             );
     }
 
+    getAdminClinicAppointmentRequests(): Observable<Appointment[]> {
+        return this.http
+            .get<Appointment[]>(
+                this.url + '/admin-clinic-requests'
+            )
+            .pipe(
+                map(response => Appointment.toAppointmentList(response))
+            );
+    }
+
     getAppointmentById(id: number): Observable<Appointment> {
         return this.http
             .get(
@@ -94,6 +104,7 @@ export class AppointmentService {
             );
     }
 
+    // when patient confirms predefined appointment
     activateAppointment(id: number): Observable<Appointment> {
         return this.http
             .post(
@@ -105,6 +116,7 @@ export class AppointmentService {
             );
     }
 
+    // when clinic admin approves appointment request
     approveAppointment(id: number): Observable<Appointment> {
         return this.http
             .post(

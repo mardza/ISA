@@ -37,8 +37,4 @@ export class PatientClinicPredefinedAppointmentListComponent implements OnInit {
                 }
             );
     }
-
-    onAppointmentClick(appointment: Appointment) {
-        console.log(appointment);
-    }
 }
