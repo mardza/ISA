@@ -24,7 +24,6 @@ import com.isa.dto.ClinicDTO;
 import com.isa.dto.ClinicSearchDTO;
 import com.isa.dto.DoctorAvailableDTO;
 import com.isa.dto.PriceDTO;
-import com.isa.entity.Appointment;
 import com.isa.entity.Clinic;
 import com.isa.entity.Price;
 import com.isa.service.AppointmentService;
@@ -75,8 +74,8 @@ public class ClinicController {
 	
 	@GetMapping("/{id}/predefined-appointments")
 	public ResponseEntity<List<AppointmentDTO>> getPredefinedAppointments(@PathVariable("id") Integer id) {
-		List<Appointment> appointmentList = this.appointmentService.findPredefinedByClinicId(id);
-		return new ResponseEntity<List<AppointmentDTO>>(AppointmentDTO.toList(appointmentList), HttpStatus.OK);
+		List<AppointmentDTO> appointmentListDTO = this.appointmentService.findPredefinedByClinicId(id);
+		return new ResponseEntity<List<AppointmentDTO>>(appointmentListDTO, HttpStatus.OK);
 	}
 	
 	@GetMapping("/search")

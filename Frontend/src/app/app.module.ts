@@ -49,6 +49,7 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import { EmptyComponent } from './components/empty/empty.component';
 import { PatientFindDoctorComponent } from './components/patient/appointment/patient-find-doctor/patient-find-doctor.component';
 import { ConfirmAppointmentComponent } from './components/patient/confirm-appointment/confirm-appointment.component';
+import { PatientAppointmentListComponent } from './components/patient/patient-appointment-list/patient-appointment-list.component';
 
 @NgModule({
     declarations: [
@@ -79,7 +80,8 @@ import { ConfirmAppointmentComponent } from './components/patient/confirm-appoin
         PatientFindClinicComponent,
         EmptyComponent,
         PatientFindDoctorComponent,
-        ConfirmAppointmentComponent
+        ConfirmAppointmentComponent,
+        PatientAppointmentListComponent
     ],
     entryComponents: [
       EmptyComponent

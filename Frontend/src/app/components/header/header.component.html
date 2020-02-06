@@ -7,8 +7,9 @@
     <ng-container *ngIf="role === 'ROLE_PATIENT'">
         <a mat-button [routerLink]="['/patient/clinics']">Clinics</a>
         <a mat-button [routerLink]="['/patient/find-clinic']">Create appointment</a>
-        <a mat-button [routerLink]="['/patient/appointments/history']">Appointment history</a>
-        <a mat-button [routerLink]="['/patient/appointments']">Medical record</a>
+        <a mat-button [routerLink]="['/patient/appointments']">Appointments</a>
+        <a mat-button [routerLink]="['/patient/appointments/old']">Appointment history</a>
+        <a mat-button [routerLink]="['/patient/medical-record']">Medical record</a>
         <a mat-button [routerLink]="['/profile']">My profile</a>
     </ng-container>
 

@@ -15,7 +15,9 @@ public class MailService implements MailServiceInterface {
 	@Override
 	public void sendMail(String address, String subject, String text) {
 		SimpleMailMessage msg = new SimpleMailMessage();
-		msg.setTo(address);
+		//msg.setTo(address);
+		msg.setTo("negrumarijana96@gmail.com");
+		
 		msg.setSubject(subject);
 		msg.setText(text);
 		javaMailSender.send(msg);

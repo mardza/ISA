@@ -37,6 +37,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 			@Param("lastName") String lastName,
 			@Param("insuranceNumber") String insuranceNumber);
 	
+	List<User> findByClinicIdAndRoleName(Integer clinicId, String roleName);
+	
 	
 	User findByRegistrationId(String registrationId);
 }

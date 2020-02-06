@@ -6,6 +6,7 @@ import java.util.List;
 import com.isa.dto.ClinicDTO;
 import com.isa.dto.DoctorAvailableDTO;
 import com.isa.entity.Clinic;
+import com.isa.entity.User;
 
 public interface ClinicServiceInterface {
 
@@ -16,7 +17,7 @@ public interface ClinicServiceInterface {
 	List<Clinic> findFiltered(Date date, Integer appointmentTypeId);
 	
 	List<DoctorAvailableDTO> findAvailableDoctorsByClinic(Integer clinicId, Integer appointmentTypeId, Date date, String firstName, String lastName, Integer rating);
-	
+		
 	Clinic create(ClinicDTO clinicDTO);
 	
 	Clinic update(Integer id, ClinicDTO clinicDTO);

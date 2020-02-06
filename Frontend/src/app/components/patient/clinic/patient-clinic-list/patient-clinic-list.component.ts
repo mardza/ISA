@@ -40,8 +40,4 @@ export class PatientClinicListComponent implements OnInit {
                 }
             );
     }
-
-    onSubmit(form: NgForm) {
-
-    }
 }

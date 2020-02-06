@@ -23,6 +23,8 @@ public interface UserServiceInterface {
 	
 	List<User> findFiltered(Boolean approved, Boolean activated, String roleName, String firstName, String lastName, String insuranceNumber);
 	
+	List<User> findByClinicAndRole(Integer clinicId, String roleName);
+	
 	Registration approveRegistration(String email);
 	
 	void rejectRegistration(String email, String message);

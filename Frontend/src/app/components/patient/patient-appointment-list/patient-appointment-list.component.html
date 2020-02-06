@@ -1,0 +1,50 @@
+<div id="table-wrapper" class="mat-elevation-z3">
+    <p *ngIf="old">Appointment history</p>
+    <p *ngIf="!old">Scheduled appointments</p>
+    <table mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="clinic">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Clinic</th>
+            <td mat-cell *matCellDef="let appointment">{{appointment.clinic?.name}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="appointmentType">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Appointment type</th>
+            <td mat-cell *matCellDef="let appointment">{{appointment.type?.name}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="room">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Room</th>
+            <td mat-cell *matCellDef="let appointment">{{appointment.room?.name}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="doctor">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Doctor</th>
+            <td mat-cell *matCellDef="let appointment">{{appointment.doctor?.fullName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="approved">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Approved</th>
+            <td mat-cell *matCellDef="let appointment">{{appointment.approved}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="time">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+            <td mat-cell *matCellDef="let appointment">{{appointment.time | date:'dd.MM.yyyy HH:mm'}}</td>
+        </ng-container>
+
+
+
+        <ng-container matColumnDef="noRecord">
+            <td mat-footer-cell [attr.colspan]="columnsToDisplay.length" *matFooterCellDef>No appointments found.</td>
+        </ng-container>
+        <ng-container matColumnDef="loading">
+            <td mat-footer-cell [attr.colspan]="columnsToDisplay.length" *matFooterCellDef>Loading</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" [routerLink]="[row.id]" class="clickable-row"></tr>
+        <tr [hidden]="!loading" mat-footer-row *matFooterRowDef="['loading']"></tr>
+        <tr [hidden]="dataSource?.data.length > 0 || loading" mat-footer-row *matFooterRowDef="['noRecord']"></tr>
+    </table>
+</div>

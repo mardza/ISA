@@ -1,6 +1,9 @@
 package com.isa.service;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -73,14 +76,8 @@ public class ClinicService implements ClinicServiceInterface {
 				});
 				appointmentList.sort(Comparator.comparing(appointment -> appointment.getTime()));
 
-				Date doctorStartDate = new Date();
-				doctorStartDate.setHours(doctor.getWorkStart());
-				doctorStartDate.setMinutes(0);
-				doctorStartDate.setSeconds(0);
-				Date doctorEndDate = new Date();
-				doctorEndDate.setHours(doctor.getWorkEnd());
-				doctorEndDate.setMinutes(0);
-				doctorEndDate.setSeconds(0);
+				Date doctorStartDate = todayAtHours(doctor.getWorkStart());
+				Date doctorEndDate = todayAtHours(doctor.getWorkEnd());
 				System.out.println("Doctor start time: " + doctorStartDate);
 				System.out.println("Doctor end time: " + doctorEndDate);
 
@@ -158,14 +155,8 @@ public class ClinicService implements ClinicServiceInterface {
 			});
 			appointmentList.sort(Comparator.comparing(appointment -> appointment.getTime()));
 			
-			Date doctorStartDate = new Date();
-			doctorStartDate.setHours(doctor.getWorkStart());
-			doctorStartDate.setMinutes(0);
-			doctorStartDate.setSeconds(0);
-			Date doctorEndDate = new Date();
-			doctorEndDate.setHours(doctor.getWorkEnd());
-			doctorEndDate.setMinutes(0);
-			doctorEndDate.setSeconds(0);
+			Date doctorStartDate = todayAtHours(doctor.getWorkStart());
+			Date doctorEndDate = todayAtHours(doctor.getWorkEnd());
 			System.out.println("Doctor start time: " + doctorStartDate);
 			System.out.println("Doctor end time: " + doctorEndDate);
 			
@@ -220,6 +211,7 @@ public class ClinicService implements ClinicServiceInterface {
 		return doctorAvailableDTOList;
 	}
 
+
 	@Override
 	public Clinic create(ClinicDTO clinicDTO) {
 		Clinic clinic = new Clinic(clinicDTO);
@@ -249,5 +241,9 @@ public class ClinicService implements ClinicServiceInterface {
 
 	private boolean checkIfSameDay(Date date1, Date date2) {
 		return fmt.format(date1).equals(fmt.format(date2));
+	}
+	
+	private Date todayAtHours(Integer hours) {
+		return Date.from(LocalDateTime.now().truncatedTo(ChronoUnit.HOURS).withHour(hours).atZone(ZoneId.systemDefault()).toInstant());
 	}
 }

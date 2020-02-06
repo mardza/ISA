@@ -79,6 +79,11 @@ public class UserService implements UserServiceInterface {
 		}
 		return user;
 	}
+	
+	@Override
+	public List<User> findByClinicAndRole(Integer clinicId, String roleName) {
+		return this.userRepository.findByClinicIdAndRoleName(clinicId, roleName);
+	}
 
 	@Override
 	public User save(User user) {

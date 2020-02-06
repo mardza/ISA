@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -28,7 +27,7 @@ public class Appointment {
 	@JoinColumn(name = "type_id", referencedColumnName = "id", unique = false, nullable = false)
 	private AppointmentType type;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "price_id", referencedColumnName = "id", unique = false, nullable = true)
 	private Price price;
 	
@@ -37,7 +36,7 @@ public class Appointment {
 	private Clinic clinic;
 	
 	@ManyToOne
-	@JoinColumn(name = "room_id", referencedColumnName = "id", unique = false, nullable = false)
+	@JoinColumn(name = "room_id", referencedColumnName = "id", unique = false, nullable = true)
 	private Room room;
 	
 	@ManyToOne
@@ -133,7 +132,7 @@ public class Appointment {
 
 	@Override
 	public String toString() {
-		return "Appointment [id=" + id + ", time=" + time + ", type=" + type.getName() + ", clinic=" + clinic.getId() + ", price=" + price.getPrice() + ", room=" + room.getName()
+		return "Appointment [id=" + id + ", time=" + time + ", type=" + type.getName() + ", clinic=" + clinic.getId() + ", price=" + price.getPrice() + ", room=" + (room!=null?room.getName():"null")
 				+ "]";
 	}
 

@@ -4,6 +4,8 @@ import {User} from '../../../models/User.model';
 import {Clinic} from '../../../models/Clinic.model';
 import {NgForm} from '@angular/forms';
 import {Location} from '@angular/common';
+import {AppointmentService} from '../../../services/http/appointment.service';
+import {AppointmentCreate} from '../../../models/custom/AppointmentCreate.model';
 
 @Component({
     selector: 'app-confirm-appointment',
@@ -20,7 +22,8 @@ export class ConfirmAppointmentComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private location: Location
+        private location: Location,
+        private appointmentService: AppointmentService
     ) {
     }
 
@@ -32,7 +35,25 @@ export class ConfirmAppointmentComponent implements OnInit {
     }
 
     onConfirmClick(form: NgForm) {
+        const appointmentCreate: AppointmentCreate = new AppointmentCreate();
+        appointmentCreate.time = this.datetime.getTime();
+        appointmentCreate.doctorEmail = this.doctor.email;
+        appointmentCreate.patientEmail = this.patient.email;
+        appointmentCreate.clinicId = this.clinic.id;
+        this.appointmentService
+            .createAppointment(
+                appointmentCreate
+            )
+            .subscribe(
+                value => {
+                    console.log(value);
 
+                    // TODO: redirect to appointment list
+                },
+                error => {
+                    console.log(error);
+                }
+            )
     }
 
     onCancelClick() {

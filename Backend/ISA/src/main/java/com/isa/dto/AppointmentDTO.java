@@ -4,11 +4,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.isa.entity.Appointment;
 
 public class AppointmentDTO {
 	
 	private Integer id;
+	@JsonFormat(shape = JsonFormat.Shape.NUMBER)
 	private Date time;
 	private AppointmentTypeDTO type;
 	private PriceDTO price;

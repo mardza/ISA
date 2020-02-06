@@ -26,6 +26,7 @@ import {AppointmentTypeListResolver} from './services/resolvers/AppointmentTypeL
 import {PatientFindDoctorComponent} from './components/patient/appointment/patient-find-doctor/patient-find-doctor.component';
 import {ConfirmAppointmentComponent} from './components/patient/confirm-appointment/confirm-appointment.component';
 import {DoctorResolver} from './services/resolvers/Doctor.resolver';
+import {PatientAppointmentListComponent} from './components/patient/patient-appointment-list/patient-appointment-list.component';
 
 
 const routes: Routes = [
@@ -93,6 +94,20 @@ const routes: Routes = [
                     clinic: ClinicResolver,
                     doctor: DoctorResolver,
                     patient: CurrentUserResolver
+                }
+            },
+            {
+                path: 'appointments',
+                component: PatientAppointmentListComponent,
+                data: {
+                    old: false
+                }
+            },
+            {
+                path: 'appointments/old',
+                component: PatientAppointmentListComponent,
+                data: {
+                    old: true
                 }
             }
         ]
