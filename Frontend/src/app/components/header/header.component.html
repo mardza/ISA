@@ -7,9 +7,10 @@
     <ng-container *ngIf="role === 'ROLE_PATIENT'">
         <a mat-button [routerLink]="['/patient/clinics']">Clinics</a>
         <a mat-button [routerLink]="['/patient/find-clinic']">Create appointment</a>
+        <a mat-button [routerLink]="['/patient/appointments-confirm']">Confirm appointments</a>
         <a mat-button [routerLink]="['/patient/appointments']">Appointments</a>
         <a mat-button [routerLink]="['/patient/appointments/old']">Appointment history</a>
-        <a mat-button [routerLink]="['/patient/medical-record']">Medical record</a>
+<!--        <a mat-button [routerLink]="['/patient/medical-record']">Medical record</a>-->
         <a mat-button [routerLink]="['/profile']">My profile</a>
     </ng-container>
 
@@ -32,11 +33,11 @@
     <ng-container *ngIf="role === 'ROLE_ADMIN_CLINIC'">
         <a mat-button [routerLink]="['/admin-clinic/clinic']">Clinic</a>
         <a mat-button [routerLink]="['/admin-clinic/appointments']">Appointments</a>
-        <a mat-button [routerLink]="['/admin-clinic/appointment-types']">Appointment types</a>
+<!--        <a mat-button [routerLink]="['/admin-clinic/appointment-types']">Appointment types</a>-->
         <a mat-button [routerLink]="['/admin-clinic/appointment-requests']">Appointment requests</a>
-        <a mat-button [routerLink]="['/admin-clinic/staff']">Staff</a>
-        <a mat-button [routerLink]="['/admin-clinic/rooms']">Rooms</a>
-        <a mat-button [routerLink]="['/admin-clinic/report']">Report</a>
+<!--        <a mat-button [routerLink]="['/admin-clinic/staff']">Staff</a>-->
+<!--        <a mat-button [routerLink]="['/admin-clinic/rooms']">Rooms</a>-->
+<!--        <a mat-button [routerLink]="['/admin-clinic/report']">Report</a>-->
     </ng-container>
 
     <ng-container *ngIf="role === 'ROLE_ADMIN_CENTER'">

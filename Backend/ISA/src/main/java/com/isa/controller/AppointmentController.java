@@ -40,18 +40,20 @@ public class AppointmentController {
 			@RequestParam(name = "clinicId", required = false) Integer clinicId,
 			@RequestParam(name = "predefined", required = false) Boolean predefined,
 			@RequestParam(name = "requested", required = false) Boolean requested,
+			@RequestParam(name = "patientApproved", required = false) Boolean patientApproved,
 			@RequestParam(name = "old", required = false) Boolean old
 			){
-		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(doctorEmail, patientEmail, adminEmail, approved, clinicId, predefined, requested, old);
+		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(doctorEmail, patientEmail, adminEmail, approved, clinicId, predefined, requested, patientApproved, old);
 		return new ResponseEntity<List<AppointmentDTO>>(appointmentDTOList, HttpStatus.OK);
 	}
 	
 	@GetMapping(path = "/current-user")
 	public ResponseEntity<List<AppointmentDTO>> getAllOfCurrentUser(
-			@RequestParam(name = "old", required = false) Boolean old
+			@RequestParam(name = "old", required = false) Boolean old,
+			@RequestParam(name = "patientApproved", required = false) Boolean patientApproved
 			){
 		User patient = this.userService.getCurrentUser();
-		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(null, patient.getEmail(), null, null, null, null, null, old);
+		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(null, patient.getEmail(), null, true, null, null, null, patientApproved, old);
 		return new ResponseEntity<List<AppointmentDTO>>(appointmentDTOList, HttpStatus.OK);
 	}
 	
@@ -91,6 +93,13 @@ public class AppointmentController {
 	@PostMapping(path = "/{id}/disapprove")
 	public ResponseEntity<AppointmentDTO> disapproveAppointment(@PathVariable("id") Integer id){
 		AppointmentDTO appointmentDTO = this.appointmentService.disapproveAppointment(id);
+		return new ResponseEntity<AppointmentDTO>(appointmentDTO, HttpStatus.OK);
+	}
+	
+	// when patient confirms approved appointment request
+	@PostMapping(path = "/{id}/patient-approve")
+	public ResponseEntity<AppointmentDTO> patientApprove(@PathVariable("id") Integer id){
+		AppointmentDTO appointmentDTO = this.appointmentService.patientApproveAppointment(id);
 		return new ResponseEntity<AppointmentDTO>(appointmentDTO, HttpStatus.OK);
 	}
 	

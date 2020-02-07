@@ -40,14 +40,8 @@ public class AppointmentService implements AppointmentServiceInterface {
 		return new AppointmentDTO(appointment);
 	}
 	
-//	@Override
-//	public List<AppointmentDTO> findPredefinedByClinicId(Integer id) {
-//		List<Appointment> appointmentList = this.appointmentRepository.findPredefinedByClinicId(id);
-//		return AppointmentDTO.toList(appointmentList);
-//	}
-	
 	@Override
-	public List<AppointmentDTO> findFiltered(String doctorEmail, String patientEmail, String adminEmail, Boolean approved, Integer clinicId, Boolean predefined, Boolean requested, Boolean old) {
+	public List<AppointmentDTO> findFiltered(String doctorEmail, String patientEmail, String adminEmail, Boolean approved, Integer clinicId, Boolean predefined, Boolean requested, Boolean patientApproved, Boolean old) {
 		List<Appointment> appointmentList = this.appointmentRepository.findAll();
 		
 		if(doctorEmail != null && doctorEmail.length() > 0) {
@@ -102,6 +96,12 @@ public class AppointmentService implements AppointmentServiceInterface {
 			});
 		}
 		
+		if(patientApproved != null) {
+			appointmentList.removeIf(appointment -> {
+				return appointment.getPatientApproved() != patientApproved;
+			});
+		}
+		
 		if(old != null) {
 			Long time = new Date().getTime();
 			appointmentList.removeIf(appointment -> {
@@ -115,28 +115,8 @@ public class AppointmentService implements AppointmentServiceInterface {
 	@Override
 	public List<AppointmentDTO> findAdminClinicAppointmentRequests() {
 		User admin = this.userService.getCurrentUser();
-		List<AppointmentDTO> appointmentDTOList = this.findFiltered(null, null, admin.getEmail(), false, admin.getClinic().getId(), null, true, null);
+		List<AppointmentDTO> appointmentDTOList = this.findFiltered(null, null, admin.getEmail(), false, admin.getClinic().getId(), null, true, null, null);
 		return appointmentDTOList;
-		
-//		User admin = this.userService.getCurrentUser();
-//		List<Appointment> appointmentList = this.appointmentRepository.findAll();
-//		appointmentList.removeIf(appointment -> {
-//			List<User> adminList = appointment.getClinic().getEmployees();
-//			adminList.removeIf(employee -> {
-//				return !employee.getRole().getName().equals("ROLE_ADMIN_CLINIC");
-//			});
-//			boolean toRemove = true;
-//			for(User a: adminList) {
-//				if(a.getEmail().equals(admin.getEmail())) {
-//					toRemove = false;
-//				}
-//			}
-//			return toRemove;
-//		});
-//		appointmentList.removeIf(appointment -> {
-//			return appointment.getApproved() && !appointment.getRequested();
-//		});
-//		return AppointmentDTO.toList(appointmentList);
 	}
 	
 	@Override
@@ -148,8 +128,9 @@ public class AppointmentService implements AppointmentServiceInterface {
 		Clinic clinic = this.clinicService.findById(appointmentCreateDTO.getClinicId());
 		Price price = this.priceService.findByClinicAndAppointmentType(appointmentCreateDTO.getClinicId(), doctor.getSpecialisation().getId());
 		
-		appointment.setApproved(false);
 		appointment.setRequested(true);
+		appointment.setApproved(false);
+		appointment.setPatientApproved(false);
 		appointment.setPredefined(false);
 		appointment.setClinic(clinic);
 		appointment.setDoctor(doctor);
@@ -160,9 +141,8 @@ public class AppointmentService implements AppointmentServiceInterface {
 		appointment = this.save(appointment);
 		
 		List<User> adminList = this.userService.findByClinicAndRole(clinic.getId(), "ROLE_ADMIN_CLINIC");
-		
 		adminList.forEach(admin -> {
-			this.mailService.sendMail(admin.getEmail(), "Request for appointment", "Patient " + patient.getFirstName() + " " + patient.getLastName() + " requested an appointment. Go to your dashboard and approve it.");
+			this.mailService.sendMail(admin.getEmail(), "Request for appointment", "Patient " + patient.getFirstName() + " " + patient.getLastName() + " requested an appointment. Go to your dashboard and approve/disapprove it.");
 		});
 				
 		return new AppointmentDTO(appointment);
@@ -175,6 +155,12 @@ public class AppointmentService implements AppointmentServiceInterface {
 		appointment.setPatient(patient);
 		appointment.setRequested(true);
 		appointment = this.save(appointment);
+		
+		List<User> adminList = this.userService.findByClinicAndRole(appointment.getClinic().getId(), "ROLE_ADMIN_CLINIC");
+		adminList.forEach(admin -> {
+			this.mailService.sendMail(admin.getEmail(), "Request for appointment", "Patient " + patient.getFirstName() + " " + patient.getLastName() + " requested an appointment. Go to your dashboard and approve/disapprove it.");
+		});
+		
 		return new AppointmentDTO(appointment);
 	}
 	
@@ -183,12 +169,14 @@ public class AppointmentService implements AppointmentServiceInterface {
 		Appointment appointment = this.appointmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Appointment with id '" + id + "' not found"));
 		appointment.setApproved(true);
 		appointment = this.save(appointment);
+		this.mailService.sendMail(appointment.getPatient().getEmail(), "Request for appointment approved", "Request for appointment was approved, check your approved appointments and confirm.");
 		return new AppointmentDTO(appointment);
 	}
 	
 	@Override
 	public AppointmentDTO disapproveAppointment(Integer id) {
 		Appointment appointment = this.appointmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Appointment with id '" + id + "' not found"));
+		this.mailService.sendMail(appointment.getPatient().getEmail(), "Request for appointment disapproved", "Request for appointment was disapproved. Try again.");
 		if(appointment.getPredefined()) {
 			appointment.setRequested(false);
 			appointment.setPatient(null);
@@ -212,6 +200,14 @@ public class AppointmentService implements AppointmentServiceInterface {
 				this.remove(appointment);
 			}
 		}
+	}
+	
+	@Override
+	public AppointmentDTO patientApproveAppointment(Integer id) {
+		Appointment appointment = this.appointmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Appointment with id '" + id + "' not found"));
+		appointment.setPatientApproved(true);
+		appointment = this.save(appointment);
+		return new AppointmentDTO(appointment);
 	}
 	
 	@Override

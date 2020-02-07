@@ -1,0 +1,62 @@
+<div id="table-wrapper" class="mat-elevation-z3">
+    <p>Confirm appointments</p>
+    <table mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="clinicName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Clinic</th>
+            <td mat-cell *matCellDef="let appointment">{{appointment.clinicName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="typeName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Appointment type</th>
+            <td mat-cell *matCellDef="let appointment">{{appointment.typeName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="roomName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Room</th>
+            <td mat-cell *matCellDef="let appointment">{{appointment.roomName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="doctorName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Doctor</th>
+            <td mat-cell *matCellDef="let appointment">{{appointment.doctorName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="approved">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Approved</th>
+            <td mat-cell *matCellDef="let appointment">{{appointment.approved}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="finalPrice">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+            <td mat-cell *matCellDef="let appointment">{{appointment.finalPrice}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="time">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+            <td mat-cell *matCellDef="let appointment">{{appointment.time | date:'dd.MM.yyyy HH:mm'}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="button">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let appointment">
+                <button mat-raised-button type="button" (click)="onConfirmClick(appointment.id)">Confirm</button>
+                <button mat-raised-button type="button" (click)="onCancelClick(appointment.id)">Cancel</button>
+            </td>
+        </ng-container>
+
+
+
+        <ng-container matColumnDef="noRecord">
+            <td mat-footer-cell [attr.colspan]="columnsToDisplay.length" *matFooterCellDef>No appointments found.</td>
+        </ng-container>
+        <ng-container matColumnDef="loading">
+            <td mat-footer-cell [attr.colspan]="columnsToDisplay.length" *matFooterCellDef>Loading</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+        <tr [hidden]="!loading" mat-footer-row *matFooterRowDef="['loading']"></tr>
+        <tr [hidden]="dataSource?.data.length > 0 || loading" mat-footer-row *matFooterRowDef="['noRecord']"></tr>
+    </table>
+</div>

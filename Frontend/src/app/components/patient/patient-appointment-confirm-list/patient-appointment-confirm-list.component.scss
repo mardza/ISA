@@ -1,0 +1,17 @@
+#table-wrapper {
+  margin: 20px auto;
+  padding: 15px;
+  max-width: 850px;
+
+  p {
+    text-align: center;
+  }
+
+  table {
+    width: 100%;
+
+    .clickable-row:hover {
+      cursor: pointer;
+    }
+  }
+}

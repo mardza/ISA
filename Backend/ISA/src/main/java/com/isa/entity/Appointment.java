@@ -56,6 +56,9 @@ public class Appointment {
 	@Column(name = "requested", unique = false, nullable = false)
 	private Boolean requested;
 	
+	@Column(name = "patient_approved", unique = false, nullable = false)
+	private Boolean patientApproved;
+	
 	
 	public Appointment() {}
 
@@ -146,6 +149,14 @@ public class Appointment {
 
 	public void setRequested(Boolean requested) {
 		this.requested = requested;
+	}
+
+	public Boolean getPatientApproved() {
+		return patientApproved;
+	}
+
+	public void setPatientApproved(Boolean patientApproved) {
+		this.patientApproved = patientApproved;
 	}
 
 	@Override

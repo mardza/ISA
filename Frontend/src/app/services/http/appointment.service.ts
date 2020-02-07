@@ -17,11 +17,14 @@ export class AppointmentService {
     ) {
     }
 
-    getCurrentUserAppointments(old: boolean): Observable<Appointment[]> {
+    getCurrentUserAppointments(old: boolean, patientApproved: boolean): Observable<Appointment[]> {
         let params: HttpParams;
+        params = new HttpParams();
         if(old !== null && old !== undefined){
-            params = new HttpParams();
             params = params.set('old', old.toString());
+        }
+        if(patientApproved !== null && patientApproved !== undefined){
+            params = params.set('patientApproved', patientApproved.toString());
         }
         return this.http
             .get<Appointment[]>(
@@ -36,6 +39,7 @@ export class AppointmentService {
     }
 
     getAppointments(query?: {doctorEmail?: string, patientEmail?: string, approved?: boolean, clinicId?: number, predefined?: boolean, old?: boolean}): Observable<Appointment[]> {
+        // TODO: not all supported parameters are listed here, add all
         let params: HttpParams;
         if(query){
             params = new HttpParams();
@@ -133,6 +137,17 @@ export class AppointmentService {
         return this.http
             .post(
                 this.url + '/' + id + '/disapprove',
+                null
+            )
+            .pipe(
+                map(response => Appointment.toAppointment(response))
+            );
+    }
+
+    patientApproveAppointment(id: number): Observable<Appointment> {
+        return this.http
+            .post(
+                this.url + '/' + id + '/patient-approve',
                 null
             )
             .pipe(

@@ -12,7 +12,7 @@ public interface AppointmentServiceInterface {
 	
 	//List<AppointmentDTO> findPredefinedByClinicId(Integer id);
 	
-	List<AppointmentDTO> findFiltered(String doctorEmail, String patientEmail, String adminEmail, Boolean approved, Integer clinicId, Boolean predefined, Boolean requested, Boolean old);
+	List<AppointmentDTO> findFiltered(String doctorEmail, String patientEmail, String adminEmail, Boolean approved, Integer clinicId, Boolean predefined, Boolean requested, Boolean patientApproved, Boolean old);
 	
 	List<AppointmentDTO> findAdminClinicAppointmentRequests();
 	
@@ -21,6 +21,8 @@ public interface AppointmentServiceInterface {
 	AppointmentDTO activateAppointment(Integer id);
 	
 	AppointmentDTO approveAppointment(Integer id);
+	
+	AppointmentDTO patientApproveAppointment(Integer id);
 	
 	AppointmentDTO disapproveAppointment(Integer id);
 	

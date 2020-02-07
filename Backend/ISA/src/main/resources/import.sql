@@ -125,20 +125,20 @@ VALUES (2, 4, 3000, 50);
 
 
 
-INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested) 
-VALUES ('2020-1-14 09:30:00', 1, 1, 1, 1, 5, 8, true, true, true);
+INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested, patient_approved) 
+VALUES ('2020-1-14 09:30:00', 1, 1, 1, 1, 5, 8, true, true, true, true);
 
-INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested) 
-VALUES ('2020-3-25 08:00:00', 1, 1, 1, 1, 5, NULL, false, true, false);
+INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested, patient_approved) 
+VALUES ('2020-3-25 08:00:00', 1, 1, 1, 1, 5, NULL, false, true, false, false);
 
-INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested) 
-VALUES ('2020-3-25 12:00:00', 1, 1, 1, 1, 5, NULL, false, true, false);
+INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested, patient_approved) 
+VALUES ('2020-3-25 12:00:00', 1, 1, 1, 1, 5, NULL, false, true, false, false);
 
-INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested) 
-VALUES ('2020-3-25 09:30:00', 2, 1, 2, 2, 6, NULL, false, true, false);
+INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested, patient_approved) 
+VALUES ('2020-3-25 09:30:00', 2, 1, 2, 2, 6, NULL, false, true, false, false);
 
-INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested) 
-VALUES ('2020-3-25 12:30:00', 2, 2, 4, 3, 7, NULL, false, true, false);
+INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested, patient_approved) 
+VALUES ('2020-3-25 12:30:00', 2, 2, 4, 3, 7, NULL, false, true, false, false);
 
 
 --INSERT INTO users_roles (user_id, role_id)
