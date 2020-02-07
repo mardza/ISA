@@ -50,9 +50,11 @@ public class Appointment {
 	@Column(name = "approved", unique = false, nullable = false)
 	private Boolean approved;
 	
-//	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.MERGE}, fetch = FetchType.EAGER)
-//	@JoinTable(name = "appointments_work_calendars", joinColumns = @JoinColumn(name = "appointment_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "work_calendar_id", referencedColumnName = "id"))
-//	private List<WorkCalendar> workCalendars;
+	@Column(name = "predefined", unique = false, nullable = false)
+	private Boolean predefined;
+	
+	@Column(name = "requested", unique = false, nullable = false)
+	private Boolean requested;
 	
 	
 	public Appointment() {}
@@ -128,6 +130,22 @@ public class Appointment {
 
 	public void setApproved(Boolean approved) {
 		this.approved = approved;
+	}
+	
+	public Boolean getPredefined() {
+		return predefined;
+	}
+
+	public void setPredefined(Boolean predefined) {
+		this.predefined = predefined;
+	}
+
+	public Boolean getRequested() {
+		return requested;
+	}
+
+	public void setRequested(Boolean requested) {
+		this.requested = requested;
 	}
 
 	@Override

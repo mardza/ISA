@@ -128,7 +128,19 @@ export class AppointmentService {
             );
     }
 
-    deleteAppointment(id: number): Observable<any> {
+    // when clinic admin disapproves appointment request
+    disapproveAppointment(id: number): Observable<Appointment> {
+        return this.http
+            .post(
+                this.url + '/' + id + '/disapprove',
+                null
+            )
+            .pipe(
+                map(response => Appointment.toAppointment(response))
+            );
+    }
+
+    cancelAppointment(id: number): Observable<any> {
         return this.http
             .delete(
                 this.url + '/' + id

@@ -14,6 +14,7 @@ export class PatientAppointmentListComponent implements OnInit {
     old: boolean;
     columnsToDisplay: string[];
     dataSource: MatTableDataSource<Appointment>;
+    currentTime: Date;
     loading: boolean;
 
     @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -27,7 +28,8 @@ export class PatientAppointmentListComponent implements OnInit {
 
 
     ngOnInit() {
-        this.columnsToDisplay = ['clinicName', 'typeName', 'roomName', 'doctorName', 'approved', 'finalPrice', 'time'];
+        this.columnsToDisplay = ['clinicName', 'typeName', 'roomName', 'doctorName', 'approved', 'finalPrice', 'time', 'buttonCancel'];
+        this.currentTime = new Date();
         this.loading = true;
         this.old = this.route.snapshot.data.old;
         this.appointmentService
@@ -35,6 +37,7 @@ export class PatientAppointmentListComponent implements OnInit {
             .subscribe(
                 value => {
                     this.dataSource = new MatTableDataSource<Appointment>();
+                    console.log(value);
                     this.dataSource.data = value;
                     this.dataSource.sort = this.sort;
                     this.loading = false
@@ -44,5 +47,18 @@ export class PatientAppointmentListComponent implements OnInit {
                     this.loading = false;
                 }
             )
+    }
+
+    onCancelClick(appointmentId: number) {
+        this.appointmentService
+            .cancelAppointment(appointmentId)
+            .subscribe(
+                value => {
+                    this.ngOnInit();
+                },
+                error => {
+                    console.log(error);
+                }
+            );
     }
 }

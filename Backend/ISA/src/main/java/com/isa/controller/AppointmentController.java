@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,9 +39,10 @@ public class AppointmentController {
 			@RequestParam(name = "approved", required = false) Boolean approved,
 			@RequestParam(name = "clinicId", required = false) Integer clinicId,
 			@RequestParam(name = "predefined", required = false) Boolean predefined,
+			@RequestParam(name = "requested", required = false) Boolean requested,
 			@RequestParam(name = "old", required = false) Boolean old
 			){
-		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(doctorEmail, patientEmail, adminEmail, approved, clinicId, predefined, old);
+		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(doctorEmail, patientEmail, adminEmail, approved, clinicId, predefined, requested, old);
 		return new ResponseEntity<List<AppointmentDTO>>(appointmentDTOList, HttpStatus.OK);
 	}
 	
@@ -49,7 +51,7 @@ public class AppointmentController {
 			@RequestParam(name = "old", required = false) Boolean old
 			){
 		User patient = this.userService.getCurrentUser();
-		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(null, patient.getEmail(), null, null, null, null, old);
+		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(null, patient.getEmail(), null, null, null, null, null, old);
 		return new ResponseEntity<List<AppointmentDTO>>(appointmentDTOList, HttpStatus.OK);
 	}
 	
@@ -83,5 +85,18 @@ public class AppointmentController {
 	public ResponseEntity<AppointmentDTO> approveAppointment(@PathVariable("id") Integer id){
 		AppointmentDTO appointmentDTO = this.appointmentService.approveAppointment(id);
 		return new ResponseEntity<AppointmentDTO>(appointmentDTO, HttpStatus.OK);
+	}
+	
+	// when clinic admin disapproves appointment request
+	@PostMapping(path = "/{id}/disapprove")
+	public ResponseEntity<AppointmentDTO> disapproveAppointment(@PathVariable("id") Integer id){
+		AppointmentDTO appointmentDTO = this.appointmentService.disapproveAppointment(id);
+		return new ResponseEntity<AppointmentDTO>(appointmentDTO, HttpStatus.OK);
+	}
+	
+	@DeleteMapping(path = "/{id}")
+	public ResponseEntity<Void> cancelAppointment(@PathVariable("id") Integer id) {
+		this.appointmentService.cancelAppointment(id);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }

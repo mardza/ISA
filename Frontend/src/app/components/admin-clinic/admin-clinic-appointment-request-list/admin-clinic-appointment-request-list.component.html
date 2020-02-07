@@ -37,6 +37,14 @@
             <td mat-cell *matCellDef="let appointment">{{appointment.time | date:'dd.MM.yyyy HH:mm'}}</td>
         </ng-container>
 
+        <ng-container matColumnDef="button">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let appointment">
+                <button mat-raised-button type="button" (click)="onApproveClick(appointment.id)">Approve</button>
+                <button mat-raised-button type="button" (click)="onDisapproveClick(appointment.id)">Disapprove</button>
+            </td>
+        </ng-container>
+
 
 
         <ng-container matColumnDef="noRecord">
@@ -47,7 +55,7 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" [routerLink]="[row.id]" class="clickable-row"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
         <tr [hidden]="!loading" mat-footer-row *matFooterRowDef="['loading']"></tr>
         <tr [hidden]="dataSource?.data.length > 0 || loading" mat-footer-row *matFooterRowDef="['noRecord']"></tr>
     </table>

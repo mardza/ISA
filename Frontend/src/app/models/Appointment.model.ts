@@ -14,6 +14,7 @@ export class Appointment {
     doctor: User;
     patient: User;
     approved: boolean;
+    predefined: boolean;
 
 
     constructor() {
@@ -46,7 +47,7 @@ export class Appointment {
 
         const appointmentToReturn: Appointment = new Appointment();
         appointmentToReturn.id = appointment.id;
-        appointmentToReturn.time = appointment.time;
+        appointmentToReturn.time = new Date(appointment.time);
         appointmentToReturn.type = AppointmentType.toAppointmentType(appointment.type);
         appointmentToReturn.clinic = Clinic.toClinic(appointment.clinic);
         appointmentToReturn.price = Price.toPrice(appointment.price);
@@ -54,6 +55,7 @@ export class Appointment {
         appointmentToReturn.doctor = User.toUser(appointment.doctor);
         appointmentToReturn.patient = User.toUser(appointment.patient);
         appointmentToReturn.approved = appointment.approved;
+        appointmentToReturn.predefined = appointment.predefined;
         return appointmentToReturn;
     }
 

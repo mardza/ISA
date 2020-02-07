@@ -40,14 +40,14 @@ public class AppointmentService implements AppointmentServiceInterface {
 		return new AppointmentDTO(appointment);
 	}
 	
-	@Override
-	public List<AppointmentDTO> findPredefinedByClinicId(Integer id) {
-		List<Appointment> appointmentList = this.appointmentRepository.findPredefinedByClinicId(id);
-		return AppointmentDTO.toList(appointmentList);
-	}
+//	@Override
+//	public List<AppointmentDTO> findPredefinedByClinicId(Integer id) {
+//		List<Appointment> appointmentList = this.appointmentRepository.findPredefinedByClinicId(id);
+//		return AppointmentDTO.toList(appointmentList);
+//	}
 	
 	@Override
-	public List<AppointmentDTO> findFiltered(String doctorEmail, String patientEmail, String adminEmail, Boolean approved, Integer clinicId, Boolean predefined, Boolean old) {
+	public List<AppointmentDTO> findFiltered(String doctorEmail, String patientEmail, String adminEmail, Boolean approved, Integer clinicId, Boolean predefined, Boolean requested, Boolean old) {
 		List<Appointment> appointmentList = this.appointmentRepository.findAll();
 		
 		if(doctorEmail != null && doctorEmail.length() > 0) {
@@ -92,7 +92,13 @@ public class AppointmentService implements AppointmentServiceInterface {
 		
 		if(predefined != null) {
 			appointmentList.removeIf(appointment -> {
-				return (appointment.getPatient() == null) != predefined;
+				return appointment.getPredefined() != predefined;
+			});
+		}
+		
+		if(requested != null) {
+			appointmentList.removeIf(appointment -> {
+				return appointment.getRequested() != requested;
 			});
 		}
 		
@@ -109,24 +115,28 @@ public class AppointmentService implements AppointmentServiceInterface {
 	@Override
 	public List<AppointmentDTO> findAdminClinicAppointmentRequests() {
 		User admin = this.userService.getCurrentUser();
-		List<Appointment> appointmentList = this.appointmentRepository.findAll();
-		appointmentList.removeIf(appointment -> {
-			List<User> adminList = appointment.getClinic().getEmployees();
-			adminList.removeIf(employee -> {
-				return !employee.getRole().getName().equals("ROLE_ADMIN_CLINIC");
-			});
-			boolean toRemove = true;
-			for(User a: adminList) {
-				if(a.getEmail().equals(admin.getEmail())) {
-					toRemove = false;
-				}
-			}
-			return toRemove;
-		});
-		appointmentList.removeIf(appointment -> {
-			return !(appointment.getPatient() != null && appointment.getApproved() == false);
-		});
-		return AppointmentDTO.toList(appointmentList);
+		List<AppointmentDTO> appointmentDTOList = this.findFiltered(null, null, admin.getEmail(), false, admin.getClinic().getId(), null, true, null);
+		return appointmentDTOList;
+		
+//		User admin = this.userService.getCurrentUser();
+//		List<Appointment> appointmentList = this.appointmentRepository.findAll();
+//		appointmentList.removeIf(appointment -> {
+//			List<User> adminList = appointment.getClinic().getEmployees();
+//			adminList.removeIf(employee -> {
+//				return !employee.getRole().getName().equals("ROLE_ADMIN_CLINIC");
+//			});
+//			boolean toRemove = true;
+//			for(User a: adminList) {
+//				if(a.getEmail().equals(admin.getEmail())) {
+//					toRemove = false;
+//				}
+//			}
+//			return toRemove;
+//		});
+//		appointmentList.removeIf(appointment -> {
+//			return appointment.getApproved() && !appointment.getRequested();
+//		});
+//		return AppointmentDTO.toList(appointmentList);
 	}
 	
 	@Override
@@ -139,6 +149,8 @@ public class AppointmentService implements AppointmentServiceInterface {
 		Price price = this.priceService.findByClinicAndAppointmentType(appointmentCreateDTO.getClinicId(), doctor.getSpecialisation().getId());
 		
 		appointment.setApproved(false);
+		appointment.setRequested(true);
+		appointment.setPredefined(false);
 		appointment.setClinic(clinic);
 		appointment.setDoctor(doctor);
 		appointment.setPatient(patient);
@@ -161,6 +173,7 @@ public class AppointmentService implements AppointmentServiceInterface {
 		Appointment appointment = this.appointmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Appointment with id '" + id + "' not found"));
 		User patient = this.userService.getCurrentUser();
 		appointment.setPatient(patient);
+		appointment.setRequested(true);
 		appointment = this.save(appointment);
 		return new AppointmentDTO(appointment);
 	}
@@ -171,6 +184,34 @@ public class AppointmentService implements AppointmentServiceInterface {
 		appointment.setApproved(true);
 		appointment = this.save(appointment);
 		return new AppointmentDTO(appointment);
+	}
+	
+	@Override
+	public AppointmentDTO disapproveAppointment(Integer id) {
+		Appointment appointment = this.appointmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Appointment with id '" + id + "' not found"));
+		if(appointment.getPredefined()) {
+			appointment.setRequested(false);
+			appointment.setPatient(null);
+			appointment = this.save(appointment);
+			return new AppointmentDTO(appointment);
+		} else {
+			this.remove(appointment);
+			return null;
+		}
+	}
+	
+	@Override
+	public void cancelAppointment(Integer id) {
+		Appointment appointment = this.appointmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Appointment with id '" + id + "' not found"));
+		if(appointment.getTime().getTime() - new Date().getTime() >  86400000) {
+			if(appointment.getPredefined()) {
+				appointment.setRequested(false);
+				appointment.setPatient(null);
+				this.save(appointment);
+			} else {
+				this.remove(appointment);
+			}
+		}
 	}
 	
 	@Override

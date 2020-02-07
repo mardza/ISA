@@ -24,7 +24,7 @@ export class AdminClinicAppointmentRequestListComponent implements OnInit {
 
 
     ngOnInit() {
-        this.columnsToDisplay = ['clinicName', 'typeName', 'roomName', 'doctorName', 'approved', 'finalPrice', 'time'];
+        this.columnsToDisplay = ['clinicName', 'typeName', 'roomName', 'doctorName', 'approved', 'finalPrice', 'time', 'button'];
         this.loading = true;
         this.appointmentService
             .getAdminClinicAppointmentRequests()
@@ -38,6 +38,34 @@ export class AdminClinicAppointmentRequestListComponent implements OnInit {
                 error => {
                     console.log(error);
                     this.loading = false;
+                }
+            );
+    }
+
+    onApproveClick(appointmentId: number) {
+        this.appointmentService
+            .approveAppointment(appointmentId)
+            .subscribe(
+                value => {
+                    console.log(value);
+                    this.ngOnInit();
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+
+    onDisapproveClick(appointmentId: number) {
+        this.appointmentService
+            .disapproveAppointment(appointmentId)
+            .subscribe(
+                value => {
+                    console.log(value);
+                    this.ngOnInit();
+                },
+                error => {
+                    console.log(error);
                 }
             );
     }

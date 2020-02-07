@@ -19,6 +19,7 @@ public class AppointmentDTO {
 	private UserDTO doctor;
 	private UserDTO patient;
 	private Boolean approved;
+	private Boolean predefined;
 	
 	
 	public AppointmentDTO() {}
@@ -52,6 +53,7 @@ public class AppointmentDTO {
 		}
 		
 		this.approved = appointment.getApproved();
+		this.predefined = appointment.getPredefined();
 	}
 	
 	public static List<AppointmentDTO> toList(List<Appointment> appointmentList) {
@@ -129,6 +131,14 @@ public class AppointmentDTO {
 
 	public void setApproved(Boolean approved) {
 		this.approved = approved;
+	}
+
+	public Boolean getPredefined() {
+		return predefined;
+	}
+
+	public void setPredefined(Boolean predefined) {
+		this.predefined = predefined;
 	}
 
 	@Override

@@ -137,7 +137,14 @@ const routes: Routes = [
             {
                 path: 'appointment-requests',
                 component: AdminClinicAppointmentRequestListComponent
-            }
+            },
+            // {
+            //     path: 'appointment-requests/:appointmentId',
+            //     component: AdminClinicAppointmentRequestListComponent,
+            //     resolve: {
+            //         appointment: AppointmentResolver
+            //     }
+            // }
         ]
     },
 
