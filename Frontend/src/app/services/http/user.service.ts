@@ -136,4 +136,25 @@ export class UserService {
                 null
             )
     }
+
+    getPatientDoctors(): Observable<User[]> {
+        return this.http
+            .get<User[]>(
+                this.url + '/interacted-with'
+            )
+            .pipe(
+                map(response => User.toUserList(response))
+            );
+    }
+
+    rateDoctor(doctorId: number, rating: number): Observable<User> {
+        return this.http
+            .post(
+                this.url + '/' + doctorId + '/rate',
+                rating
+            )
+            .pipe(
+                map(response => User.toUser(response))
+            );
+    }
 }

@@ -59,6 +59,12 @@ public class ClinicController {
 		List<Clinic> clinicList = this.clinicService.findAll();
 		return new ResponseEntity<List<ClinicDTO>>(ClinicDTO.toList(clinicList), HttpStatus.OK);
 	}
+	
+	@GetMapping("/interacted-with")
+	public ResponseEntity<List<ClinicDTO>> getInteracted(){
+		List<ClinicDTO> clinicDTOList = this.clinicService.findPatientClinics();
+		return new ResponseEntity<List<ClinicDTO>>(clinicDTOList, HttpStatus.OK);
+	}
 
 	@PostMapping
 	public ResponseEntity<ClinicDTO> createClinic(@RequestBody @Valid ClinicDTO clinicDTO) {
@@ -107,5 +113,17 @@ public class ClinicController {
 			){
 		List<DoctorAvailableDTO> doctorAvailableDTOList = this.clinicService.findAvailableDoctorsByClinic(clinicId, appointmentTypeId, date, firstName, lastName, rating);
 		return new ResponseEntity<List<DoctorAvailableDTO>>(doctorAvailableDTOList, HttpStatus.OK);
+	}
+	
+	@GetMapping("/{id}/doctors")
+	public ResponseEntity<List<DoctorAvailableDTO>> clinicDoctors(@PathVariable("id") Integer clinicId) {
+		List<DoctorAvailableDTO> doctorDTOList = this.clinicService.findAllDoctorsByClinic(clinicId);
+		return new ResponseEntity<List<DoctorAvailableDTO>>(doctorDTOList, HttpStatus.OK);
+	}
+	
+	@PostMapping("/{id}/rate")
+	public ResponseEntity<ClinicDTO> rateClinic(@PathVariable("id") Integer clinicId, @RequestBody Integer rating){
+		ClinicDTO clinicDTO = this.clinicService.rate(clinicId, rating);
+		return new ResponseEntity<ClinicDTO>(clinicDTO, HttpStatus.OK);
 	}
 }

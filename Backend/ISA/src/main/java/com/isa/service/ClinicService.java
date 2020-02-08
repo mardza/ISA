@@ -8,7 +8,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import com.isa.dto.DoctorAvailableDTO;
 import com.isa.dto.UserDTO;
 import com.isa.dto.PeriodDTO;
 import com.isa.entity.Clinic;
+import com.isa.entity.ClinicRating;
 import com.isa.entity.User;
 import com.isa.entity.Appointment;
 import com.isa.entity.AppointmentType;
@@ -34,6 +37,16 @@ public class ClinicService implements ClinicServiceInterface {
 
 	@Autowired
 	private AppointmentTypeService appointmentTypeService;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private ClinicRatingService clinicRatingService;
+	
+	@Autowired
+	private DoctorRatingService doctorRatingService;
+	
 
 	@Override
 	public List<Clinic> findAll() {
@@ -42,8 +55,9 @@ public class ClinicService implements ClinicServiceInterface {
 
 	@Override
 	public Clinic findById(Integer id) {
-		return this.clinicRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Clinic with id '" + id + "' not found"));
+		Clinic clinic = this.clinicRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Clinic with id '" + id + "' not found"));
+		clinic.setRatingAverage(this.clinicRatingService.findClinicRating(clinic.getId()));
+		return clinic;
 	}
 
 	@Override
@@ -110,7 +124,27 @@ public class ClinicService implements ClinicServiceInterface {
 			});
 			return doctors.size() == 0;
 		});
+		clinicList.forEach(clinic -> {
+			clinic.setRatingAverage(this.clinicRatingService.findClinicRating(clinic.getId()));
+		});
 		return clinicList;
+	}
+	
+	@Override
+	public List<DoctorAvailableDTO> findAllDoctorsByClinic(Integer clinicId) {
+		Clinic clinic = this.findById(clinicId);
+		List<User> doctors = clinic.getEmployees();
+		doctors.removeIf(employee -> {
+			return !employee.getRole().getName().equals("ROLE_DOCTOR");
+		});
+		List<DoctorAvailableDTO> doctorAvailableDTOList = new ArrayList<DoctorAvailableDTO>();
+		doctors.forEach(doctor -> {
+			doctor.setRatingAverage(this.doctorRatingService.findDoctorRating(doctor.getId()));
+				DoctorAvailableDTO doctorAvailableDTO = new DoctorAvailableDTO();
+				doctorAvailableDTO.setDoctor(new UserDTO(doctor));
+				doctorAvailableDTOList.add(doctorAvailableDTO);
+		});
+		return doctorAvailableDTOList;
 	}
 	
 	@Override
@@ -156,8 +190,6 @@ public class ClinicService implements ClinicServiceInterface {
 			});
 			appointmentList.sort(Comparator.comparing(appointment -> appointment.getTime()));
 			
-//			Date doctorStartDate = todayAtHours(doctor.getWorkStart());
-//			Date doctorEndDate = todayAtHours(doctor.getWorkEnd());
 			Date doctorStartDate = dateAtHours(date, doctor.getWorkStart());
 			Date doctorEndDate = dateAtHours(date, doctor.getWorkEnd());
 			System.out.println("Doctor start time: " + doctorStartDate);
@@ -213,7 +245,51 @@ public class ClinicService implements ClinicServiceInterface {
 		
 		return doctorAvailableDTOList;
 	}
-
+	
+	@Override
+	public List<ClinicDTO> findPatientClinics() {
+		User patient = this.userService.getCurrentUser();
+		List<Appointment> patientAppointments = patient.getPatientAppointmentList();
+		Long time = new Date().getTime();
+		patientAppointments.removeIf(appointment -> {
+			return appointment.getTime().getTime() >= time;
+		});
+		Set<Clinic> clinicSet = new HashSet<Clinic>();
+		patientAppointments.forEach(appointment -> {
+			clinicSet.add(appointment.getClinic());
+		});
+		clinicSet.forEach(clinic -> {
+			clinic.setRatingAverage(this.clinicRatingService.findClinicRating(clinic.getId()));
+		});
+		List<ClinicDTO> clinicDTOList = ClinicDTO.toList(new ArrayList<Clinic>(clinicSet));
+		clinicDTOList.forEach(clinicDTO -> {
+			ClinicRating clinicRating = this.clinicRatingService.findByPatientIdAndClinicId(patient.getId(), clinicDTO.getId());
+			if(clinicRating != null) {
+				clinicDTO.setPatientRating(clinicRating.getValue());
+			}
+		});
+		return clinicDTOList;
+	}
+	
+	@Override
+	public ClinicDTO rate(Integer clinicId, Integer rating) {
+		Clinic clinic = this.findById(clinicId);
+		User patient = this.userService.getCurrentUser();
+		ClinicRating clinicRating = this.clinicRatingService.findByPatientIdAndClinicId(patient.getId(), clinicId);
+		if(clinicRating != null) {
+			clinicRating.setValue(rating);
+			clinicRating = this.clinicRatingService.update(clinicRating);
+		} else {
+			clinicRating = new ClinicRating();
+			clinicRating.setPatient(patient);
+			clinicRating.setClinic(clinic);
+			clinicRating.setValue(rating);
+			clinicRating = this.clinicRatingService.create(clinicRating);
+		}
+		ClinicDTO clinicDTO = new ClinicDTO(clinic);
+		clinicDTO.setPatientRating(rating);
+		return clinicDTO;
+	}
 
 	@Override
 	public Clinic create(ClinicDTO clinicDTO) {

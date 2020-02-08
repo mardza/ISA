@@ -25,7 +25,7 @@
         <p class="result-clinic-name">{{clinicPriceWrapper.clinic.name}}</p>
         <p class="result-clinic-address">{{clinicPriceWrapper.clinic.address}}</p>
         <div>
-            <p class="result-clinic-rating"><b>{{clinicPriceWrapper.clinic.ratingAverage}}</b> <mat-icon>star_border</mat-icon></p>
+            <p class="result-clinic-rating"><b>{{clinicPriceWrapper.clinic.ratingAverage>=1?clinicPriceWrapper.clinic.ratingAverage:'-'}}</b> <mat-icon>star_border</mat-icon></p>
             <div class="predefined-price-wrapper">
                 <p *ngIf="clinicPriceWrapper.price?.discount === 0">{{clinicPriceWrapper.price?.price}} rsd</p>
                 <ng-container *ngIf="clinicPriceWrapper.price?.discount > 0">

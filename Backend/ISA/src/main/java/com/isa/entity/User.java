@@ -77,6 +77,15 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "doctor")
 	private List<Appointment> doctorAppointmentList;
 	
+	@OneToMany(mappedBy = "patient")
+	private List<Appointment> patientAppointmentList;
+	
+	@OneToMany(mappedBy = "patient")
+	private List<ClinicRating> patientClinicRatingList;
+	
+	@OneToMany(mappedBy = "patient")
+	private List<DoctorRating> patientDoctorRatingList;
+	
 	@Column(name = "work_start", unique = false, nullable = true)
 	private Integer workStart;
 	
@@ -228,6 +237,14 @@ public class User implements UserDetails {
 
 	public void setDoctorAppointmentList(List<Appointment> doctorAppointmentList) {
 		this.doctorAppointmentList = doctorAppointmentList;
+	}
+
+	public List<Appointment> getPatientAppointmentList() {
+		return patientAppointmentList;
+	}
+
+	public void setPatientAppointmentList(List<Appointment> patientAppointmentList) {
+		this.patientAppointmentList = patientAppointmentList;
 	}
 
 	public Integer getWorkStart() {

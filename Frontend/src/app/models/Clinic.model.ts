@@ -12,6 +12,7 @@ export class Clinic {
     rooms: Room[];
     ratingAverage: number;
     ratingWeight: number;
+    patientRating: number;
 
     constructor() {
     }
@@ -32,6 +33,7 @@ export class Clinic {
         clinicToReturn.rooms = Room.toRoomList(clinic.rooms);
         clinicToReturn.ratingAverage = clinic.ratingAverage;
         clinicToReturn.ratingWeight = clinic.ratingWeight;
+        clinicToReturn.patientRating = clinic.patientRating;
         return clinicToReturn;
     }
 

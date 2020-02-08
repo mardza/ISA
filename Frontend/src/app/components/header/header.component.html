@@ -5,13 +5,18 @@
     <span class="example-fill-remaining-space"></span>
 
     <ng-container *ngIf="role === 'ROLE_PATIENT'">
-        <a mat-button [routerLink]="['/patient/clinics']">Clinics</a>
-        <a mat-button [routerLink]="['/patient/find-clinic']">Create appointment</a>
-        <a mat-button [routerLink]="['/patient/appointments-confirm']">Confirm appointments</a>
-        <a mat-button [routerLink]="['/patient/appointments']">Appointments</a>
-        <a mat-button [routerLink]="['/patient/appointments/old']">Appointment history</a>
+        <a mat-button [routerLink]="['/patient/clinics']" routerLinkActive="button-hover">Clinics</a>
+        <a mat-button [routerLink]="['/patient/find-clinic']" routerLinkActive="button-hover">Create appointment</a>
+        <a mat-button [routerLink]="['/patient/appointments-confirm']" routerLinkActive="button-hover">Confirm appointments</a>
+        <a mat-button [routerLink]="['/patient/appointments']" routerLinkActive="button-hover">Appointments</a>
+        <a mat-button [routerLink]="['/patient/appointments/old']" routerLinkActive="button-hover">Appointment history</a>
 <!--        <a mat-button [routerLink]="['/patient/medical-record']">Medical record</a>-->
-        <a mat-button [routerLink]="['/profile']">My profile</a>
+        <button mat-button [matMenuTriggerFor]="patientRatings">Ratings</button>
+        <mat-menu #patientRatings="matMenu">
+            <a mat-menu-item [routerLink]="['/patient/clinic-rating']">Rate clinics</a>
+            <a mat-menu-item [routerLink]="['/patient/doctor-rating']">Rate doctors</a>
+        </mat-menu>
+        <a mat-button [routerLink]="['/profile']" routerLinkActive="button-hover">My profile</a>
     </ng-container>
 
     <ng-container *ngIf="role === 'ROLE_DOCTOR'">
@@ -31,10 +36,11 @@
     </ng-container>
 
     <ng-container *ngIf="role === 'ROLE_ADMIN_CLINIC'">
-        <a mat-button [routerLink]="['/admin-clinic/clinic']">Clinic</a>
+<!--        <a mat-button [routerLink]="['/admin-clinic/registration-requests']" routerLinkActive="button-hover">Registration requests</a>-->
+<!--        <a mat-button [routerLink]="['/admin-clinic/clinic']">Clinic</a>-->
         <a mat-button [routerLink]="['/admin-clinic/appointments']">Appointments</a>
 <!--        <a mat-button [routerLink]="['/admin-clinic/appointment-types']">Appointment types</a>-->
-        <a mat-button [routerLink]="['/admin-clinic/appointment-requests']">Appointment requests</a>
+        <a mat-button [routerLink]="['/admin-clinic/appointment-requests']" routerLinkActive="button-hover">Appointment requests</a>
 <!--        <a mat-button [routerLink]="['/admin-clinic/staff']">Staff</a>-->
 <!--        <a mat-button [routerLink]="['/admin-clinic/rooms']">Rooms</a>-->
 <!--        <a mat-button [routerLink]="['/admin-clinic/report']">Report</a>-->

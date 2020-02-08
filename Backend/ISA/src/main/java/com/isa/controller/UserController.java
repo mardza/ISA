@@ -63,6 +63,12 @@ public class UserController {
 		return new ResponseEntity<List<UserDTO>>(UserDTO.toList(userList, true), HttpStatus.OK);
 	}
 	
+	@GetMapping(path = "/interacted-with")
+	public ResponseEntity<List<UserDTO>> getInteracted(){
+		List<UserDTO> doctorDTOList = this.userService.findPatientDoctors();
+		return new ResponseEntity<List<UserDTO>>(doctorDTOList, HttpStatus.OK);
+	}
+	
 	@GetMapping()
 	public ResponseEntity<List<UserDTO>> getAll(
 			@RequestParam(name = "approved", required = false) Boolean approved,
@@ -104,4 +110,9 @@ public class UserController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
+	@PostMapping(path = "/{id}/rate")
+	public ResponseEntity<UserDTO> rateDoctor(@PathVariable("id") Integer doctorId, @RequestBody Integer rating) {
+		UserDTO userDTO = this.userService.rate(doctorId, rating);
+		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
+	}
 }

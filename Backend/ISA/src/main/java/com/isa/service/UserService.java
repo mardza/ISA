@@ -1,6 +1,10 @@
 package com.isa.service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.isa.controller.exception.custom.EntityNotFoundException;
 import com.isa.dto.UpdateUserDTO;
 import com.isa.dto.UserDTO;
+import com.isa.entity.Appointment;
+import com.isa.entity.DoctorRating;
 import com.isa.entity.Registration;
 import com.isa.entity.Role;
 import com.isa.entity.User;
@@ -37,6 +43,9 @@ public class UserService implements UserServiceInterface {
 	
 	@Autowired 
 	private MailService mailService;
+	
+	@Autowired
+	private DoctorRatingService doctorRatingService;
 	
 	
 
@@ -188,6 +197,51 @@ public class UserService implements UserServiceInterface {
 		user.setPhone(updateUserDTO.getPhone());
 		user = save(user);
 		return user;
+	}
+	
+	@Override
+	public List<UserDTO> findPatientDoctors() {
+		User patient = this.getCurrentUser();
+		List<Appointment> patientAppointments = patient.getPatientAppointmentList();
+		Long time = new Date().getTime();
+		patientAppointments.removeIf(appointment -> {
+			return appointment.getTime().getTime() >= time;
+		});
+		Set<User> doctorSet = new HashSet<User>();
+		patientAppointments.forEach(appointment -> {
+			doctorSet.add(appointment.getDoctor());
+		});
+		doctorSet.forEach(doctor -> {
+			doctor.setRatingAverage(this.doctorRatingService.findDoctorRating(doctor.getId()));
+		});
+		List<UserDTO> doctorDTOList = UserDTO.toList(new ArrayList<User>(doctorSet));
+		doctorDTOList.forEach(doctorDTO -> {
+			DoctorRating doctorRating = this.doctorRatingService.findByPatientIdAndClinicId(patient.getId(), doctorDTO.getId());
+			if(doctorRating != null) {
+				doctorDTO.setPatientRating(doctorRating.getValue());
+			}
+		});
+		return doctorDTOList;
+	}
+	
+	@Override
+	public UserDTO rate(Integer doctorId, Integer rating) {
+		User doctor = this.findById(doctorId);
+		User patient = this.getCurrentUser();
+		DoctorRating doctorRating = this.doctorRatingService.findByPatientIdAndClinicId(patient.getId(), doctorId);
+		if(doctorRating != null) {
+			doctorRating.setValue(rating);
+			doctorRating = this.doctorRatingService.update(doctorRating);
+		} else {
+			doctorRating = new DoctorRating();
+			doctorRating.setPatient(patient);
+			doctorRating.setDoctor(doctor);
+			doctorRating.setValue(rating);
+			doctorRating = this.doctorRatingService.create(doctorRating);
+		}
+		UserDTO userDTO = new UserDTO(doctor);
+		userDTO.setPatientRating(rating);
+		return userDTO;
 	}
 	
 	@Override

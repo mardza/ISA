@@ -52,27 +52,40 @@ export class PatientFindDoctorComponent implements OnInit {
         this.clinic = this.route.snapshot.data.clinic;
         this.selectedAppointmentTypeId = +this.route.snapshot.queryParams.appointmentTypeId;
         this.selectedDate = this.route.snapshot.queryParams.date;
-        this.selectedMoment = moment(this.selectedDate);
         this.currentMoment = moment();
 
-        this.clinicService
-            .searchDoctors(
-                this.clinic.id,
-                {
-                    appointmentTypeId: this.selectedAppointmentTypeId,
-                    date: this.selectedDate,
-                    firstName: '',
-                    lastName: '',
-                    rating: 1
-                })
-            .subscribe(
-                value => {
-                    this.doctorAvailableWrapperList = value;
-                },
-                error => {
-                    console.log(error);
-                }
-            );
+        if (!this.selectedAppointmentTypeId || !this.selectedDate) {
+            this.clinicService
+                .getDoctors(this.clinic.id)
+                .subscribe(
+                    value => {
+                        this.doctorAvailableWrapperList = value;
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                );
+        } else {
+            this.selectedMoment = moment(this.selectedDate);
+            this.clinicService
+                .searchDoctors(
+                    this.clinic.id,
+                    {
+                        appointmentTypeId: this.selectedAppointmentTypeId,
+                        date: this.selectedDate,
+                        firstName: '',
+                        lastName: '',
+                        rating: 1
+                    })
+                .subscribe(
+                    value => {
+                        this.doctorAvailableWrapperList = value;
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                );
+        }
     }
 
     onSubmit(form: NgForm) {
@@ -105,7 +118,7 @@ export class PatientFindDoctorComponent implements OnInit {
 
     // Returns true if day is weekend
     isWeekend(moment: Moment): boolean {
-        if(moment) {
+        if (moment) {
             const day = moment.weekday();
             return (day === 0 || day === 6);
         }

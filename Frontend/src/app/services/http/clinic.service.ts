@@ -6,7 +6,6 @@ import {Clinic} from '../../models/Clinic.model';
 import * as moment from 'moment';
 import {map} from 'rxjs/operators';
 import {Appointment} from '../../models/Appointment.model';
-import {Price} from '../../models/Price.model';
 import {ClinicPriceWrapper} from '../../models/custom/ClinicPriceWrapper.model';
 import {DoctorAvailableWrapper} from '../../models/custom/DoctorAvailableWrapper.model';
 
@@ -136,13 +135,44 @@ export class ClinicService {
         }
         return this.http
             .get<DoctorAvailableWrapper[]>(
-                this.url + '/'+ clinicId +'/search-doctors',
+                this.url + '/' + clinicId + '/search-doctors',
                 {
                     params: params
                 }
             )
             .pipe(
                 map(result => DoctorAvailableWrapper.toDoctorAvailableWrapperList(result))
+            );
+    }
+
+    getDoctors(clinicId: number): Observable<DoctorAvailableWrapper[]> {
+        return this.http
+            .get<DoctorAvailableWrapper[]>(
+                this.url + '/' + clinicId + '/doctors'
+            )
+            .pipe(
+                map(result => DoctorAvailableWrapper.toDoctorAvailableWrapperList(result))
+            );
+    }
+
+    getPatientClinics(): Observable<Clinic[]> {
+        return this.http
+            .get<Clinic[]>(
+                this.url + '/interacted-with'
+            )
+            .pipe(
+                map(result => Clinic.toClinicList(result))
+            );
+    }
+
+    rateClinic(clinicId: number, rating: number): Observable<Clinic> {
+        return this.http
+            .post(
+                this.url + '/' + clinicId + '/rate',
+                rating
+            )
+            .pipe(
+                map(response => Clinic.toClinic(response))
             );
     }
 }

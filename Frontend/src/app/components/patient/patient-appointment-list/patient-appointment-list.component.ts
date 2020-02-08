@@ -45,7 +45,7 @@ export class PatientAppointmentListComponent implements OnInit {
                     console.log(error);
                     this.loading = false;
                 }
-            )
+            );
     }
 
     onCancelClick(appointmentId: number) {

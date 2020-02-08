@@ -31,6 +31,8 @@ import {AppointmentResolver} from './services/resolvers/Appointment.resolver';
 import {AdminClinicHomeComponentComponent} from './components/admin-clinic/admin-clinic-home-component/admin-clinic-home-component.component';
 import {AdminClinicAppointmentRequestListComponent} from './components/admin-clinic/admin-clinic-appointment-request-list/admin-clinic-appointment-request-list.component';
 import {PatientAppointmentConfirmListComponent} from './components/patient/patient-appointment-confirm-list/patient-appointment-confirm-list.component';
+import {ClinicRatingListComponent} from './components/patient/ratings/clinic-rating-list/clinic-rating-list.component';
+import {DoctorRatingListComponent} from './components/patient/ratings/doctor-rating-list/doctor-rating-list.component';
 
 
 const routes: Routes = [
@@ -125,6 +127,14 @@ const routes: Routes = [
                 data: {
                     old: true
                 }
+            },
+            {
+                path: 'clinic-rating',
+                component: ClinicRatingListComponent
+            },
+            {
+                path: 'doctor-rating',
+                component: DoctorRatingListComponent
             }
         ]
     },

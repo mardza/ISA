@@ -16,6 +16,7 @@ export class User {
     specialisation: string;
     ratingAverage: number;
     ratingWeight: number;
+    patientRating: number;
 
     constructor() {
     }
@@ -45,6 +46,7 @@ export class User {
         userToReturn.specialisation = user.specialisation;
         userToReturn.ratingAverage = user.ratingAverage;
         userToReturn.ratingWeight = user.ratingWeight;
+        userToReturn.patientRating = user.patientRating;
         return userToReturn;
     }
 

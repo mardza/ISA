@@ -28,6 +28,8 @@ public class ClinicDTO {
 	
 	private Integer ratingWeight;
 	
+	private Integer patientRating;
+	
 	
 	public ClinicDTO() {}
 	
@@ -109,6 +111,14 @@ public class ClinicDTO {
 
 	public void setRatingWeight(Integer ratingWeight) {
 		this.ratingWeight = ratingWeight;
+	}
+
+	public Integer getPatientRating() {
+		return patientRating;
+	}
+
+	public void setPatientRating(Integer patientRating) {
+		this.patientRating = patientRating;
 	}
 
 	@Override

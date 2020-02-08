@@ -1,0 +1,43 @@
+<div id="table-wrapper" class="mat-elevation-z3">
+    <p>Rate doctors</p>
+    <table mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="fullName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+            <td mat-cell *matCellDef="let doctor">{{doctor.fullName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="specialisation">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Specialisation</th>
+            <td mat-cell *matCellDef="let doctor">{{doctor.specialisation}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="patientRating">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Rating</th>
+            <td mat-cell *matCellDef="let doctor">
+                <mat-form-field>
+                    <mat-select [value]="doctor.patientRating" (selectionChange)="onRatingChange(doctor.id, $event)">
+                        <mat-option [value]="1">1</mat-option>
+                        <mat-option [value]="2">2</mat-option>
+                        <mat-option [value]="3">3</mat-option>
+                        <mat-option [value]="4">4</mat-option>
+                        <mat-option [value]="5">5</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="noRecord">
+            <td mat-footer-cell [attr.colspan]="columnsToDisplay.length" *matFooterCellDef>No doctors found.</td>
+        </ng-container>
+        <ng-container matColumnDef="loading">
+            <td mat-footer-cell [attr.colspan]="columnsToDisplay.length" *matFooterCellDef>Loading</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+        <tr [hidden]="!loading" mat-footer-row *matFooterRowDef="['loading']"></tr>
+        <tr [hidden]="dataSource?.data.length > 0 || loading" mat-footer-row *matFooterRowDef="['noRecord']"></tr>
+    </table>
+</div>

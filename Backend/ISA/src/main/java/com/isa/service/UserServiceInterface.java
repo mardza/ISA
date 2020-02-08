@@ -25,11 +25,17 @@ public interface UserServiceInterface {
 	
 	List<User> findByClinicAndRole(Integer clinicId, String roleName);
 	
+	//List<User> findPatientDoctors();
+	
 	Registration approveRegistration(String email);
 	
 	void rejectRegistration(String email, String message);
 	
 	Registration activateRegistration(String registrationId);
+	
+	List<UserDTO> findPatientDoctors();
+	
+	UserDTO rate(Integer doctorId, Integer rating);
 		
 	User save(User user);
 	
