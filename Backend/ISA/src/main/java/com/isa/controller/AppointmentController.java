@@ -43,7 +43,7 @@ public class AppointmentController {
 			@RequestParam(name = "patientApproved", required = false) Boolean patientApproved,
 			@RequestParam(name = "old", required = false) Boolean old
 			){
-		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(doctorEmail, patientEmail, adminEmail, approved, clinicId, predefined, requested, patientApproved, old);
+		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(doctorEmail, patientEmail, adminEmail, approved, clinicId, predefined, requested, patientApproved, old, null);
 		return new ResponseEntity<List<AppointmentDTO>>(appointmentDTOList, HttpStatus.OK);
 	}
 	
@@ -53,7 +53,7 @@ public class AppointmentController {
 			@RequestParam(name = "patientApproved", required = false) Boolean patientApproved
 			){
 		User patient = this.userService.getCurrentUser();
-		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(null, patient.getEmail(), null, true, null, null, null, patientApproved, old);
+		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(null, patient.getEmail(), null, true, null, null, null, patientApproved, old, null);
 		return new ResponseEntity<List<AppointmentDTO>>(appointmentDTOList, HttpStatus.OK);
 	}
 	

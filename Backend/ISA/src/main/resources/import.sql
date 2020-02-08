@@ -25,18 +25,18 @@ INSERT INTO clinics (name, address, city, country, description, rating_average, 
 VALUES ('Clinic 3', 'Address 3', 'Podgorica', 'Montenegro', 'This is clinic 3 description.', 1.54, 4);
 
 
+-- Duration must end with 9 (if duration is 1 second, then it should be 999ms) for doctor available period calculations to work
+INSERT INTO appointmenttypes (name, duration) 
+VALUES ('Basic exam', 1799999);
 
 INSERT INTO appointmenttypes (name, duration) 
-VALUES ('Basic exam', 1800000);
+VALUES ('Dermatology exam', 3599999);
 
 INSERT INTO appointmenttypes (name, duration) 
-VALUES ('Dermatology exam', 3600000);
+VALUES ('Cardiology exam', 1799999);
 
 INSERT INTO appointmenttypes (name, duration) 
-VALUES ('Cardiology exam', 1800000);
-
-INSERT INTO appointmenttypes (name, duration) 
-VALUES ('Physical  exam', 1800000);
+VALUES ('Physical  exam', 1799999);
 
 
 
@@ -126,13 +126,13 @@ VALUES (2, 4, 3000, 50);
 
 
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested, patient_approved) 
-VALUES ('2020-1-14 09:30:00', 1, 1, 1, 1, 5, 8, true, true, true, true);
+VALUES ('2020-2-10 09:30:00', 1, 1, 1, 1, 5, 8, true, true, true, true);
 
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested, patient_approved) 
-VALUES ('2020-3-25 08:00:00', 1, 1, 1, 1, 5, NULL, false, true, false, false);
+VALUES ('2020-2-10 08:00:00', 1, 1, 1, 1, 5, NULL, false, true, false, false);
 
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested, patient_approved) 
-VALUES ('2020-3-25 12:00:00', 1, 1, 1, 1, 5, NULL, false, true, false, false);
+VALUES ('2020-2-10 12:00:00', 1, 1, 1, 1, 5, NULL, false, true, false, false);
 
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested, patient_approved) 
 VALUES ('2020-3-25 09:30:00', 2, 1, 2, 2, 6, NULL, false, true, false, false);

@@ -1,5 +1,9 @@
 package com.isa.service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +45,7 @@ public class AppointmentService implements AppointmentServiceInterface {
 	}
 	
 	@Override
-	public List<AppointmentDTO> findFiltered(String doctorEmail, String patientEmail, String adminEmail, Boolean approved, Integer clinicId, Boolean predefined, Boolean requested, Boolean patientApproved, Boolean old) {
+	public List<AppointmentDTO> findFiltered(String doctorEmail, String patientEmail, String adminEmail, Boolean approved, Integer clinicId, Boolean predefined, Boolean requested, Boolean patientApproved, Boolean old, Date dayDate) {
 		List<Appointment> appointmentList = this.appointmentRepository.findAll();
 		
 		if(doctorEmail != null && doctorEmail.length() > 0) {
@@ -109,13 +113,21 @@ public class AppointmentService implements AppointmentServiceInterface {
 			});
 		}
 		
+		if(dayDate != null) {
+			Date start = dateAtHours(dayDate, 0);
+			Date end = dateAtHours(dayDate, 23);
+			appointmentList.removeIf(appointment -> {
+				return !(dayDate.getTime() >= start.getTime() && dayDate.getTime() <= end.getTime());
+			});
+		}
+		
 		return AppointmentDTO.toList(appointmentList);
 	}
 	
 	@Override
 	public List<AppointmentDTO> findAdminClinicAppointmentRequests() {
 		User admin = this.userService.getCurrentUser();
-		List<AppointmentDTO> appointmentDTOList = this.findFiltered(null, null, admin.getEmail(), false, admin.getClinic().getId(), null, true, null, null);
+		List<AppointmentDTO> appointmentDTOList = this.findFiltered(null, null, admin.getEmail(), false, admin.getClinic().getId(), null, true, null, null, null);
 		return appointmentDTOList;
 	}
 	
@@ -218,5 +230,13 @@ public class AppointmentService implements AppointmentServiceInterface {
 	@Override
 	public void remove(Appointment appointment) {
 		this.appointmentRepository.delete(appointment);
+	}
+	
+	private Date todayAtHours(Integer hours) {
+		return Date.from(LocalDateTime.now().truncatedTo(ChronoUnit.HOURS).withHour(hours).atZone(ZoneId.systemDefault()).toInstant());
+	}
+	
+	private Date dateAtHours(Date date, Integer hours) {
+		return Date.from(Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime().truncatedTo(ChronoUnit.HOURS).withHour(hours).atZone(ZoneId.systemDefault()).toInstant());
 	}
 }

@@ -29,4 +29,8 @@ public class PeriodDTO {
 	public void setEnd(Long end) {
 		this.end = end;
 	}
+	
+	public boolean in(PeriodDTO period) {
+		return this.start >= period.start && this.end <= period.end;
+	}
 }

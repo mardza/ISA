@@ -80,7 +80,7 @@ public class ClinicController {
 	
 	@GetMapping("/{id}/predefined-appointments")
 	public ResponseEntity<List<AppointmentDTO>> getPredefinedAppointments(@PathVariable("id") Integer id) {
-		List<AppointmentDTO> appointmentListDTO = this.appointmentService.findFiltered(null, null, null, null, id, true, false, null, null);
+		List<AppointmentDTO> appointmentListDTO = this.appointmentService.findFiltered(null, null, null, null, id, true, false, null, null, null);
 		return new ResponseEntity<List<AppointmentDTO>>(appointmentListDTO, HttpStatus.OK);
 	}
 	
