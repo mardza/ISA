@@ -18,3 +18,5 @@ mvn spring-boot:run
 ```
 npm start
 ```
+##Accessing app
+Navigate to *http://localhost:4200* via web browser of choice
