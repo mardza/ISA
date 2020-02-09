@@ -2,7 +2,6 @@ package com.isa.service;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -87,46 +86,9 @@ public class ClinicService implements ClinicServiceInterface {
 			doctors.forEach(doctor -> {
 				System.out.println(doctor);
 			});
-
-			doctors.removeIf(doctor -> {
-				List<Appointment> appointmentList = doctor.getDoctorAppointmentList();
-				appointmentList.removeIf(appointment -> {
-					return !checkIfSameDay(date, appointment.getTime());
-				});
-				appointmentList.sort(Comparator.comparing(appointment -> appointment.getTime()));
-
-				Date doctorStartDate = todayAtHours(doctor.getWorkStart());
-				Date doctorEndDate = todayAtHours(doctor.getWorkEnd());
-				System.out.println("Doctor start time: " + doctorStartDate);
-				System.out.println("Doctor end time: " + doctorEndDate);
-
-				Long max = 0L;
-
-				// uporediti pocetak radnog vremena za pocetkom prvog appointmenta, pa onda
-				// svaki apointment, pa poslednji sa krajem
-				if (appointmentList.size() == 0) {
-					max = doctorEndDate.getTime() - doctorStartDate.getTime();
-				} else {
-					max = appointmentList.get(0).getTime().getTime() - doctorStartDate.getTime();
-					if (appointmentList.size() > 1) {
-						for (int i = 0; i <= appointmentList.size() - 2; i++) {
-							Long a1End = appointmentList.get(i).getTime().getTime() + appointmentType.getDuration();
-							Long a2Start = appointmentList.get(i + 1).getTime().getTime();
-							if (a2Start - a1End > max) {
-								max = a2Start - a1End;
-							}
-						}
-					}
-					if (doctorEndDate.getTime() - appointmentList.get(appointmentList.size() - 1).getTime().getTime() > max) {
-						max = doctorEndDate.getTime() - appointmentList.get(appointmentList.size() - 1).getTime().getTime();
-					}
-				}
-
-				appointmentList.forEach(appointment -> System.out.println(appointment));
-
-				return max < appointmentType.getDuration();
-			});
-			return doctors.size() == 0;
+			
+			List<DoctorAvailableDTO> doctorAvailableDTOList = this.findAvailableDoctorsByClinic(clinic.getId(), appointmentTypeId, date, "", "", 0);
+			return doctorAvailableDTOList.size() == 0;
 		});
 		clinicList.forEach(clinic -> {
 			clinic.setRatingAverage(this.clinicRatingService.findClinicRating(clinic.getId()));
@@ -152,8 +114,7 @@ public class ClinicService implements ClinicServiceInterface {
 	}
 
 	@Override
-	public List<DoctorAvailableDTO> findAvailableDoctorsByClinic(Integer clinicId, Integer appointmentTypeId, Date date,
-			String firstName, String lastName, Integer rating) {
+	public List<DoctorAvailableDTO> findAvailableDoctorsByClinic(Integer clinicId, Integer appointmentTypeId, Date date, String firstName, String lastName, Integer rating) {
 
 		System.out.println("Searching doctors for clinic: " + clinicId);
 		System.out.println("appointmentId: " + appointmentTypeId);
@@ -182,8 +143,7 @@ public class ClinicService implements ClinicServiceInterface {
 			return doctor.getRatingAverage() < rating;
 		});
 
-		// TODO: filter doctors based on vacation (list of vacation periods for each
-		// doctor)
+		// TODO: filter doctors based on vacation (list of vacation periods for each doctor)
 
 		User patient = this.userService.getCurrentUser();
 		List<AppointmentDTO> patientAppointmentList = this.appointmentService.findFiltered(null, patient.getEmail(), null, null, null, null, null, null, null, date);
@@ -195,8 +155,7 @@ public class ClinicService implements ClinicServiceInterface {
 				Long workStart = dateAtHours(date, doctor.getWorkStart()).getTime();
 				Long workEnd = dateAtHours(date, doctor.getWorkEnd()).getTime();
 
-				// to limit same day appointments (not needed as patient cant create appointment
-				// for same day
+				// to limit same day appointments (not needed as patient cant create appointment for same day
 //				Long currentTime = new Date().getTime();
 //				// skip if doctors shift for today already ended
 //				if(end <= currentTime) {
@@ -288,67 +247,6 @@ public class ClinicService implements ClinicServiceInterface {
 			});
 		}
 		return doctorAvailableDTOList;
-
-//		List<DoctorAvailableDTO> doctorAvailableDTOList = new ArrayList<DoctorAvailableDTO>();
-//		doctors.forEach(doctor -> {
-//			
-//			List<Appointment> appointmentList = doctor.getDoctorAppointmentList();
-//			appointmentList.removeIf(appointment -> {
-//				return !checkIfSameDay(date, appointment.getTime());
-//			});
-//			appointmentList.sort(Comparator.comparing(appointment -> appointment.getTime()));
-//			
-//			Date doctorStartDate = dateAtHours(date, doctor.getWorkStart());
-//			Date doctorEndDate = dateAtHours(date, doctor.getWorkEnd());
-//			System.out.println("Doctor start time: " + doctorStartDate);
-//			System.out.println("Doctor end time: " + doctorEndDate);
-//			
-//			Long max = 0L;
-//			
-//			List<PeriodDTO> periodDTOList = new ArrayList<PeriodDTO>();
-//
-//			// uporediti pocetak radnog vremena za pocetkom prvog appointmenta, pa onda
-//			// svaki apointment, pa poslednji sa krajem
-//			if (appointmentList.size() == 0) { // if no appointments, then take start and end of doctors shift
-//				max = doctorEndDate.getTime() - doctorStartDate.getTime();
-//				if(max >= appointmentType.getDuration()) {
-//					periodDTOList.add(new PeriodDTO(doctorStartDate.getTime(), doctorEndDate.getTime()));
-//				}
-//			} else { // if there are appointments
-//				max = appointmentList.get(0).getTime().getTime() - doctorStartDate.getTime(); // time between start of shift and start of first appointment
-//				if(max >= appointmentType.getDuration()) {
-//					periodDTOList.add(new PeriodDTO(doctorStartDate.getTime(), appointmentList.get(0).getTime().getTime()));
-//				}
-//				
-//				if (appointmentList.size() > 1) { // if there is more then one, go trough appointments
-//					for (int i = 0; i <= appointmentList.size() - 2; i++) {
-//						Long a1End = appointmentList.get(i).getTime().getTime() + appointmentType.getDuration();
-//						Long a2Start = appointmentList.get(i + 1).getTime().getTime();
-//						if(a2Start - a1End > max) {
-//							max = a2Start - a1End;
-//						}
-//						if(a2Start - a1End >= appointmentType.getDuration()) {
-//							periodDTOList.add(new PeriodDTO(a1End, a2Start));
-//						}
-//					}
-//				}
-//				if (doctorEndDate.getTime() - (appointmentList.get(appointmentList.size() - 1).getTime().getTime() + appointmentType.getDuration()) > max) { // compare last appointment end with end of shift
-//					max = doctorEndDate.getTime() - (appointmentList.get(appointmentList.size() - 1).getTime().getTime() + appointmentType.getDuration());
-//				}
-//				if(doctorEndDate.getTime() - (appointmentList.get(appointmentList.size() - 1).getTime().getTime() + appointmentType.getDuration()) >= appointmentType.getDuration()) {
-//					periodDTOList.add(new PeriodDTO(appointmentList.get(appointmentList.size() - 1).getTime().getTime() + appointmentType.getDuration(), doctorEndDate.getTime()));
-//				}
-//			}
-//			
-//			if(max >= appointmentType.getDuration()) {
-//				DoctorAvailableDTO doctorAvailableDTO = new DoctorAvailableDTO();
-//				doctorAvailableDTO.setDoctor(new UserDTO(doctor));
-//				doctorAvailableDTO.setPeriodList(periodDTOList);
-//				doctorAvailableDTO.setAppointmentTypeDuration(appointmentType.getDuration());
-//				doctorAvailableDTOList.add(doctorAvailableDTO);
-//			}
-//		});
-//		return doctorAvailableDTOList;
 	}
 
 	@Override
@@ -427,14 +325,19 @@ public class ClinicService implements ClinicServiceInterface {
 		return fmt.format(date1).equals(fmt.format(date2));
 	}
 
-	private Date todayAtHours(Integer hours) {
-		return Date.from(LocalDateTime.now().truncatedTo(ChronoUnit.HOURS).withHour(hours)
-				.atZone(ZoneId.systemDefault()).toInstant());
-	}
+//	private Date todayAtHours(Integer hours) {
+//		return Date.from(LocalDateTime.now().truncatedTo(ChronoUnit.HOURS).withHour(hours)
+//				.atZone(ZoneId.systemDefault()).toInstant());
+//	}
 
 	private Date dateAtHours(Date date, Integer hours) {
-		return Date.from(Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime()
-				.truncatedTo(ChronoUnit.HOURS).withHour(hours).atZone(ZoneId.systemDefault()).toInstant());
+		return Date.from(Instant.ofEpochMilli(date.getTime())
+				.atZone(ZoneId.systemDefault())
+				.toLocalDateTime()
+				.truncatedTo(ChronoUnit.HOURS)
+				.withHour(hours)
+				.atZone(ZoneId.systemDefault())
+				.toInstant());
 	}
 
 //	private Long roundToNext15Min(Long time) {

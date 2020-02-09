@@ -137,6 +137,9 @@ public class AppointmentService implements AppointmentServiceInterface {
 		
 		User doctor = this.userService.findByEmail(appointmentCreateDTO.getDoctorEmail());
 		User patient = this.userService.findByEmail(appointmentCreateDTO.getPatientEmail());
+		
+		//if(checkAppointment())
+		
 		Clinic clinic = this.clinicService.findById(appointmentCreateDTO.getClinicId());
 		Price price = this.priceService.findByClinicAndAppointmentType(appointmentCreateDTO.getClinicId(), doctor.getSpecialisation().getId());
 		

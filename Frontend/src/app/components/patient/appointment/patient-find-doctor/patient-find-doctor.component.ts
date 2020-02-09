@@ -113,7 +113,7 @@ export class PatientFindDoctorComponent implements OnInit {
     }
 
     myFilter = (moment: Moment): boolean => {
-        return moment.isSameOrAfter(this.currentMoment, 'day') && !this.isWeekend(moment);
+        return moment.isAfter(this.currentMoment, 'day') && !this.isWeekend(moment);
     };
 
     // Returns true if day is weekend
