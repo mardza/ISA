@@ -1,7 +1,6 @@
 package com.isa.service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -13,11 +12,13 @@ import org.springframework.stereotype.Service;
 import com.isa.controller.exception.custom.EntityNotFoundException;
 import com.isa.dto.AppointmentCreateDTO;
 import com.isa.dto.AppointmentDTO;
+import com.isa.dto.PeriodDTO;
 import com.isa.entity.Appointment;
 import com.isa.entity.Clinic;
 import com.isa.entity.Price;
 import com.isa.entity.User;
 import com.isa.repository.AppointmentRepository;
+import com.isa.service.exception.AppointmentAlreadyExistsException;
 
 @Service
 public class AppointmentService implements AppointmentServiceInterface {
@@ -138,7 +139,9 @@ public class AppointmentService implements AppointmentServiceInterface {
 		User doctor = this.userService.findByEmail(appointmentCreateDTO.getDoctorEmail());
 		User patient = this.userService.findByEmail(appointmentCreateDTO.getPatientEmail());
 		
-		//if(checkAppointment())
+		if(!isAppointmentVaild(doctor, patient, appointmentCreateDTO.getTime())) {
+			throw new AppointmentAlreadyExistsException("Failed to create appointment, eather doctor or patient are not available at that time.");
+		}
 		
 		Clinic clinic = this.clinicService.findById(appointmentCreateDTO.getClinicId());
 		Price price = this.priceService.findByClinicAndAppointmentType(appointmentCreateDTO.getClinicId(), doctor.getSpecialisation().getId());
@@ -163,10 +166,26 @@ public class AppointmentService implements AppointmentServiceInterface {
 		return new AppointmentDTO(appointment);
 	}
 	
+	private boolean isAppointmentVaild(User doctor, User patient, Date date) {
+		List<PeriodDTO> periodDTOList = this.clinicService.getDoctorPatientAvailablePeriodList(doctor, patient, date);
+		boolean valid = false;
+		for(PeriodDTO period: periodDTOList) {
+			if(date.getTime() >= period.getStart() && (date.getTime() + doctor.getSpecialisation().getDuration()) <= period.getEnd()) {
+				valid = true;
+			}
+		}
+		return valid;
+	}
+	
 	@Override
 	public AppointmentDTO activateAppointment(Integer id) {
 		Appointment appointment = this.appointmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Appointment with id '" + id + "' not found"));
 		User patient = this.userService.getCurrentUser();
+		
+		if(!isAppointmentVaild(appointment.getDoctor(), patient, appointment.getTime())) {
+			throw new AppointmentAlreadyExistsException("Failed to create appointment, eather doctor or patient are not available at that time.");
+		}
+		
 		appointment.setPatient(patient);
 		appointment.setRequested(true);
 		appointment = this.save(appointment);
@@ -233,10 +252,6 @@ public class AppointmentService implements AppointmentServiceInterface {
 	@Override
 	public void remove(Appointment appointment) {
 		this.appointmentRepository.delete(appointment);
-	}
-	
-	private Date todayAtHours(Integer hours) {
-		return Date.from(LocalDateTime.now().truncatedTo(ChronoUnit.HOURS).withHour(hours).atZone(ZoneId.systemDefault()).toInstant());
 	}
 	
 	private Date dateAtHours(Date date, Integer hours) {

@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.isa.dto.ClinicDTO;
 import com.isa.dto.DoctorAvailableDTO;
+import com.isa.dto.PeriodDTO;
 import com.isa.entity.Clinic;
+import com.isa.entity.User;
 
 public interface ClinicServiceInterface {
 
@@ -18,6 +20,8 @@ public interface ClinicServiceInterface {
 	List<DoctorAvailableDTO> findAvailableDoctorsByClinic(Integer clinicId, Integer appointmentTypeId, Date date, String firstName, String lastName, Integer rating);
 	
 	List<DoctorAvailableDTO> findAllDoctorsByClinic(Integer clinicId);
+	
+	List<PeriodDTO> getDoctorPatientAvailablePeriodList(User doctor, User patient, Date date);
 	
 	List<ClinicDTO> findPatientClinics();
 	

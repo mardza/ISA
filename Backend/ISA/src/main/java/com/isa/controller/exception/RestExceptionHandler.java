@@ -32,6 +32,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.isa.controller.exception.custom.BadLoginException;
 import com.isa.controller.exception.custom.EntityNotFoundException;
 import com.isa.security.exception.TokenNotValidException;
+import com.isa.service.exception.AppointmentAlreadyExistsException;
 import com.isa.service.exception.RegistrationActivatedException;
 import com.isa.service.exception.RegistrationApprovedException;
 
@@ -70,6 +71,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return buildResponseEntity(new ApiError(HttpStatus.CONFLICT, ex));
 	}
 	
+	@ExceptionHandler(AppointmentAlreadyExistsException.class)
+	protected ResponseEntity<Object> handleAppointmentAlreadyExistsException(AppointmentAlreadyExistsException ex) {
+		return buildResponseEntity(new ApiError(HttpStatus.CONFLICT, ex));
+	}
 	
 	
 	/* OVERRIDE METHODS */

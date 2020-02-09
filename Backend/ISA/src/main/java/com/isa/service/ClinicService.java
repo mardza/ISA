@@ -62,6 +62,23 @@ public class ClinicService implements ClinicServiceInterface {
 		clinic.setRatingAverage(this.clinicRatingService.findClinicRating(clinic.getId()));
 		return clinic;
 	}
+	
+	@Override
+	public List<DoctorAvailableDTO> findAllDoctorsByClinic(Integer clinicId) {
+		Clinic clinic = this.findById(clinicId);
+		List<User> doctors = clinic.getEmployees();
+		doctors.removeIf(employee -> {
+			return !employee.getRole().getName().equals("ROLE_DOCTOR");
+		});
+		List<DoctorAvailableDTO> doctorAvailableDTOList = new ArrayList<DoctorAvailableDTO>();
+		doctors.forEach(doctor -> {
+			doctor.setRatingAverage(this.doctorRatingService.findDoctorRating(doctor.getId()));
+			DoctorAvailableDTO doctorAvailableDTO = new DoctorAvailableDTO();
+			doctorAvailableDTO.setDoctor(new UserDTO(doctor));
+			doctorAvailableDTOList.add(doctorAvailableDTO);
+		});
+		return doctorAvailableDTOList;
+	}
 
 	@Override
 	public List<Clinic> findFiltered(Date date, Integer appointmentTypeId) {
@@ -97,23 +114,6 @@ public class ClinicService implements ClinicServiceInterface {
 	}
 
 	@Override
-	public List<DoctorAvailableDTO> findAllDoctorsByClinic(Integer clinicId) {
-		Clinic clinic = this.findById(clinicId);
-		List<User> doctors = clinic.getEmployees();
-		doctors.removeIf(employee -> {
-			return !employee.getRole().getName().equals("ROLE_DOCTOR");
-		});
-		List<DoctorAvailableDTO> doctorAvailableDTOList = new ArrayList<DoctorAvailableDTO>();
-		doctors.forEach(doctor -> {
-			doctor.setRatingAverage(this.doctorRatingService.findDoctorRating(doctor.getId()));
-			DoctorAvailableDTO doctorAvailableDTO = new DoctorAvailableDTO();
-			doctorAvailableDTO.setDoctor(new UserDTO(doctor));
-			doctorAvailableDTOList.add(doctorAvailableDTO);
-		});
-		return doctorAvailableDTOList;
-	}
-
-	@Override
 	public List<DoctorAvailableDTO> findAvailableDoctorsByClinic(Integer clinicId, Integer appointmentTypeId, Date date, String firstName, String lastName, Integer rating) {
 
 		System.out.println("Searching doctors for clinic: " + clinicId);
@@ -146,97 +146,10 @@ public class ClinicService implements ClinicServiceInterface {
 		// TODO: filter doctors based on vacation (list of vacation periods for each doctor)
 
 		User patient = this.userService.getCurrentUser();
-		List<AppointmentDTO> patientAppointmentList = this.appointmentService.findFiltered(null, patient.getEmail(), null, null, null, null, null, null, null, date);
-
 		List<DoctorAvailableDTO> doctorAvailableDTOList = new ArrayList<DoctorAvailableDTO>();
 		if (!checkIfSameDay(new Date(), date)) {
 			doctors.forEach(doctor -> {
-
-				Long workStart = dateAtHours(date, doctor.getWorkStart()).getTime();
-				Long workEnd = dateAtHours(date, doctor.getWorkEnd()).getTime();
-
-				// to limit same day appointments (not needed as patient cant create appointment for same day
-//				Long currentTime = new Date().getTime();
-//				// skip if doctors shift for today already ended
-//				if(end <= currentTime) {
-//					return;
-//				}
-//				// if query date is today, move workStart to now
-//				if(start < currentTime && end > currentTime) {
-//					start = roundToNext15Min(currentTime);
-//				}
-//				Long workStart = start;
-//				Long workEnd = end;
-
-				List<AppointmentDTO> doctorAppointmentList = this.appointmentService.findFiltered(doctor.getEmail(), null, null, null, null, null, null, null, null, date);
-				List<Point> pointList = new ArrayList<>();
-				doctorAppointmentList.forEach(appointment -> {
-					pointList.add(new Point(appointment.getTime().getTime(), PointType.start));
-					pointList.add(new Point(appointment.getTime().getTime() + appointmentType.getDuration(), PointType.end));
-				});
-				patientAppointmentList.forEach(appointment -> {
-					pointList.add(new Point(appointment.getTime().getTime(), PointType.start));
-					pointList.add(new Point(appointment.getTime().getTime() + appointmentType.getDuration(), PointType.end));
-				});
-
-				pointList.sort(Comparator.comparing(point -> point.timestamp));
-
-				// remove points that are not in doctor work period
-				pointList.removeIf(point -> {
-					return point.timestamp <= workStart || point.timestamp >= workEnd;
-				});
-
-				if (pointList.size() > 0) {
-					if (pointList.get(0).type == PointType.end) {
-						pointList.add(0, new Point(workStart, PointType.start));
-					}
-					if (pointList.get(pointList.size() - 1).type == PointType.start) {
-						pointList.add(new Point(workEnd, PointType.end));
-					}
-				}
-
-				List<Point> pointList2 = new ArrayList<>();
-				int counter = 0;
-				for (Point point : pointList) {
-					if (point.type == PointType.start) {
-						counter++;
-						if (counter == 1) {
-							pointList2.add(new Point(point.timestamp, PointType.start));
-						}
-					} else if (point.type == PointType.end) {
-						counter--;
-						if (counter == 0) {
-							pointList2.add(new Point(point.timestamp, PointType.end));
-						}
-					}
-				}
-
-				pointList2.forEach(point -> {
-					point.type = point.type == PointType.start ? PointType.end : PointType.start;
-				});
-
-				pointList2.add(0, new Point(workStart, PointType.start));
-				pointList2.add(new Point(workEnd, PointType.end));
-
-				List<PeriodDTO> availablePeriodList = new ArrayList<>();
-				Point p = null;
-				for (Point point : pointList2) {
-					if (point.type == PointType.start) {
-						p = point;
-					}
-					if (point.type == PointType.end) {
-						if (point.timestamp - p.timestamp >= appointmentType.getDuration()) {
-							if (p.timestamp % 10 == 9) {
-								p.timestamp++;
-							}
-							if (point.timestamp % 10 == 0) {
-								point.timestamp--;
-							}
-							availablePeriodList.add(new PeriodDTO(p.timestamp, point.timestamp));
-						}
-					}
-				}
-
+				List<PeriodDTO> availablePeriodList = getDoctorPatientAvailablePeriodList(doctor, patient, date);
 				if (availablePeriodList.size() > 0) {
 					DoctorAvailableDTO doctorAvailableDTO = new DoctorAvailableDTO();
 					doctorAvailableDTO.setDoctor(new UserDTO(doctor));
@@ -247,6 +160,83 @@ public class ClinicService implements ClinicServiceInterface {
 			});
 		}
 		return doctorAvailableDTOList;
+	}
+	
+	@Override
+	public List<PeriodDTO> getDoctorPatientAvailablePeriodList(User doctor, User patient, Date date) {
+		Long workStart = dateAtHours(date, doctor.getWorkStart()).getTime();
+		Long workEnd = dateAtHours(date, doctor.getWorkEnd()).getTime();
+
+		List<AppointmentDTO> doctorAppointmentList = this.appointmentService.findFiltered(doctor.getEmail(), null, null, null, null, null, null, null, null, date);
+		List<Point> pointList = new ArrayList<>();
+		doctorAppointmentList.forEach(appointment -> {
+			pointList.add(new Point(appointment.getTime().getTime(), PointType.start));
+			pointList.add(new Point(appointment.getTime().getTime() + doctor.getSpecialisation().getDuration(), PointType.end));
+		});
+		List<AppointmentDTO> patientAppointmentList = this.appointmentService.findFiltered(null, patient.getEmail(), null, null, null, null, null, null, null, date);
+		patientAppointmentList.forEach(appointment -> {
+			pointList.add(new Point(appointment.getTime().getTime(), PointType.start));
+			pointList.add(new Point(appointment.getTime().getTime() + doctor.getSpecialisation().getDuration(), PointType.end));
+		});
+
+		// remove points that are not in doctor work period
+		pointList.removeIf(point -> {
+			return point.timestamp <= workStart || point.timestamp >= workEnd;
+		});
+		
+		pointList.sort(Comparator.comparing(point -> point.timestamp));
+
+		if (pointList.size() > 0) {
+			if (pointList.get(0).type == PointType.end) {
+				pointList.add(0, new Point(workStart, PointType.start));
+			}
+			if (pointList.get(pointList.size() - 1).type == PointType.start) {
+				pointList.add(new Point(workEnd, PointType.end));
+			}
+		}
+
+		List<Point> pointList2 = new ArrayList<>();
+		int counter = 0;
+		for (Point point : pointList) {
+			if (point.type == PointType.start) {
+				counter++;
+				if (counter == 1) {
+					pointList2.add(new Point(point.timestamp, PointType.start));
+				}
+			} else if (point.type == PointType.end) {
+				counter--;
+				if (counter == 0) {
+					pointList2.add(new Point(point.timestamp, PointType.end));
+				}
+			}
+		}
+
+		pointList2.forEach(point -> {
+			point.type = point.type == PointType.start ? PointType.end : PointType.start;
+		});
+
+		pointList2.add(0, new Point(workStart, PointType.start));
+		pointList2.add(new Point(workEnd, PointType.end));
+
+		List<PeriodDTO> availablePeriodList = new ArrayList<>();
+		Point p = null;
+		for (Point point : pointList2) {
+			if (point.type == PointType.start) {
+				p = point;
+			}
+			if (point.type == PointType.end) {
+				if (point.timestamp - p.timestamp >= doctor.getSpecialisation().getDuration()) {
+					if (p.timestamp % 10 == 9) {
+						p.timestamp++;
+					}
+					if (point.timestamp % 10 == 0) {
+						point.timestamp--;
+					}
+					availablePeriodList.add(new PeriodDTO(p.timestamp, point.timestamp));
+				}
+			}
+		}
+		return availablePeriodList;
 	}
 
 	@Override
@@ -325,11 +315,6 @@ public class ClinicService implements ClinicServiceInterface {
 		return fmt.format(date1).equals(fmt.format(date2));
 	}
 
-//	private Date todayAtHours(Integer hours) {
-//		return Date.from(LocalDateTime.now().truncatedTo(ChronoUnit.HOURS).withHour(hours)
-//				.atZone(ZoneId.systemDefault()).toInstant());
-//	}
-
 	private Date dateAtHours(Date date, Integer hours) {
 		return Date.from(Instant.ofEpochMilli(date.getTime())
 				.atZone(ZoneId.systemDefault())
@@ -339,27 +324,6 @@ public class ClinicService implements ClinicServiceInterface {
 				.atZone(ZoneId.systemDefault())
 				.toInstant());
 	}
-
-//	private Long roundToNext15Min(Long time) {
-//		int minutes = Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault()).getMinute();
-//		int hours = Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault()).getHour();
-//		if (minutes > 0 && minutes <= 15) {
-//			minutes = 15;
-//		} else if (minutes > 15 && minutes <= 30) {
-//			minutes = 30;
-//		} else if (minutes > 30 && minutes <= 45) {
-//			minutes = 45;
-//		} else if (minutes > 45 && minutes <= 59) {
-//			minutes = 0;
-//			hours++;
-//		}
-//		System.out.println("Minutes: " + minutes);
-//		time = Date
-//				.from(Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault()).toLocalDateTime().withMinute(minutes)
-//						.withHour(hours).withSecond(0).withNano(0).atZone(ZoneId.systemDefault()).toInstant())
-//				.getTime();
-//		return time;
-//	}
 
 	private enum PointType {
 		start, end
