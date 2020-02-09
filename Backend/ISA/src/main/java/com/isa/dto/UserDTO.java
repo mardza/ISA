@@ -50,8 +50,6 @@ public class UserDTO {
 
 	private Double ratingAverage;
 	
-	private Integer ratingWeight;
-	
 	private Integer patientRating;
 	
 	
@@ -74,7 +72,6 @@ public class UserDTO {
 		this.workStart = user.getWorkStart();
 		this.workEnd = user.getWorkEnd();
 		this.ratingAverage = user.getRatingAverage();
-		this.ratingWeight = user.getRatingWeight();
 	}
 	
 	public UserDTO(User user, Boolean fillRegistration) {
@@ -217,14 +214,6 @@ public class UserDTO {
 
 	public void setRatingAverage(Double ratingAverage) {
 		this.ratingAverage = ratingAverage;
-	}
-
-	public Integer getRatingWeight() {
-		return ratingWeight;
-	}
-
-	public void setRatingWeight(Integer ratingWeight) {
-		this.ratingWeight = ratingWeight;
 	}
 
 	public Integer getPatientRating() {

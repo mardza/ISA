@@ -3,7 +3,6 @@ import {globals} from '../../globals';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Clinic} from '../../models/Clinic.model';
-import * as moment from 'moment';
 import {map} from 'rxjs/operators';
 import {Appointment} from '../../models/Appointment.model';
 import {ClinicPriceWrapper} from '../../models/custom/ClinicPriceWrapper.model';
@@ -22,20 +21,10 @@ export class ClinicService {
     }
 
 
-    getClinics(query?: { date?: Date, appointmentType?: string, address?: string }): Observable<Clinic[]> {
-        let params: HttpParams;
-        if (query) {
-            params = new HttpParams();
-            if (query.date) {
-                params = params.set('date', moment(query.date).format('yyyy-MM-dd'));
-            }
-        }
+    getClinics(): Observable<Clinic[]> {
         return this.http
             .get<Clinic[]>(
-                this.url,
-                {
-                    params: params
-                }
+                this.url
             )
             .pipe(
                 map(result => Clinic.toClinicList(result))

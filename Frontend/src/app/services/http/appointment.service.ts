@@ -38,42 +38,6 @@ export class AppointmentService {
             );
     }
 
-    getAppointments(query?: {doctorEmail?: string, patientEmail?: string, approved?: boolean, clinicId?: number, predefined?: boolean, old?: boolean}): Observable<Appointment[]> {
-        // TODO: not all supported parameters are listed here, add all
-        let params: HttpParams;
-        if(query){
-            params = new HttpParams();
-            if(query.doctorEmail){
-                params = params.set('doctorEmail', query.doctorEmail);
-            }
-            if(query.patientEmail){
-                params = params.set('patientEmail', query.patientEmail);
-            }
-            if(query.approved !== null && query.approved !== undefined){
-                params = params.set('approved', query.approved.toString());
-            }
-            if(query.clinicId){
-                params = params.set('clinicId', query.clinicId.toString());
-            }
-            if(query.predefined !== null && query.predefined !== undefined){
-                params = params.set('predefined', query.predefined.toString());
-            }
-            if(query.old !== null && query.old !== undefined){
-                params = params.set('old', query.old.toString());
-            }
-        }
-        return this.http
-            .get<Appointment[]>(
-                this.url,
-                {
-                    params: params
-                }
-            )
-            .pipe(
-                map(response => Appointment.toAppointmentList(response))
-            );
-    }
-
     getAdminClinicAppointmentRequests(): Observable<Appointment[]> {
         return this.http
             .get<Appointment[]>(

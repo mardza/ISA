@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,23 +32,8 @@ public class AppointmentController {
 	private UserService userService;
 	
 	
-	@GetMapping()
-	public ResponseEntity<List<AppointmentDTO>> getAll(
-			@RequestParam(name = "doctorEmail", required = false) String doctorEmail,
-			@RequestParam(name = "patientEmail", required = false) String patientEmail,
-			@RequestParam(name = "adminEmail", required = false) String adminEmail,
-			@RequestParam(name = "approved", required = false) Boolean approved,
-			@RequestParam(name = "clinicId", required = false) Integer clinicId,
-			@RequestParam(name = "predefined", required = false) Boolean predefined,
-			@RequestParam(name = "requested", required = false) Boolean requested,
-			@RequestParam(name = "patientApproved", required = false) Boolean patientApproved,
-			@RequestParam(name = "old", required = false) Boolean old
-			){
-		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findFiltered(doctorEmail, patientEmail, adminEmail, approved, clinicId, predefined, requested, patientApproved, old, null);
-		return new ResponseEntity<List<AppointmentDTO>>(appointmentDTOList, HttpStatus.OK);
-	}
-	
 	@GetMapping(path = "/current-user")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public ResponseEntity<List<AppointmentDTO>> getAllOfCurrentUser(
 			@RequestParam(name = "old", required = false) Boolean old,
 			@RequestParam(name = "patientApproved", required = false) Boolean patientApproved
@@ -58,6 +44,7 @@ public class AppointmentController {
 	}
 	
 	@GetMapping(path = "/admin-clinic-requests")
+	@PreAuthorize("hasRole('ROLE_ADMIN_CLINIC')")
 	public ResponseEntity<List<AppointmentDTO>> getAllAdminClinic() {
 		List<AppointmentDTO> appointmentDTOList = this.appointmentService.findAdminClinicAppointmentRequests();
 		return new ResponseEntity<List<AppointmentDTO>>(appointmentDTOList, HttpStatus.OK);
@@ -70,6 +57,7 @@ public class AppointmentController {
 	}
 	
 	@PostMapping()
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public ResponseEntity<AppointmentDTO> createAppointment(@RequestBody AppointmentCreateDTO appointmentCreateDTO){
 		AppointmentDTO appointmentDTO = this.appointmentService.createAppointment(appointmentCreateDTO);
 		return new ResponseEntity<AppointmentDTO>(appointmentDTO, HttpStatus.OK);
@@ -77,6 +65,7 @@ public class AppointmentController {
 	
 	// when patient confirms predefined appointment
 	@PostMapping(path = "/{id}/activate")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public ResponseEntity<AppointmentDTO> activateAppointment(@PathVariable("id") Integer id){
 		AppointmentDTO appointmentDTO = this.appointmentService.activateAppointment(id);
 		return new ResponseEntity<AppointmentDTO>(appointmentDTO, HttpStatus.OK);
@@ -84,6 +73,7 @@ public class AppointmentController {
 	
 	// when clinic admin approves appointment request
 	@PostMapping(path = "/{id}/approve")
+	@PreAuthorize("hasRole('ROLE_ADMIN_CLINIC')")
 	public ResponseEntity<AppointmentDTO> approveAppointment(@PathVariable("id") Integer id){
 		AppointmentDTO appointmentDTO = this.appointmentService.approveAppointment(id);
 		return new ResponseEntity<AppointmentDTO>(appointmentDTO, HttpStatus.OK);
@@ -91,6 +81,7 @@ public class AppointmentController {
 	
 	// when clinic admin disapproves appointment request
 	@PostMapping(path = "/{id}/disapprove")
+	@PreAuthorize("hasRole('ROLE_ADMIN_CLINIC')")
 	public ResponseEntity<AppointmentDTO> disapproveAppointment(@PathVariable("id") Integer id){
 		AppointmentDTO appointmentDTO = this.appointmentService.disapproveAppointment(id);
 		return new ResponseEntity<AppointmentDTO>(appointmentDTO, HttpStatus.OK);
@@ -98,12 +89,14 @@ public class AppointmentController {
 	
 	// when patient confirms approved appointment request
 	@PostMapping(path = "/{id}/patient-approve")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public ResponseEntity<AppointmentDTO> patientApprove(@PathVariable("id") Integer id){
 		AppointmentDTO appointmentDTO = this.appointmentService.patientApproveAppointment(id);
 		return new ResponseEntity<AppointmentDTO>(appointmentDTO, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(path = "/{id}")
+	@PreAuthorize("hasRole('ROLE_PATIENT')")
 	public ResponseEntity<Void> cancelAppointment(@PathVariable("id") Integer id) {
 		this.appointmentService.cancelAppointment(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);

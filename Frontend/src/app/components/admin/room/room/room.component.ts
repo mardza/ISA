@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Room} from '../../../models/Room.model';
+import {Room} from '../../../../models/Room.model';
 import {ActivatedRoute, Router} from '@angular/router';
-import {RoomService} from '../../../services/http/room.service';
+import {RoomService} from '../../../../services/http/room.service';
 import {NgForm} from '@angular/forms';
 
 @Component({

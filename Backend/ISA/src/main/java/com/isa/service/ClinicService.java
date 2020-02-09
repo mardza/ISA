@@ -82,11 +82,6 @@ public class ClinicService implements ClinicServiceInterface {
 
 	@Override
 	public List<Clinic> findFiltered(Date date, Integer appointmentTypeId) {
-
-		System.out.println("Searching clinics for ");
-		System.out.println("\tdate: " + date);
-		System.out.println("\ttypeId: " + appointmentTypeId);
-
 		List<Clinic> clinicList = this.clinicRepository.findAll();
 		AppointmentType appointmentType = this.appointmentTypeService.findById(appointmentTypeId);
 		clinicList.removeIf(clinic -> {
@@ -115,14 +110,6 @@ public class ClinicService implements ClinicServiceInterface {
 
 	@Override
 	public List<DoctorAvailableDTO> findAvailableDoctorsByClinic(Integer clinicId, Integer appointmentTypeId, Date date, String firstName, String lastName, Integer rating) {
-
-		System.out.println("Searching doctors for clinic: " + clinicId);
-		System.out.println("appointmentId: " + appointmentTypeId);
-		System.out.println("date: " + date);
-		System.out.println("firstName: '" + firstName + "'");
-		System.out.println("lastName: '" + lastName + "'");
-		System.out.println("rating: " + rating);
-
 		Clinic clinic = this.findById(clinicId);
 		AppointmentType appointmentType = this.appointmentTypeService.findById(appointmentTypeId);
 
@@ -140,18 +127,18 @@ public class ClinicService implements ClinicServiceInterface {
 			return !doctor.getLastName().toLowerCase().contains(lastName.toLowerCase());
 		});
 		doctors.removeIf(doctor -> {
-			return doctor.getRatingAverage() < rating;
+			Double r = this.doctorRatingService.findDoctorRating(doctor.getId());
+			return r < rating && r >= 1;
 		});
-
-		// TODO: filter doctors based on vacation (list of vacation periods for each doctor)
 
 		User patient = this.userService.getCurrentUser();
 		List<DoctorAvailableDTO> doctorAvailableDTOList = new ArrayList<DoctorAvailableDTO>();
 		if (!checkIfSameDay(new Date(), date)) {
 			doctors.forEach(doctor -> {
-				List<PeriodDTO> availablePeriodList = getDoctorPatientAvailablePeriodList(doctor, patient, date);
+				List<PeriodDTO> availablePeriodList = getDoctorPatientAvailablePeriodList(doctor, patient, date, false);
 				if (availablePeriodList.size() > 0) {
 					DoctorAvailableDTO doctorAvailableDTO = new DoctorAvailableDTO();
+					doctor.setRatingAverage(this.doctorRatingService.findDoctorRating(doctor.getId()));
 					doctorAvailableDTO.setDoctor(new UserDTO(doctor));
 					doctorAvailableDTO.setPeriodList(availablePeriodList);
 					doctorAvailableDTO.setAppointmentTypeDuration(appointmentType.getDuration());
@@ -163,20 +150,29 @@ public class ClinicService implements ClinicServiceInterface {
 	}
 	
 	@Override
-	public List<PeriodDTO> getDoctorPatientAvailablePeriodList(User doctor, User patient, Date date) {
+	public List<PeriodDTO> getDoctorPatientAvailablePeriodList(User doctor, User patient, Date date, Boolean ignoreDoctorPredefined) {
 		Long workStart = dateAtHours(date, doctor.getWorkStart()).getTime();
 		Long workEnd = dateAtHours(date, doctor.getWorkEnd()).getTime();
 
-		List<AppointmentDTO> doctorAppointmentList = this.appointmentService.findFiltered(doctor.getEmail(), null, null, null, null, null, null, null, null, date);
+		// In case that patient tries to request predefined appointment we need 
+		// to skip unrequested predefined appointments for this check or 
+		// else that predefined appointment would not be able to be requested
+		// (better solution would be to ignore just that exact appointment)
+		Boolean requested = null;
+		if(ignoreDoctorPredefined == true) {
+			requested = true;
+		}
+		
+		List<AppointmentDTO> doctorAppointmentList = this.appointmentService.findFiltered(doctor.getEmail(), null, null, null, null, null, requested, null, null, date);
 		List<Point> pointList = new ArrayList<>();
 		doctorAppointmentList.forEach(appointment -> {
 			pointList.add(new Point(appointment.getTime().getTime(), PointType.start));
-			pointList.add(new Point(appointment.getTime().getTime() + doctor.getSpecialisation().getDuration(), PointType.end));
+			pointList.add(new Point(appointment.getTime().getTime() + appointment.getType().getDuration(), PointType.end));
 		});
 		List<AppointmentDTO> patientAppointmentList = this.appointmentService.findFiltered(null, patient.getEmail(), null, null, null, null, null, null, null, date);
 		patientAppointmentList.forEach(appointment -> {
 			pointList.add(new Point(appointment.getTime().getTime(), PointType.start));
-			pointList.add(new Point(appointment.getTime().getTime() + doctor.getSpecialisation().getDuration(), PointType.end));
+			pointList.add(new Point(appointment.getTime().getTime() + appointment.getType().getDuration(), PointType.end));
 		});
 
 		// remove points that are not in doctor work period

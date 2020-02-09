@@ -21,7 +21,7 @@ public interface ClinicServiceInterface {
 	
 	List<DoctorAvailableDTO> findAllDoctorsByClinic(Integer clinicId);
 	
-	List<PeriodDTO> getDoctorPatientAvailablePeriodList(User doctor, User patient, Date date);
+	List<PeriodDTO> getDoctorPatientAvailablePeriodList(User doctor, User patient, Date date, Boolean ignoreDoctorPredefined);
 	
 	List<ClinicDTO> findPatientClinics();
 	

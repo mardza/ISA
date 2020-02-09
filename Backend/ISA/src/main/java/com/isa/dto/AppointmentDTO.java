@@ -143,7 +143,7 @@ public class AppointmentDTO {
 
 	@Override
 	public String toString() {
-		return "AppointmentDTO [id=" + id + ", time=" + time + ", type=" + type + ", price="
-				+ price + ", clinic=" + clinic + ", room=" + room + ", doctor=" + doctor + ", patient=" + patient + "]";
+		return "AppointmentDTO [id=" + id + ", time=" + time + ", type=" + type.getDuration() + ", price="
+				+ price.getPrice() + ", clinic=" + clinic.getName() + ", room=" + room.getName() + ", doctor=" + doctor.getEmail() + ", patient=" + patient.getEmail() + "]";
 	}
 }

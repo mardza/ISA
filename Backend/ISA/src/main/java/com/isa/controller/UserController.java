@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,14 +31,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	
-	
-
-//	@GetMapping()
-//	public ResponseEntity<List<UserDTO>> getAll() {
-//		List<User> userList = this.userService.findAll();
-//		return new ResponseEntity<List<UserDTO>>(UserDTO.toList(userList), HttpStatus.OK);
-//	}
 
 	@GetMapping(path = "/{email}")
 	public ResponseEntity<UserDTO> getByEmail(@PathVariable("email") String email) {
@@ -82,6 +75,7 @@ public class UserController {
 	}
 
 	@PostMapping(path = "/approve-registration/{email}")
+	@PreAuthorize("hasRole('ROLE_ADMIN_CENTER')")
 	public ResponseEntity<Void> approveRegistration(@PathVariable("email") String email, @RequestParam("approved") Boolean approved, @RequestBody(required = false) String message) {
 		if(approved) {
 			this.userService.approveRegistration(email);

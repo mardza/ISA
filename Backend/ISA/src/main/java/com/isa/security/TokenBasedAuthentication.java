@@ -3,6 +3,7 @@ package com.isa.security;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 
+@SuppressWarnings("serial")
 public class TokenBasedAuthentication extends AbstractAuthenticationToken {
 
     private String token;

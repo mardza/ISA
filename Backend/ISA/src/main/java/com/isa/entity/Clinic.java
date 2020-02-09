@@ -60,9 +60,6 @@ public class Clinic {
 	@Column(name = "rating_average", unique = false, nullable = true)
 	private Double ratingAverage;
 	
-	@Column(name = "rating_weight", unique = false, nullable = true)
-	private Integer ratingWeight;
-	
 	
 	public Clinic() {}
 	
@@ -160,14 +157,6 @@ public class Clinic {
 
 	public void setRatingAverage(Double ratingAverage) {
 		this.ratingAverage = ratingAverage;
-	}
-
-	public Integer getRatingWeight() {
-		return ratingWeight;
-	}
-
-	public void setRatingWeight(Integer ratingWeight) {
-		this.ratingWeight = ratingWeight;
 	}
 
 	@Override

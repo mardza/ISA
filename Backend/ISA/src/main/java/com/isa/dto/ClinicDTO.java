@@ -26,8 +26,6 @@ public class ClinicDTO {
 	
 	private Double ratingAverage;
 	
-	private Integer ratingWeight;
-	
 	private Integer patientRating;
 	
 	
@@ -39,7 +37,6 @@ public class ClinicDTO {
 		this.address = clinic.getAddress();
 		this.description = clinic.getDescription();
 		this.ratingAverage = clinic.getRatingAverage();
-		this.ratingWeight = clinic.getRatingWeight();
 		this.city = clinic.getCity();
 		this.country = clinic.getCountry();
 	}
@@ -103,14 +100,6 @@ public class ClinicDTO {
 
 	public void setRatingAverage(Double ratingAverage) {
 		this.ratingAverage = ratingAverage;
-	}
-
-	public Integer getRatingWeight() {
-		return ratingWeight;
-	}
-
-	public void setRatingWeight(Integer ratingWeight) {
-		this.ratingWeight = ratingWeight;
 	}
 
 	public Integer getPatientRating() {

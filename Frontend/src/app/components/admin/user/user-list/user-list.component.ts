@@ -21,6 +21,20 @@ export class UserListComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.columnsToDisplay = ['firstName', 'lastName', 'email', 'role'];
+        this.loading = true;
+        this.userService
+            .getUsers()
+            .subscribe(
+                value => {
+                    this.dataSource = new MatTableDataSource<User>();
+                    this.dataSource.data = value;
+                    this.loading = false;
+                },
+                error => {
+                    this.loading = false;
+                }
+            );
     }
 
 }

@@ -1,6 +1,6 @@
 <div id="form-wrapper" class="mat-elevation-z3">
     <p>Confirm appointment</p>
-    <form #form="ngForm">
+    <form>
 
         <!-- Clinic -->
         <mat-form-field>
@@ -28,7 +28,7 @@
         </mat-form-field>
 
         <div id="button-wrapper">
-            <button mat-raised-button type="button" (click)="onConfirmClick(form)">Confirm</button>
+            <button mat-raised-button type="button" (click)="onConfirmClick()">Confirm</button>
             <button mat-button type="button" (click)="onCancelClick()">Cancel</button>
         </div>
     </form>

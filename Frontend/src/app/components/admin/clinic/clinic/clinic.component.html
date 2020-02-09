@@ -1,5 +1,3 @@
-<app-header></app-header>
-
 <div id="form-wrapper" class="mat-elevation-z3">
     <p>Clinics</p>
     <form #form="ngForm">
@@ -26,9 +24,9 @@
         <div id="button-wrapper">
             <button *ngIf="!isCreateMode && !isEditActive" mat-raised-button type="button" (click)="onEditClick()">Edit</button>
             <button *ngIf="isCreateMode || isEditActive" mat-raised-button type="button" (click)="onConfirmClick(form)">Confirm</button>
-            <button *ngIf="isCreateMode" mat-button type="button" [routerLink]="['/clinics']">Cancel</button>
+            <button *ngIf="isCreateMode" mat-button type="button" [routerLink]="['/admin/clinics']">Cancel</button>
             <button *ngIf="isEditActive" mat-button type="button" (click)="onCancelClick(form)">Cancel</button>
-            <button *ngIf="!isCreateMode && !isEditActive" mat-button type="button" [routerLink]="['/clinics']">Back</button>
+            <button *ngIf="!isCreateMode && !isEditActive" mat-button type="button" [routerLink]="['/admin/clinics']">Back</button>
         </div>
     </form>
 </div>

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatTableDataSource} from '@angular/material';
-import {ClinicService} from '../../../services/http/clinic.service';
-import {Clinic} from '../../../models/Clinic.model';
+import {ClinicService} from '../../../../services/http/clinic.service';
+import {Clinic} from '../../../../models/Clinic.model';
 
 @Component({
     selector: 'app-clinic-list',

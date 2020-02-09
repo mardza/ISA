@@ -1,15 +1,9 @@
-<app-header></app-header>
 <div id="table-wrapper" class="mat-elevation-z3">
     <div>
         <p>Rooms</p>
         <a mat-raised-button [routerLink]="['create']">New</a>
     </div>
     <table mat-table [dataSource]="dataSource">
-
-        <ng-container matColumnDef="clinic">
-            <th mat-header-cell *matHeaderCellDef>Clinic</th>
-            <td mat-cell *matCellDef="let room">{{room.clinic?.name}}</td>
-        </ng-container>
 
         <ng-container matColumnDef="number">
             <th mat-header-cell *matHeaderCellDef>Number</th>

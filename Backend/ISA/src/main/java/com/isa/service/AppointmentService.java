@@ -51,7 +51,7 @@ public class AppointmentService implements AppointmentServiceInterface {
 		
 		if(doctorEmail != null && doctorEmail.length() > 0) {
 			appointmentList.removeIf(appointment -> {
-				return !appointment.getDoctor().getEmail().equals(doctorEmail);
+				return appointment.getDoctor() == null || !appointment.getDoctor().getEmail().equals(doctorEmail);
 			});
 		}
 		
@@ -139,7 +139,7 @@ public class AppointmentService implements AppointmentServiceInterface {
 		User doctor = this.userService.findByEmail(appointmentCreateDTO.getDoctorEmail());
 		User patient = this.userService.findByEmail(appointmentCreateDTO.getPatientEmail());
 		
-		if(!isAppointmentVaild(doctor, patient, appointmentCreateDTO.getTime())) {
+		if(!isAppointmentVaild(doctor, patient, appointmentCreateDTO.getTime(), false)) {
 			throw new AppointmentAlreadyExistsException("Failed to create appointment, eather doctor or patient are not available at that time.");
 		}
 		
@@ -166,10 +166,13 @@ public class AppointmentService implements AppointmentServiceInterface {
 		return new AppointmentDTO(appointment);
 	}
 	
-	private boolean isAppointmentVaild(User doctor, User patient, Date date) {
-		List<PeriodDTO> periodDTOList = this.clinicService.getDoctorPatientAvailablePeriodList(doctor, patient, date);
+	private boolean isAppointmentVaild(User doctor, User patient, Date date, Boolean ignoreDoctorPredefined) {
+		List<PeriodDTO> periodDTOList = this.clinicService.getDoctorPatientAvailablePeriodList(doctor, patient, date, ignoreDoctorPredefined);
 		boolean valid = false;
+		System.out.println("Appointment start: " + date);
+		System.out.println("Appointment end: " + new Date(date.getTime() + doctor.getSpecialisation().getDuration()));
 		for(PeriodDTO period: periodDTOList) {
+			System.out.println(period);
 			if(date.getTime() >= period.getStart() && (date.getTime() + doctor.getSpecialisation().getDuration()) <= period.getEnd()) {
 				valid = true;
 			}
@@ -182,7 +185,7 @@ public class AppointmentService implements AppointmentServiceInterface {
 		Appointment appointment = this.appointmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Appointment with id '" + id + "' not found"));
 		User patient = this.userService.getCurrentUser();
 		
-		if(!isAppointmentVaild(appointment.getDoctor(), patient, appointment.getTime())) {
+		if(!isAppointmentVaild(appointment.getDoctor(), patient, appointment.getTime(), true)) {
 			throw new AppointmentAlreadyExistsException("Failed to create appointment, eather doctor or patient are not available at that time.");
 		}
 		

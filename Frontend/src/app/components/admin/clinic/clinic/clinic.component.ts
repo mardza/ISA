@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Clinic} from '../../../models/Clinic.model';
+import {Clinic} from '../../../../models/Clinic.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgForm} from '@angular/forms';
-import {ClinicService} from '../../../services/http/clinic.service';
+import {ClinicService} from '../../../../services/http/clinic.service';
 
 @Component({
     selector: 'app-clinic',

@@ -21,10 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isa.controller.exception.custom.BadLoginException;
 import com.isa.dto.LoginDTO;
-import com.isa.dto.UserDTO;
 import com.isa.entity.Role;
 import com.isa.entity.User;
-import com.isa.security.CustomUserDetailsService;
 import com.isa.security.TokenHelper;
 import com.isa.service.UserService;
 
@@ -35,12 +33,9 @@ public class AuthenticationController {
 	@Autowired
 	private TokenHelper tokenHelper;
 	
-	@Lazy // iz nekog razloga circular dependency greska koja se resava sa @Lazy
+	@Lazy // for some reason there is some 'circular dependency' error which is solved with @Lazy
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
-	@Autowired
-	private CustomUserDetailsService userDetailsService;
 	
 	@Autowired
     private PasswordEncoder passwordEncoder;
@@ -60,10 +55,10 @@ public class AuthenticationController {
 			throw new BadLoginException("Email/Password is wrong");
 		}
 		
-		// Ubaci email + password u kontext
+		// Inject email + password into context
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
-		// Kreiraj token
+		// Create token
 		User user = (User) authentication.getPrincipal();
 		String jwt = tokenHelper.generateToken(user.getEmail());
 		

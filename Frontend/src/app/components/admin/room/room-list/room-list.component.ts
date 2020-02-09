@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatTableDataSource} from '@angular/material';
-import {Room} from '../../../models/Room.model';
-import {RoomService} from '../../../services/http/room.service';
+import {Room} from '../../../../models/Room.model';
+import {RoomService} from '../../../../services/http/room.service';
 
 @Component({
     selector: 'app-room-list',
@@ -21,7 +21,7 @@ export class RoomListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.columnsToDisplay = ['clinic', 'number', 'name'];
+        this.columnsToDisplay = ['number', 'name'];
         this.loading = true;
         this.roomService
             .getRooms()

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,11 +52,7 @@ public class ClinicController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<ClinicDTO>> getAllFiltered(
-			@RequestParam(name = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date,
-			@RequestParam(name = "appointmentType", required = false) String appointmentType,
-			@RequestParam(name = "address", required = false) String address) {
-		//List<Clinic> clinicList = this.clinicService.findFiltered(date, appointmentType, address);
+	public ResponseEntity<List<ClinicDTO>> getAll() {
 		List<Clinic> clinicList = this.clinicService.findAll();
 		return new ResponseEntity<List<ClinicDTO>>(ClinicDTO.toList(clinicList), HttpStatus.OK);
 	}
@@ -67,12 +64,14 @@ public class ClinicController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('ROLE_ADMIN_CENTER')")
 	public ResponseEntity<ClinicDTO> createClinic(@RequestBody @Valid ClinicDTO clinicDTO) {
 		Clinic clinic = this.clinicService.create(clinicDTO);
 		return new ResponseEntity<ClinicDTO>(new ClinicDTO(clinic), HttpStatus.OK);
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN_CENTER')")
 	public ResponseEntity<ClinicDTO> updateClinic(@PathVariable("id") Integer id, @RequestBody @Valid ClinicDTO clinicDTO) {
 		Clinic clinic = this.clinicService.update(id, clinicDTO);
 		return new ResponseEntity<ClinicDTO>(new ClinicDTO(clinic), HttpStatus.OK);
@@ -80,7 +79,7 @@ public class ClinicController {
 	
 	@GetMapping("/{id}/predefined-appointments")
 	public ResponseEntity<List<AppointmentDTO>> getPredefinedAppointments(@PathVariable("id") Integer id) {
-		List<AppointmentDTO> appointmentListDTO = this.appointmentService.findFiltered(null, null, null, null, id, true, false, null, null, null);
+		List<AppointmentDTO> appointmentListDTO = this.appointmentService.findFiltered(null, null, null, null, id, true, false, null, false, null);
 		return new ResponseEntity<List<AppointmentDTO>>(appointmentListDTO, HttpStatus.OK);
 	}
 	

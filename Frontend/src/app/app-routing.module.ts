@@ -11,11 +11,11 @@ import {UserListComponent} from './components/admin/user/user-list/user-list.com
 import {ProfileComponent} from './components/profile/profile.component';
 import {CurrentUserResolver} from './services/resolvers/CurrentUser.resolver';
 import {PasswordComponent} from './components/profile/password/password.component';
-import {ClinicListComponent} from './components/clinic/clinic-list/clinic-list.component';
-import {RoomListComponent} from './components/room/room-list/room-list.component';
-import {RoomComponent} from './components/room/room/room.component';
+import {ClinicListComponent} from './components/admin/clinic/clinic-list/clinic-list.component';
+import {RoomListComponent} from './components/admin/room/room-list/room-list.component';
+import {RoomComponent} from './components/admin/room/room/room.component';
 import {RoomResolver} from './services/resolvers/Room.resolver';
-import {ClinicComponent} from './components/clinic/clinic/clinic.component';
+import {ClinicComponent} from './components/admin/clinic/clinic/clinic.component';
 import {ClinicResolver} from './services/resolvers/Clinic.resolver';
 import {HomeComponent} from './components/home/home.component';
 import {PatientHomeComponentComponent} from './components/patient/patient-home-component/patient-home-component.component';
@@ -33,6 +33,7 @@ import {AdminClinicAppointmentRequestListComponent} from './components/admin-cli
 import {PatientAppointmentConfirmListComponent} from './components/patient/patient-appointment-confirm-list/patient-appointment-confirm-list.component';
 import {ClinicRatingListComponent} from './components/patient/ratings/clinic-rating-list/clinic-rating-list.component';
 import {DoctorRatingListComponent} from './components/patient/ratings/doctor-rating-list/doctor-rating-list.component';
+import {AdminCenterHomeComponent} from './components/admin/admin-center-home/admin-center-home.component';
 
 
 const routes: Routes = [
@@ -51,6 +52,27 @@ const routes: Routes = [
     {
         path: 'home',
         component: HomeComponent,
+        data: {
+            allowedRoles: ['*']
+        },
+        canActivate: [RoleGuard]
+    },
+
+
+    {
+        path: 'profile',
+        component: ProfileComponent,
+        data: {
+            allowedRoles: ['*']
+        },
+        resolve: {
+            user: CurrentUserResolver,
+        },
+        canActivate: [RoleGuard]
+    },
+    {
+        path: 'profile/password',
+        component: PasswordComponent,
         data: {
             allowedRoles: ['*']
         },
@@ -152,118 +174,69 @@ const routes: Routes = [
             {
                 path: 'appointment-requests',
                 component: AdminClinicAppointmentRequestListComponent
-            },
-            // {
-            //     path: 'appointment-requests/:appointmentId',
-            //     component: AdminClinicAppointmentRequestListComponent,
-            //     resolve: {
-            //         appointment: AppointmentResolver
-            //     }
-            // }
+            }
         ]
     },
 
 
     {
-        path: 'profile',
-        component: ProfileComponent,
-        data: {
-            allowedRoles: ['*']
-        },
-        resolve: {
-            user: CurrentUserResolver,
-        },
-        canActivate: [RoleGuard]
-    },
-    {
-        path: 'profile/password',
-        component: PasswordComponent,
-        data: {
-            allowedRoles: ['*']
-        },
-        canActivate: [RoleGuard]
-    },
-    {
-        path: 'admin/approve-user-list',
-        component: ApproveUserListComponent,
+        path: 'admin',
+        component: AdminCenterHomeComponent,
         data: {
             allowedRoles: ['ROLE_ADMIN_CENTER']
         },
-        canActivate: [RoleGuard]
+        canActivate: [RoleGuard],
+        canActivateChild: [RoleGuard],
+        children: [
+            {
+                path: 'approve-user-list',
+                component: ApproveUserListComponent
+            },
+            {
+                path: 'approve-user-list/:email',
+                component: ApproveUserComponent,
+                resolve: {
+                    user: UserResolver
+                }
+            },
+            {
+                path: 'user-list',
+                component: UserListComponent
+            },
+            {
+                path: 'clinics',
+                component: ClinicListComponent
+            },
+            {
+                path: 'clinics/create',
+                component: ClinicComponent
+            },
+            {
+                path: 'clinics/:clinicId',
+                component: ClinicComponent,
+                resolve: {
+                    clinic: ClinicResolver
+                }
+            },
+            {
+                path: 'rooms',
+                component: RoomListComponent
+            },
+            {
+                path: 'rooms/create',
+                component: RoomComponent
+            },
+            {
+                path: 'rooms/:id',
+                component: RoomComponent,
+                resolve: {
+                    room: RoomResolver
+                }
+            }
+        ]
     },
-    {
-        path: 'admin/approve-user-list/:email',
-        component: ApproveUserComponent,
-        data: {
-            allowedRoles: ['ROLE_ADMIN_CENTER']
-        },
-        resolve: {
-            user: UserResolver
-        },
-        canActivate: [RoleGuard]
-    },
-    {
-        path: 'admin/user-list',
-        component: UserListComponent,
-        data: {
-            allowedRoles: ['ROLE_ADMIN_CENTER']
-        },
-        canActivate: [RoleGuard]
-    },
-    {
-        path: 'clinics',
-        component: ClinicListComponent,
-        data: {
-            allowedRoles: ['ROLE_PATIENT', 'ROLE_ADMIN_CENTER']
-        },
-        canActivate: [RoleGuard]
-    },
-    {
-        path: 'clinics/create',
-        component: ClinicComponent,
-        data: {
-            allowedRoles: ['ROLE_ADMIN_CENTER']
-        },
-        canActivate: [RoleGuard]
-    },
-    {
-        path: 'clinics/:clinicId',
-        component: ClinicComponent,
-        data: {
-            allowedRoles: ['ROLE_ADMIN_CENTER']
-        },
-        resolve: {
-            clinic: ClinicResolver
-        },
-        canActivate: [RoleGuard]
-    },
-    {
-        path: 'rooms',
-        component: RoomListComponent,
-        data: {
-            allowedRoles: ['ROLE_ADMIN_CENTER']
-        },
-        canActivate: [RoleGuard]
-    },
-    {
-        path: 'rooms/create',
-        component: RoomComponent,
-        data: {
-            allowedRoles: ['ROLE_ADMIN_CENTER']
-        },
-        canActivate: [RoleGuard]
-    },
-    {
-        path: 'rooms/:id',
-        component: RoomComponent,
-        data: {
-            allowedRoles: ['ROLE_ADMIN_CENTER']
-        },
-        resolve: {
-            room: RoomResolver
-        },
-        canActivate: [RoleGuard]
-    },
+
+
     {
         path: '**',
         redirectTo: '/home'

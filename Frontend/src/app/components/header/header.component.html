@@ -8,7 +8,7 @@
         <a mat-button [routerLink]="['/patient/clinics']" routerLinkActive="button-hover">Clinics</a>
         <a mat-button [routerLink]="['/patient/find-clinic']" routerLinkActive="button-hover">Create appointment</a>
         <a mat-button [routerLink]="['/patient/appointments-confirm']" routerLinkActive="button-hover">Confirm appointments</a>
-        <a mat-button [routerLink]="['/patient/appointments']" routerLinkActive="button-hover">Appointments</a>
+        <a mat-button [routerLink]="['/patient/appointments']" routerLinkActive="button-hover"  [routerLinkActiveOptions]="{exact: true}">Appointments</a>
         <a mat-button [routerLink]="['/patient/appointments/old']" routerLinkActive="button-hover">Appointment history</a>
 <!--        <a mat-button [routerLink]="['/patient/medical-record']">Medical record</a>-->
         <button mat-button [matMenuTriggerFor]="patientRatings">Ratings</button>
@@ -19,45 +19,16 @@
         <a mat-button [routerLink]="['/profile']" routerLinkActive="button-hover">My profile</a>
     </ng-container>
 
-    <ng-container *ngIf="role === 'ROLE_DOCTOR'">
-        <a mat-button [routerLink]="['/doctor/patients']">Patients</a>
-        <a mat-button [routerLink]="['/doctor/appointments']">Appointments</a>
-        <a mat-button [routerLink]="['/work-calendar']">Work calendar</a>
-        <a mat-button [routerLink]="['/leave']">Leave</a>
-        <a mat-button [routerLink]="['/profile']">My profile</a>
-    </ng-container>
-
-    <ng-container *ngIf="role === 'ROLE_NURSE'">
-        <a mat-button [routerLink]="['/nurse/patients']">Patients</a>
-        <a mat-button [routerLink]="['/work-calendar']">Work calendar</a>
-        <a mat-button [routerLink]="['/leave']">Leave</a>
-        <a mat-button [routerLink]="['/profile']">My profile</a>
-        <a mat-button [routerLink]="['/prescriptions']">Prescriptions</a>
-    </ng-container>
-
     <ng-container *ngIf="role === 'ROLE_ADMIN_CLINIC'">
-<!--        <a mat-button [routerLink]="['/admin-clinic/registration-requests']" routerLinkActive="button-hover">Registration requests</a>-->
-<!--        <a mat-button [routerLink]="['/admin-clinic/clinic']">Clinic</a>-->
-        <a mat-button [routerLink]="['/admin-clinic/appointments']">Appointments</a>
-<!--        <a mat-button [routerLink]="['/admin-clinic/appointment-types']">Appointment types</a>-->
         <a mat-button [routerLink]="['/admin-clinic/appointment-requests']" routerLinkActive="button-hover">Appointment requests</a>
-<!--        <a mat-button [routerLink]="['/admin-clinic/staff']">Staff</a>-->
-<!--        <a mat-button [routerLink]="['/admin-clinic/rooms']">Rooms</a>-->
-<!--        <a mat-button [routerLink]="['/admin-clinic/report']">Report</a>-->
     </ng-container>
 
     <ng-container *ngIf="role === 'ROLE_ADMIN_CENTER'">
-        <a mat-button [routerLink]="['/admin/approve-user-list']">Approve patients</a>
-        <a mat-button [routerLink]="['/clinics']">Clinics</a>
-        <a mat-button [routerLink]="['/users']">Users</a>
-        <a mat-button [routerLink]="['/diagnoses']">Diagnoses</a>
-        <a mat-button [routerLink]="['/medicines']">Medicines</a>
+        <a mat-button [routerLink]="['/admin/approve-user-list']" routerLinkActive="button-hover">Approve patients</a>
+        <a mat-button [routerLink]="['/admin/user-list']" routerLinkActive="button-hover">Users</a>
+        <a mat-button [routerLink]="['/admin/clinics']" routerLinkActive="button-hover">Clinics</a>
+        <a mat-button [routerLink]="['/admin/rooms']" routerLinkActive="button-hover">Rooms</a>
     </ng-container>
-
-<!--    <button *ngIf="role === 'ROLE_ADMIN_CENTER'" mat-button [matMenuTriggerFor]="adminMenu">Admin</button>-->
-<!--    <mat-menu #adminMenu="matMenu">-->
-<!--        <a mat-menu-item [routerLink]="['/admin/approve-user-list']">Approve patients</a>-->
-<!--    </mat-menu>-->
 
     <button mat-button (click)="onClickLogout()">Logout</button>
 </mat-toolbar>

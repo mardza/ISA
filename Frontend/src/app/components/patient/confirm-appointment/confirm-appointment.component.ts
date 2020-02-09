@@ -2,11 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {User} from '../../../models/User.model';
 import {Clinic} from '../../../models/Clinic.model';
-import {NgForm} from '@angular/forms';
 import {Location} from '@angular/common';
 import {AppointmentService} from '../../../services/http/appointment.service';
 import {AppointmentCreate} from '../../../models/custom/AppointmentCreate.model';
 import {Appointment} from '../../../models/Appointment.model';
+import {HttpApiError} from '../../../models/HttpApiError.model';
 
 @Component({
     selector: 'app-confirm-appointment',
@@ -44,7 +44,7 @@ export class ConfirmAppointmentComponent implements OnInit {
         this.patient = this.route.snapshot.data.patient;
     }
 
-    onConfirmClick(form: NgForm) {
+    onConfirmClick() {
 
         if (this.appointment) {
             this.appointmentService
@@ -54,8 +54,9 @@ export class ConfirmAppointmentComponent implements OnInit {
                         console.log(value);
                         this.router.navigate(['/patient/appointments']);
                     },
-                    error => {
+                    (error: HttpApiError) => {
                         console.log(error);
+                        window.alert(error.message);
                     }
                 )
         } else {
@@ -73,8 +74,9 @@ export class ConfirmAppointmentComponent implements OnInit {
                         console.log(value);
                         this.router.navigate(['/patient/appointments']);
                     },
-                    error => {
+                    (error: HttpApiError) => {
                         console.log(error);
+                        window.alert(error.message);
                     }
                 );
         }
