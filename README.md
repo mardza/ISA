@@ -17,6 +17,7 @@ mvn spring-boot:run
 * Open folder in CMD
 * Run using node.js
 ```
+npm install
 npm start
 ```
 ## Accessing app
