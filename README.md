@@ -10,7 +10,7 @@ mvn spring-boot:run
 ```
 ### Using Spring Tool Suite 4
 * Open */Backend* folder as STS4 workspace
-* Import ISA folder as existing project
+* Import ISA folder as existing maven project
 * Press Run button
 ## Running Angular frontend application
 * Navigate to */Frontend*
