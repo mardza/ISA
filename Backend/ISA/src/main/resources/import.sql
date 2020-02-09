@@ -61,7 +61,6 @@ INSERT INTO users (email, password, first_name, last_name, address, city, countr
 VALUES ('admin_clinic2@g.com', '$2a$10$GGi3fzEAMIAgQE/lsADrueJsbTGbCYezOB/dAuXtMSUfkduNgTxX6', 'Admin Clinic 2 first', 'Admin last', 'Admin address', 'Admin city', 'Admin country', '0631231231', 4, 3, 2);
 
 
-
 INSERT INTO registrations (id, approved, activated)
 VALUES (4, true, true);
 INSERT INTO users (email, password, first_name, last_name, address, city, country, phone, role_id, registration_id, clinic_id)
@@ -84,16 +83,10 @@ INSERT INTO users (email, password, first_name, last_name, address, city, countr
 VALUES ('doctor3@g.com', '$2a$10$GGi3fzEAMIAgQE/lsADrueJsbTGbCYezOB/dAuXtMSUfkduNgTxX6', 'Doctor3 first', 'Doctor3 last', 'Doctor address', 'Doctor city', 'Doctor country', '0631231231', 2, 7, 2, 2, 8, 16, 1);
 
 
-
 INSERT INTO registrations (id, approved, activated)
 VALUES (8, true, true);
 INSERT INTO users (email, password, first_name, last_name, address, city, country, phone, role_id, registration_id, insurance_number)
 VALUES ('patient@g.com', '$2a$10$GGi3fzEAMIAgQE/lsADrueJsbTGbCYezOB/dAuXtMSUfkduNgTxX6', 'Patient first', 'Patient last', 'Patient address', 'Patient city', 'Patient country', '0631231231', 1, 8, '123456789');
-
-INSERT INTO registrations (id, approved, activated)
-VALUES (9, true, true);
-INSERT INTO users (email, password, first_name, last_name, address, city, country, phone, role_id, registration_id, insurance_number)
-VALUES ('patient2@g.com', '$2a$10$GGi3fzEAMIAgQE/lsADrueJsbTGbCYezOB/dAuXtMSUfkduNgTxX6', 'Patient first', 'Patient last', 'Patient address', 'Patient city', 'Patient country', '0631231231', 1, 9, '123456781239');
 
 
 
@@ -132,9 +125,6 @@ VALUES (2, 4, 3000, 50);
 
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested, patient_approved) 
 VALUES ('2020-1-29 09:30:00', 1, 1, 1, 1, 5, 8, true, true, true, true);
-
-INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested, patient_approved) 
-VALUES ('2020-1-29 09:30:00', 1, 1, 1, 1, 5, 9, true, true, true, true);
 
 INSERT INTO appointments (time, type_id, clinic_id, price_id, room_id, doctor_id, patient_id, approved, predefined, requested, patient_approved) 
 VALUES ('2020-3-24 08:00:00', 1, 1, 1, 1, 5, NULL, false, true, false, false);
